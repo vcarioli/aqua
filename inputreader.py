@@ -7,6 +7,7 @@ from os.path import dirname
 from datetime import datetime
 from decimal import Decimal
 import sys
+import logging
 
 
 __all__ = ["InputReader"]
@@ -41,6 +42,7 @@ class InputReader():
 
 		data = {}
 		for line in lineslist:
+			logging.info('Reading line {0}'.format(str(line)))
 			key = line[0]
 			values = line[1:]
 

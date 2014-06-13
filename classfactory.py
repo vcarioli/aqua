@@ -1,6 +1,6 @@
 ﻿# -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Name:		classfactory
 #-------------------------------------------------------------------------------
 
@@ -76,13 +76,13 @@ class AquaBase():
 				raise UnknownFieldTypeError(key, typ)
 
 			fields[key] = dict(
-							field_type = typ,
-							field_len = field_len,
-							dec_len = dec_len,
-							set = funcs[typ][0],
-							chk = funcs[typ][1],
-							out = funcs[typ][2],
-							)
+				field_type=typ,
+				field_len=field_len,
+				dec_len=dec_len,
+				set=funcs[typ][0],
+				chk=funcs[typ][1],
+				out=funcs[typ][2],
+			)
 		return fields
 
 	# _set_int(), _chk_int(), _out_int()
@@ -97,7 +97,9 @@ class AquaBase():
 		if dec_len != 0:
 			raise AssignmentError(field_name, 'int fields can not have decimals')
 		if len(str(value).strip('-+')) > field_len:
-			raise OverflowError('{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value))
+			raise OverflowError(
+				'{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value)
+			)
 
 	def _out_int(self, field_name):
 		d = self.fields[field_name]
@@ -119,9 +121,13 @@ class AquaBase():
 		field_len, dec_len = d['field_len'], d['dec_len']
 		v = str(value).replace('+', '').replace('-', '').split('.')
 		if len(v[0]) > field_len:
-			raise OverflowError('{0} integer part length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value))
+			raise OverflowError(
+				'{0} integer part length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value)
+)
 		if len(v) > 1 and len(v[1]) > dec_len:
-			raise OverflowError('{0} fractional part length is {1}: trying to assign value [{2}]'.format(field_name, dec_len, value))
+			raise OverflowError(
+				'{0} fractional part length is {1}: trying to assign value [{2}]'.format(field_name, dec_len, value)
+)
 
 	def _out_dec(self, field_name):
 		d = self.fields[field_name]
@@ -139,7 +145,9 @@ class AquaBase():
 
 	def _chk_date(self, field_name, value):
 		if type(value) not in [type(None), date]:
-			raise AssignmentError(field_name, 'trying to assign value [{0}] of type {1} to a date field'.format(value, type(value)))
+			raise AssignmentError(field_name,
+								  'trying to assign value [{0}] of type {1} to a date field'.format(value, type(value))
+					)
 
 	def _out_date(self, field_name):
 		dt = getattr(self, field_name)
@@ -157,7 +165,9 @@ class AquaBase():
 		if dec_len != 0:
 			raise AssignmentError(field_name, 'string fields can not have decimals')
 		if len(str(value)) > field_len:
-			raise OverflowError('{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value))
+			raise OverflowError(
+						'{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value)
+					)
 
 	def _out_str(self, field_name):
 		field_len = self.fields[field_name]['field_len']
@@ -181,24 +191,24 @@ class ClassFactory(AquaBase):
 
 	@property
 	def get_class_definition(self):
-		types = { 'i': "int()", 's': "str()", 'dt': "None", 'd': "Decimal('0.{0}')" }
+		types = {'i': "int()", 's': "str()", 'dt': "None", 'd': "Decimal('0.{0}')"}
 		c = []
 
 		# <<< class --------------------------------------------------------------------------------
-		c +=["class {0}(AquaBase):".format(self._class_name)]
+		c += ["class {0}(AquaBase):".format(self._class_name)]
 
 		# <<< __init__ -----------------------------------------------------------------------------
-		c +=["	def __init__(self):"]
+		c += ["	def __init__(self):"]
 
 		for key in self.fields.keys():
 			field = self.fields[key]
 			typ = field['field_type']
-			c += ["		self._{0} = {1}".format(key, types[typ].format('0' * field['dec_len']))	]
+			c += ["		self._{0} = {1}".format(key, types[typ].format('0' * field['dec_len']))]
 
 		c += [
 			"		self.fields = " + str(self.fields),
 			""
-			]
+		]
 		# >>> __init__ -----------------------------------------------------------------------------
 
 		# _get_XXX, set_XXX, xxx = property(...)
@@ -212,14 +222,14 @@ class ClassFactory(AquaBase):
 
 				"	{0} = property(_get_{0}, _set_{0})".format(key),
 				""
-				]
+			]
 
 		# __str__()
 		c += [
 			"	def __str__(self):",
 			"		return " + ' + '.join(["self.{0}('{1}')".format(self.fields[k]['out'], k) for k in self.fields.keys()]),
 			""
-			]
+		]
 
 		# __repr__()
 		c += [
@@ -227,7 +237,7 @@ class ClassFactory(AquaBase):
 			"		s = ['\t{0}:\t<{1}>\\n'.format(x, getattr(self, x)) for x in self.fields.keys()]",
 			"		return '<class: {0}>\\n'.format(self.__class__.__name__) + ''.join(s)",
 			""
-			]
+		]
 
 		# >>> class --------------------------------------------------------------------------------
 		return c
@@ -263,45 +273,60 @@ class ClassDefinitionReader():
 
 #=##################################################################################################
 class ClassModuleUpdater():
-	def __init__(self, classdef_file_name):
-		self._classdefs_file = pjoin(dirname(sys.argv[0]), 'classdefs.txt') if classdef_file_name is None else classdef_file_name
+	def __init__(self, input_filename, output_filename, classdefs_filename):
+		self._classdefs_file = pjoin(dirname(sys.argv[0]), 'classdefs.txt') if classdefs_filename is None else classdefs_filename
 		self._out_file = pjoin(dirname(self._classdefs_file), 'aquaclasses.py')
+		self._input_filename = input_filename
+		self._output_filename = output_filename
 		self._classes = {}
 		self._definitions = {}
 
 	def _write_class_module(self):
 		sep = '\n\n#=##################################################################################################'
-		imports =	[
-					"# -*- Mode: Python; tab-width: 4 -*-",
-					"# -*- coding: utf-8 -*-",
-					"#-------------------------------------------------------------------------------",
-					"# Name:		aquaclasses",
-					"#-------------------------------------------------------------------------------",
-					"",
-					"__all__ = " + str(list(self._definitions.keys())),
-					"",
-					"from collections import OrderedDict",
-					"from datetime import datetime, date",
-					"from decimal import Decimal",
-					"from classfactory import AquaBase",
-					"",
-					sep,
-					'class AssignmentError(Exception):',
-					'	"""An error from assigning a wrong type or value to a field."""',
-					'',
-					'	def __init__(self, fieldname, message):',
-					'		self.fieldname, self.msg = fieldname, message',
-					'',
-					'	def __str__(self):',
-					'		return "field {0}: {1}".format(self.fieldname, self.msg)',
-					''
-					]
+		imports = [
+			"# -*- Mode: Python; tab-width: 4 -*-",
+			"# -*- coding: utf-8 -*-",
+			"#-------------------------------------------------------------------------------",
+			"# Name:		aquaclasses",
+			"#-------------------------------------------------------------------------------",
+			"",
+			"__all__ = " + str(list(self._definitions.keys()) + ['aqua_classes', 'input_filename', 'output_filename']),
+			"",
+			"from collections import OrderedDict",
+			"from datetime import datetime, date",
+			"from decimal import Decimal",
+			"from classfactory import AquaBase",
+			"",
+			sep,
+			'class AssignmentError(Exception):',
+			'	"""An error from assigning a wrong type or value to a field."""',
+			'',
+			'	def __init__(self, fieldname, message):',
+			'		self.fieldname, self.msg = fieldname, message',
+			'',
+			'	def __str__(self):',
+			'		return "field {0}: {1}".format(self.fieldname, self.msg)',
+			''
+		]
 
 		with open(self._out_file, 'w') as outfile:
 			outfile.write('{code}\n'.format(code="\n".join(imports)))
 
 			for k in self._definitions.keys():
 				outfile.write('{sep}\n{code}\n'.format(code="\n".join(self._definitions[k]), sep=sep))
+
+			outfile.write('{sep}\n\n{code}'.format(code="aqua_classes = dict(", sep=sep))
+
+			comma = ""
+			for k in self._definitions.keys():
+				outfile.write('{sep}\n\t\t{code}\t= {code}'.format(code=k, sep=comma))
+				comma = ","
+
+			outfile.write('\n\t)')
+			outfile.write('{sep}\n\n{code}'.format(code='input_filename = "' + self._input_filename + '"', sep=sep))
+			outfile.write('{sep}\n\n{code}'.format(code='output_filename = "' + self._output_filename + '"', sep=sep))
+
+			outfile.write('{sep}\n'.format(sep=sep))
 
 	def get_classes(self):
 		classdefs = ClassDefinitionReader(self._classdefs_file).parse()
@@ -313,21 +338,23 @@ class ClassModuleUpdater():
 		return self._classes
 
 	def _update(self):
-		if not exists(self._out_file) or getmtime(self._out_file) < getmtime(self._classdefs_file):
-			if not self._classes:
-				self.get_classes()
-			self._write_class_module()
-			logging.info('{0} recreated'.format(self._out_file))
+		if not self._classes:
+			self.get_classes()
+		self._write_class_module()
+		logging.info('{0} recreated'.format(self._out_file))
 
 
 #=##################################################################################################
-#=##################################################################################################
-
-
 def main():
-	logging.basicConfig(filename=sys.argv[2], format='%(asctime)s %(levelname)-8s %(message)s', level=logging.DEBUG)
-	ClassModuleUpdater(sys.argv[1])._update()
+	classdefs_filename	= sys.argv[1]
+	input_filename		= sys.argv[2]
+	output_filename		= sys.argv[3]
+	log_filename		= sys.argv[4]
 
+#	logging.basicConfig(filename=log_filename, format='%(asctime)s %(levelname)-8s %(message)s', level=logging.DEBUG)
+	ClassModuleUpdater(input_filename, output_filename, classdefs_filename)._update()
+
+#=##################################################################################################
 
 if __name__ == '__main__':
 	main()

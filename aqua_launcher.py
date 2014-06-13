@@ -116,28 +116,27 @@ def check_command_line_options(options):
 
 #=##################################################################################################
 def main():
-	globs =	dict(
-				base_path=base_path,
-				main_program_filename	= abspath(options.main_program_filename),
-				classdefs_filename		= abspath(options.classdefs_filename),
-				input_filename			= abspath(options.input_filename),
-				output_filename			= abspath(options.output_filename),
-				log_filename			= log_filename,
-				aqua_classes			= None,
-				aqua_data				= None
-			)
+	main_program_filename	= abspath(options.main_program_filename)
+	classdefs_filename		= abspath(options.classdefs_filename)
+	input_filename			= abspath(options.input_filename)
+	output_filename			= abspath(options.output_filename)
 
-	aquaclasses_py = pjoin(globs['base_path'], 'aquaclasses.py')
-	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(globs['classdefs_filename']):
+	aquaclasses_py = pjoin(base_path, 'aquaclasses.py')
+	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(classdefs_filename):
 		from subprocess import check_call
-		classfactory_py = pjoin(globs['base_path'], 'classfactory.py')
-		check_call([sys.executable, classfactory_py, globs['classdefs_filename'], log_filename], shell=False)
 
-	globs['aqua_classes']	= ClassModuleUpdater(globs['classdefs_filename']).get_classes()
-	globs['aqua_data']		= InputReader(globs['aqua_classes'], globs['input_filename']).read()
+		args = [
+			sys.executable,
+			pjoin(base_path, 'classfactory.py'),
+			classdefs_filename,
+			input_filename,
+			output_filename,
+			log_filename
+		]
+		check_call(args, shell=False)
 
-	logging.info('Executing %s', (globs['main_program_filename']))
-	runpy.run_path(globs['main_program_filename'], init_globals=globs, run_name='__main__')
+	logging.info('Executing %s', main_program_filename)
+	runpy.run_path(main_program_filename, run_name='__main__')
 
 
 #=##################################################################################################

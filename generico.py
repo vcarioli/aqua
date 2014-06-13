@@ -15,6 +15,7 @@ from aquaclasses import *
 
 
 #=##################################################################################################
+from inputreader import InputReader
 
 fpro = None
 tipo_lettura = None
@@ -215,6 +216,8 @@ def main():
 
 if __name__ == '__main__':
 	try:
+		aqua_data = InputReader(aqua_classes, input_filename).read()
+
 		fpro = aqua_data['Fatpro'][0]
 		tipo_lettura = fpro.fp_tipo_let
 
