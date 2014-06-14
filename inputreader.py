@@ -42,7 +42,9 @@ class InputReader():
 
 		data = {}
 		for line in lineslist:
-			logging.info('Reading line {0}'.format(str(line)))
+			logging.info('<< {0} >>'.format(str(line)))
+			if line == [''] or line[0].startswith('#'):
+				continue
 			key = line[0]
 			values = line[1:]
 
