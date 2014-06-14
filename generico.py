@@ -5,7 +5,6 @@
 #-------------------------------------------------------------------------------
 # Da fare:
 #   Logging errori più intelleggibile
-#	Compattazione degli storni
 #	Cambio tariffa (in sospeso)
 #	Gestione del garage
 #-------------------------------------------------------------------------------
@@ -212,9 +211,18 @@ def main():
 
 	out_results(results)
 
+
+#=##################################################################################################
+# Non modificare dopo questa linea
 #=##################################################################################################
 
-if __name__ == '__main__':
+
+#=##################################################################################################
+def initialize():
+	global aqua_data, fpro, tipo_lettura, fprol, fproc, fprot, fpros
+
+	logging.info('generico.py: initialize()')
+
 	try:
 		aqua_data = InputReader(aqua_classes, input_filename).read()
 
@@ -226,6 +234,17 @@ if __name__ == '__main__':
 		fprot = aqua_data['Fatprot']
 		fpros = aqua_data['Fatpros'] if 'Fatpros' in aqua_data else None
 
+	except:
+		logging.error("Errore durante l'inizializzazione.")
+		raise
+
+
+#=##################################################################################################
+if __name__ == '__main__':
+	initialize()
+
+	try:
+		logging.info('generico.py: main()')
 		main()
 	except:
 		logging.error('Azienda: {0}, lettura: {1}/{2}, utente: {3}'.format(fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa, fpro.fp_aconto))
