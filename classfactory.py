@@ -1,4 +1,4 @@
-﻿# -*- Mode: Python; tab-width: 4 -*-
+# -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
 # -------------------------------------------------------------------------------
 # Name:		classfactory
@@ -351,7 +351,6 @@ def main():
 	output_filename		= sys.argv[3]
 	log_filename		= sys.argv[4]
 
-#	logging.basicConfig(filename=log_filename, format='%(asctime)s %(levelname)-8s %(message)s', level=logging.DEBUG)
 	ClassModuleUpdater(input_filename, output_filename, classdefs_filename)._update()
 
 #=##################################################################################################
