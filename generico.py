@@ -1,8 +1,8 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Name:		main_program
-#-------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------
 # Da fare:
 #   Logging errori più intelleggibile
 #	Cambio tariffa (in sospeso)
@@ -12,29 +12,39 @@
 import logging
 from aquaclasses import *
 
-
-#=##################################################################################################
 from inputreader import InputReader
 
-fpro = None
-tipo_lettura = None
-
-fprol = None
-fproc = None
-fprot = None
-fpros = None
 
 #=##################################################################################################
 
+fpro = None			# Dati di fatturazione
+tipo_lettura = []
+
+fprol = []			# letture
+fproc = []			# costi
+fprot = []			# tariffe
+fpros = []			# scaglioni
+
+
+#=##################################################################################################
 def out_results(results):
+	"""
+	Scrive i risultati nel file di output
+	:rtype : None
+	:param results: Lista di Output()
+	"""
 	with open(output_filename, "w") as fout:
 		fout.writelines([str(o) + '\n' for o in results])
 	logging.info('Results written to ' + output_filename)
 
-#=##################################################################################################
 
+#=##################################################################################################
 def ricerca_indici():
-	"""Ricerca indici valori per Quota fissa, Fogna e Depurazione"""
+	"""
+	Ricerca indici valori per Quota fissa, Fogna e Depurazione
+	:return: Indici (interi) di Quota fissa, Fogna e Depurazione
+	:rtype : int,int,int
+	"""
 	qfissa, fogna, depur = 0, 0, 0
 	for i in range(len(fprot)):
 		if fprot[i].fpt_codtar[0] == 'Q':
@@ -45,19 +55,37 @@ def ricerca_indici():
 			depur = i
 	return qfissa, fogna, depur
 
+
 def tariffe_scaglioni_acqua():
-	"""Tariffe e scaglioni Acqua"""
+	"""
+	Tariffe e scaglioni Acqua
+	:rtype : list
+	:return: Lista di coppie [Fprot(), costo_scaglione]
+	"""
 	ta = [x for x in fprot if x.fpt_codtar[0] == 'A']
 	sa = [round(x.fpt_quota * fpro.fp_periodo / 1000) if x.fpt_quota < 99999 else 99999 for x in ta]
 	return zip(ta, sa)
 
+
 def letture_casa_garage():
-	"""Isolamento letture casa da letture garage"""
+	"""
+	Isolamento letture casa da letture garage
+	:rtype : list,list
+	:return: Lista letture Casa. Lista letture Garage. ([Fatprol()], [Fatprol()])
+	"""
 	casa = [x for x in fprol if x.fpl_garage == '']
 	garage = [x for x in fprol if x.fpl_garage == 'G']
 	return casa, garage
 
+
 def costo(index, numfat, qta):
+	"""
+	Prepara un record di Output() di costi
+	:param index: Indice della tariffa
+	:param numfat: Numero della fattura
+	:param qta: Quantità
+	:rtype : Output()
+	"""
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'C'
@@ -66,7 +94,21 @@ def costo(index, numfat, qta):
 	o.fpo_qta = qta
 	return o
 
+
 def addebito_acqua(fpt, sca, mct, numfat):
+	"""
+	Prepara un record di Output() di addebiti
+	:type fpt : Fatprot
+	:param fpt : Tariffa
+	:type sca : Decimal
+	:param sca : Scaglione
+	:type mct : Decimal
+	:param mct : Metri cubi totali
+	:type numfat : int
+	:param numfat : Numero fattura
+	:return: Output()
+	:rtype : Output()
+	"""
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'C'
@@ -75,8 +117,11 @@ def addebito_acqua(fpt, sca, mct, numfat):
 	o.fpo_qta = sca if mct > sca else mct
 	return o
 
+
 def indici_valori_acqua_calda():
-	"""Ricerca indici valori per Acqua calda (s/r)"""
+	"""
+	Ricerca indici valori per Acqua calda (s/r)
+	"""
 	ac, acs = 0, 0
 	for i in range(len(fproc)):
 		if fproc[i].fpc_bcodart == 'ACS':
@@ -85,7 +130,14 @@ def indici_valori_acqua_calda():
 			ac = i
 	return ac, acs
 
+
 def costo_acqua_calda(qta, numfat):
+	"""
+	Calcola il costo dell'acqua calda
+	:param qta:
+	:param numfat:
+	:return: Output()
+	"""
 	iAc, iAcs = indici_valori_acqua_calda()
 	o = Output()
 	o.fpo_numfat = numfat
@@ -95,11 +147,21 @@ def costo_acqua_calda(qta, numfat):
 	o.fpo_qta = qta
 	return o
 
+
 def get_numfat(bcodart):
+	"""
+	:param bcodart: string - Codice articolo
+	:return: Numero fattura di partenza
+	"""
 	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999}
 	return numfat[bcodart]
 
+
 def altri_costi(fpc):
+	"""
+	:param fpc:
+	:return: Output()
+	"""
 	o = Output()
 	o.fpo_numfat = get_numfat(fpc.fpc_bcodart)
 	o.fpo_cs = 'C'
@@ -108,30 +170,61 @@ def altri_costi(fpc):
 	o.fpo_qta = 1
 	return o
 
+
 def consumo_totale_mc(casa):
-	"""Consumo totale in metri cubi esclusi garage"""
+	"""
+	Consumo totale in metri cubi escluso garage
+	:rtype : int
+	:param casa: Lista letture casa
+	"""
 	return sum([x.fpl_consumo for x in casa])
 
+
 def consumo_totale_mc_fredda_calda(casa):
-	"""Consumo totale fredda e calda esclusi garage"""
+	"""
+	Consumo totale fredda e calda esclusi garage
+	:rtype : int,int
+	:param casa: Lista letture casa
+	"""
 	fredda = sum([x.fpl_consumo for x in casa if x.fpl_fc == 0])
 	calda = sum([x.fpl_consumo for x in casa if x.fpl_fc == 1])
 	return fredda, calda
 
+
 def consumo_totale_mc_garage(garage):
-	"""Consumo totale garage (fredda + eventuale calda)"""
+	"""
+	Consumo totale garage (fredda + eventuale calda)
+	:rtype : int
+	:type garage: list
+	:param garage: Lista letture garage
+	"""
 	return sum([x.fpl_consumo for x in garage])
 
+
 def storno(fps, numfat):
+	"""
+	Calcola lo storno
+	:rtype : object
+	:param fps: Fatpros() Storno
+	:param numfat: Numero fattura
+	:return: Output() Risultato
+	"""
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'S'
 	o.fpo_qta = -1 * fps.fps_qta
 	o.fpo_costo = fps.fps_costo
-	o.fpo_bcodart = 'S' + fps.fps_bcodart[0:len(fps.fps_bcodart)-1]
+	o.fpo_bcodart = 'S' + fps.fps_bcodart[0:len(fps.fps_bcodart) - 1]
 	return o
 
+
 def compatta_storni(fpros):
+	"""
+	Compattazione e ordinamento degli storni
+	:rtype : list
+	:param fpros: Lista degli storni
+	:return: Lista degli storni ordinati secondo il campo fps_bubicaz
+	"""
 	s = {}
 	for fps in fpros:
 		k = (fps.fps_bcodart, fps.fps_costo, fps.fps_bubicaz)
@@ -146,7 +239,8 @@ def compatta_storni(fpros):
 		fps.fps_qta = s[k]
 		storni.append(fps)
 
-	return sorted(storni, key=lambda x:x.fps_bubicaz)
+	return sorted(storni, key=lambda x: x.fps_bubicaz)
+
 
 #=##################################################################################################
 
@@ -219,6 +313,10 @@ def main():
 
 #=##################################################################################################
 def initialize():
+	"""
+	Lettura dei dati dal file di input e inizializzazione delle variabili globali
+	:return: None
+	"""
 	global aqua_data, fpro, tipo_lettura, fprol, fproc, fprot, fpros
 
 	logging.info('generico.py: initialize()')
@@ -247,5 +345,6 @@ if __name__ == '__main__':
 		logging.info('generico.py: main()')
 		main()
 	except:
-		logging.error('Azienda: {0}, lettura: {1}/{2}, utente: {3}'.format(fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa, fpro.fp_aconto))
+		logging.error(
+			'Azienda: {0}, lettura: {1}/{2}, utente: {3}'.format(fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa, fpro.fp_aconto))
 		raise
