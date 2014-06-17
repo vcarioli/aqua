@@ -21,7 +21,8 @@ class InputReader():
 		self._file_name = file_name
 		self._aqua_classes = aqua_classes
 
-	def _convert(self, field, typ, value):
+	@staticmethod
+	def _convert(typ, value):
 		if typ == 's':
 			return value
 		elif typ == 'i':
@@ -42,7 +43,7 @@ class InputReader():
 
 		data = {}
 		for line in lineslist:
-			logging.info('<< {0} >>'.format(str(line)))
+#			logging.info(str(line))
 			if line == [''] or line[0].startswith('#'):
 				continue
 			key = line[0]
@@ -50,7 +51,7 @@ class InputReader():
 
 			c = self._aqua_classes[key]()
 			for fld, val in zip(c.fields.keys(), values):
-				setattr(c, fld, self._convert(fld, c.fields[fld]['field_type'], val))
+				setattr(c, fld, self._convert(c.fields[fld]['field_type'], val))
 
 			if key not in data:
 				data[key] = []

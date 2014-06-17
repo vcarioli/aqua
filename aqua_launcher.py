@@ -41,9 +41,6 @@ import runpy
 
 from os.path import abspath, dirname, exists, getmtime, join as pjoin
 
-from classfactory import ClassModuleUpdater
-from inputreader import InputReader
-
 
 #=##################################################################################################
 class AquaClassesGenerationError(Exception):
@@ -69,14 +66,14 @@ def get_command_line_options():
 	from optparse import OptionParser, make_option
 
 	return OptionParser(
-		option_list = [
+		option_list=[
 			make_option("-m", "--main", dest="main_program_filename", metavar="FILE", help="name of the main Python program"),
 			make_option("-c", "--classdefs", dest="classdefs_filename", metavar="FILE", help="class definition data FILE"),
 			make_option("-i", "--input", dest="input_filename", metavar="FILE", help="read data from FILE"),
 			make_option("-o", "--output", dest="output_filename", metavar="FILE", help="write data to FILE"),
 			make_option("-l", "--logfile", dest="log_filename", metavar="FILE", help="write data to FILE")
-			]
-		).parse_args()
+		]
+	).parse_args()
 
 #=##################################################################################################
 
@@ -93,25 +90,25 @@ def start_logging():
 
 
 #=##################################################################################################
-def stop_logging(exit_code):
-	logging.info('--------------------------------------------------- end session (exit code {0})'.format(exit_code))
+def stop_logging(ret_code):
+	logging.info('--------------------------------------------------- end session (exit code {0})'.format(ret_code))
 
 
 #=##################################################################################################
-def check_command_line_options(options):
-	if not exists(abspath(options.main_program_filename)):
-		raise NoFileError(options.main_program_filename)
-	if not exists(abspath(options.classdefs_filename)):
-		raise NoFileError(options.classdefs_filename)
-	if not exists(abspath(options.input_filename)):
-		raise NoFileError(options.input_filename)
+def check_command_line_options(opts):
+	if not exists(abspath(opts.main_program_filename)):
+		raise NoFileError(opts.main_program_filename)
+	if not exists(abspath(opts.classdefs_filename)):
+		raise NoFileError(opts.classdefs_filename)
+	if not exists(abspath(opts.input_filename)):
+		raise NoFileError(opts.input_filename)
 
 	try:
-		outf = open(abspath(options.output_filename), 'w')
+		outf = open(abspath(opts.output_filename), 'w')
 		outf.close()
 
 	except IOError:
-		raise NoFileError(options.output_filename, "can't open for output")
+		raise NoFileError(opts.output_filename, "can't open for output")
 
 
 #=##################################################################################################
@@ -123,19 +120,10 @@ def main():
 
 	aquaclasses_py = pjoin(base_path, 'aquaclasses.py')
 	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(classdefs_filename):
-		from subprocess import check_call
+		from classfactory import ClassModuleUpdater
+		ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()
 
-		args = [
-			sys.executable,
-			pjoin(base_path, 'classfactory.py'),
-			classdefs_filename,
-			input_filename,
-			output_filename,
-			log_filename
-		]
-		check_call(args, shell=False)
-
-	logging.info('Executing %s', main_program_filename)
+	logging.info('aqua_launcher.py: Executing %s', main_program_filename)
 	runpy.run_path(main_program_filename, run_name='__main__')
 
 

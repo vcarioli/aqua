@@ -8,7 +8,7 @@ __all__ = ["ClassModuleUpdater", "AssignmentError"]
 
 import sys
 import logging
-from os.path import dirname, exists, getmtime, join as pjoin
+import os.path
 
 from collections import OrderedDict
 from datetime import datetime, date
@@ -62,27 +62,31 @@ class AquaBase():
 				's':	["_set_str",	"_chk_str",		"_out_str"],
 				'dt':	["_set_date",	"_chk_date",	"_out_date"],
 				'd':	["_set_dec",	"_chk_dec",		"_out_dec"]
-				}
+		}
 		fields = OrderedDict()
-		for fld in self._spec[1:]:
-			d = fld.split(',')
-			typ = d[1]
-			l = d[2].split('.')
-			field_len = int(l[0])
-			dec_len = int(l[1] if len(l) > 1 else 0)
+		for fld in [x.strip('\r') for x in self._spec[1:]]:
+			try:
+				d = fld.split(',')
+				typ = d[1]
+				l = d[2].split('.')
+				field_len = int(l[0])
+				dec_len = int(l[1] if len(l) > 1 else 0)
 
-			key = d[0].lower().replace('-', '_')
-			if typ not in funcs.keys():
-				raise UnknownFieldTypeError(key, typ)
+				key = d[0].lower().replace('-', '_')
+				if typ not in funcs.keys():
+					raise UnknownFieldTypeError(key, typ)
 
-			fields[key] = dict(
-				field_type=typ,
-				field_len=field_len,
-				dec_len=dec_len,
-				set=funcs[typ][0],
-				chk=funcs[typ][1],
-				out=funcs[typ][2],
-			)
+				fields[key] = dict(
+					field_type=typ,
+					field_len=field_len,
+					dec_len=dec_len,
+					set=funcs[typ][0],
+					chk=funcs[typ][1],
+					out=funcs[typ][2],
+				)
+			except:
+				logging.error("classfactory.py: _create_fields_dict(self): error decoding [{0}][{1}]".format(self._spec[0], fld))
+				raise
 		return fields
 
 	# _set_int(), _chk_int(), _out_int()
@@ -123,11 +127,11 @@ class AquaBase():
 		if len(v[0]) > field_len:
 			raise OverflowError(
 				'{0} integer part length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value)
-)
+			)
 		if len(v) > 1 and len(v[1]) > dec_len:
 			raise OverflowError(
 				'{0} fractional part length is {1}: trying to assign value [{2}]'.format(field_name, dec_len, value)
-)
+			)
 
 	def _out_dec(self, field_name):
 		d = self.fields[field_name]
@@ -143,11 +147,10 @@ class AquaBase():
 		self._chk_date(field_name, value)
 		setattr(self, '_' + field_name, value)
 
-	def _chk_date(self, field_name, value):
+	@staticmethod
+	def _chk_date(field_name, value):
 		if type(value) not in [type(None), date]:
-			raise AssignmentError(field_name,
-								  'trying to assign value [{0}] of type {1} to a date field'.format(value, type(value))
-					)
+			raise AssignmentError(field_name, 'trying to assign value [{0}] of type {1} to a date field'.format(value, type(value)))
 
 	def _out_date(self, field_name):
 		dt = getattr(self, field_name)
@@ -165,9 +168,7 @@ class AquaBase():
 		if dec_len != 0:
 			raise AssignmentError(field_name, 'string fields can not have decimals')
 		if len(str(value)) > field_len:
-			raise OverflowError(
-						'{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value)
-					)
+			raise OverflowError('{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value))
 
 	def _out_str(self, field_name):
 		field_len = self.fields[field_name]['field_len']
@@ -177,17 +178,14 @@ class AquaBase():
 #=##################################################################################################
 class ClassFactory(AquaBase):
 	def __init__(self, classname, spec):
-		super().__init__(classname, spec)
+		AquaBase.__init__(self, classname, spec)
 		if classname is None or len(classname.strip()) == 0:
 			raise ArgumentError("classname", "can't be None or empty")
 		if spec is None or len(spec) == 0 or type(spec) is not list:
 			raise ArgumentError("spec", "can't be None or empty and must be a list object")
 		self._spec = [classname] + spec
 		self._class_name = self._spec[0]
-		if sys.version_info.major > 2:
-			self.fields = super(ClassFactory, self)._create_fields_dict()
-		else:
-			self.fields = AquaBase(classname, spec)._create_fields_dict()
+		self.fields = AquaBase(classname, spec)._create_fields_dict()
 
 	@property
 	def get_class_definition(self):
@@ -273,9 +271,9 @@ class ClassDefinitionReader():
 
 #=##################################################################################################
 class ClassModuleUpdater():
-	def __init__(self, input_filename, output_filename, classdefs_filename):
-		self._classdefs_file = pjoin(dirname(sys.argv[0]), 'classdefs.txt') if classdefs_filename is None else classdefs_filename
-		self._out_file = pjoin(dirname(self._classdefs_file), 'aquaclasses.py')
+	def __init__(self, classdefs_filename, input_filename, output_filename):
+		self._classdefs_file = os.path.join(os.path.dirname(sys.argv[0]), 'classdefs.txt') if classdefs_filename is None else classdefs_filename
+		self._out_file = os.path.join(os.path.dirname(self._classdefs_file), 'aquaclasses.py')
 		self._input_filename = input_filename
 		self._output_filename = output_filename
 		self._classes = {}
@@ -293,7 +291,6 @@ class ClassModuleUpdater():
 			"__all__ = " + str(list(self._definitions.keys()) + ['aqua_classes', 'input_filename', 'output_filename']),
 			"",
 			"from collections import OrderedDict",
-			"from datetime import datetime, date",
 			"from decimal import Decimal",
 			"from classfactory import AquaBase",
 			"",
@@ -337,7 +334,7 @@ class ClassModuleUpdater():
 
 		return self._classes
 
-	def _update(self):
+	def update(self):
 		if not self._classes:
 			self.get_classes()
 		self._write_class_module()
@@ -345,15 +342,16 @@ class ClassModuleUpdater():
 
 
 #=##################################################################################################
-def main():
-	classdefs_filename	= sys.argv[1]
-	input_filename		= sys.argv[2]
-	output_filename		= sys.argv[3]
-	log_filename		= sys.argv[4]
-
-	ClassModuleUpdater(input_filename, output_filename, classdefs_filename)._update()
-
 #=##################################################################################################
 
 if __name__ == '__main__':
-	main()
+	classdefs_filename	= sys.argv[1]
+	input_filename		= sys.argv[2]
+	output_filename		= sys.argv[3]
+
+	##### Serve solo per debug quando si lancia da linea di comado #####
+	log_filename = sys.argv[4]
+	logging.basicConfig(filename=log_filename, format='%(asctime)s %(levelname)-8s %(message)s', level=logging.DEBUG)
+	####################################################################
+
+	ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()

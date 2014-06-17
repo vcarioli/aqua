@@ -23,41 +23,54 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="generico.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/generico.py">
+      <file leaf-file-name="classfactory.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classfactory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.7876344" vertical-offset="1026" max-vertical-offset="6764">
-              <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1013" max-vertical-offset="3914">
+              <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
               <folding>
-                <element signature="e#430#444#0" expanded="true" />
-                <element signature="e#890#1136#0" expanded="true" />
-                <element signature="e#1263#1659#0" expanded="true" />
-                <element signature="e#1694#1966#0" expanded="true" />
-                <element signature="e#1997#2269#0" expanded="true" />
-                <element signature="e#2304#2687#0" expanded="true" />
-                <element signature="e#2734#3232#0" expanded="true" />
-                <element signature="e#3269#3477#0" expanded="true" />
-                <element signature="e#3517#3857#0" expanded="true" />
-                <element signature="e#3886#4047#0" expanded="true" />
-                <element signature="e#4073#4274#0" expanded="true" />
-                <element signature="e#4307#4450#0" expanded="true" />
-                <element signature="e#4496#4746#0" expanded="true" />
-                <element signature="e#4788#4962#0" expanded="true" />
-                <element signature="e#4991#5314#0" expanded="true" />
-                <element signature="e#5346#5874#0" expanded="true" />
-                <element signature="e#5992#7455#0" expanded="true" />
-                <element signature="e#7817#8402#0" expanded="true" />
+                <element signature="e#300#310#0" expanded="true" />
+                <element signature="e#1807#1881#0" expanded="true" />
+                <element signature="e#2870#2969#0" expanded="true" />
+                <element signature="e#5162#5257#0" expanded="true" />
+                <element signature="e#6135#6571#0" expanded="true" />
+                <element signature="e#8515#8695#0" expanded="true" />
+                <element signature="e#8717#8915#0" expanded="true" />
+                <element signature="e#9123#9476#0" expanded="true" />
+                <element signature="e#11276#11530#0" expanded="true" />
+                <element signature="e#11553#11680#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="input.txt" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/input.txt">
+      <file leaf-file-name="generico.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/generico.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="627">
-              <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
-              <folding />
+            <state vertical-scroll-proportion="0.10166919" vertical-offset="788" max-vertical-offset="4066">
+              <caret line="67" column="7" selection-start-line="67" selection-start-column="7" selection-end-line="67" selection-end-column="7" />
+              <folding>
+                <element signature="e#430#444#0" expanded="true" />
+                <element signature="e#897#1119#0" expanded="true" />
+                <element signature="e#2008#2099#0" expanded="true" />
+                <element signature="e#2136#2284#0" expanded="true" />
+                <element signature="e#2323#2535#0" expanded="true" />
+                <element signature="e#3530#3738#0" expanded="true" />
+                <element signature="e#6244#7778#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="inputreader.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inputreader.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="513" max-vertical-offset="1159">
+              <caret line="41" column="40" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="40" />
+              <folding>
+                <element signature="e#561#705#0" expanded="true" />
+                <element signature="e#751#984#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -73,12 +86,13 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/aqua_2.log" />
+        <option value="$PROJECT_DIR$/input.txt" />
         <option value="$PROJECT_DIR$/aquaclasses.py" />
         <option value="$PROJECT_DIR$/aqua_launcher.py" />
         <option value="$PROJECT_DIR$/classfactory.py" />
+        <option value="$PROJECT_DIR$/classdefs.txt" />
         <option value="$PROJECT_DIR$/aqua.log" />
         <option value="$PROJECT_DIR$/inputreader.py" />
-        <option value="$PROJECT_DIR$/input.txt" />
         <option value="$PROJECT_DIR$/generico.py" />
       </list>
     </option>
@@ -131,7 +145,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -152,10 +165,11 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="options.lastSelected" value="preferences.customizations" />
+    <property name="options.lastSelected" value="preferences.intentionPowerPack" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -163,7 +177,7 @@
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="last_opened_file_path" value="/usr/local/bin/python3.3m" />
+    <property name="last_opened_file_path" value="/usr/local/bin/python2.7" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -173,7 +187,18 @@
       </console-settings>
     </option>
   </component>
-  <component name="RunManager" selected="Python.generico">
+  <component name="RunManager" selected="Python.aqua_launcher">
+    <configuration default="true" type="BashConfigurationType" factoryName="Bash">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <module name="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -219,13 +244,30 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.4m" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aqua" />
+      <option name="docutils_input_file" value="/usr/local/lib/python3.4/email/architecture.rst" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="rst2html" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="/usr/bin/python" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.4m" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -233,6 +275,23 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="aqua_launcher.py" />
       <option name="PARAMETERS" value="-m generico.py -i input.txt -o out_2.txt -c classdefs.txt -l aqua_2.log" />
+      <method />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.4m" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aqua" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="html" />
+      <option name="docutils_open_in_browser" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -301,9 +360,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.4m" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="aqua" />
@@ -321,14 +380,14 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.4m" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classfactory.py" />
-      <option name="PARAMETERS" value="$PROJECT_DIR$/classdefs.txt $PROJECT_DIR$/aqua.log $PROJECT_DIR$/input.txt $PROJECT_DIR$/out.txt" />
+      <option name="PARAMETERS" value="classdefs.txt input.txt out.txt aqua.log" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -341,9 +400,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_HOME" value="/usr/local/bin/python3.4m" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="aqua" />
@@ -355,10 +414,71 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <list size="3">
+    <configuration default="false" name="aqua_launcher 2.7.7" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python2.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aqua" />
+      <option name="SCRIPT_NAME" value="aqua_launcher.py" />
+      <option name="PARAMETERS" value="-m generico.py -i input.txt -o out.txt -c classdefs.txt -l aqua.log" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="classfactory 2.7.7" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python2.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aqua" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classfactory.py" />
+      <option name="PARAMETERS" value="classdefs.txt input.txt out.txt aqua.log" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="generico 2.7.7" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/local/bin/python2.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="aqua" />
+      <option name="SCRIPT_NAME" value="generico.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Python.aqua_launcher" />
       <item index="1" class="java.lang.String" itemvalue="Python.classfactory" />
       <item index="2" class="java.lang.String" itemvalue="Python.generico" />
+      <item index="3" class="java.lang.String" itemvalue="Python.aqua_launcher 2.7.7" />
+      <item index="4" class="java.lang.String" itemvalue="Python.classfactory 2.7.7" />
+      <item index="5" class="java.lang.String" itemvalue="Python.generico 2.7.7" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
@@ -395,29 +515,30 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="25" width="1448" height="847" extended-state="7" />
+    <frame x="-4" y="25" width="1448" height="847" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14978603" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21212122" sideWeight="0.496614" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23819591" sideWeight="0.49893844" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36804566" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21212122" sideWeight="0.5011287" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13837375" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="139" y="149" width="1248" height="647" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29243937" sideWeight="0.49964765" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.49964765" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21212122" sideWeight="0.49643368" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2453505" sideWeight="0.49694502" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29957205" sideWeight="0.8245243" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24171951" sideWeight="0.503055" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31241083" sideWeight="0.5003524" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31241083" sideWeight="0.49964765" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32618025" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3266762" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32904148" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39942938" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -434,9 +555,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24876674" sideWeight="0.49821427" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23467231" sideWeight="0.49928468" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37232524" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37232524" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -458,18 +579,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/generico.py</url>
-          <line>248</line>
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/generico.py</url>
-          <line>327</line>
-          <option name="timeStamp" value="29" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -478,10 +587,40 @@
           <properties exception="BaseException" />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="30" />
+      <option name="time" value="46" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1482" max-vertical-offset="1615">
+          <caret line="142" column="0" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
+          <folding>
+            <element signature="e#3922#4130#0" expanded="false" />
+            <element signature="e#5073#5706#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classfactory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6878">
+          <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
+          <folding>
+            <element signature="e#300#310#0" expanded="true" />
+            <element signature="e#1807#1881#0" expanded="true" />
+            <element signature="e#2870#2969#0" expanded="true" />
+            <element signature="e#5162#5257#0" expanded="true" />
+            <element signature="e#6135#6571#0" expanded="true" />
+            <element signature="e#8515#8695#0" expanded="true" />
+            <element signature="e#8717#8915#0" expanded="true" />
+            <element signature="e#9123#9476#0" expanded="true" />
+            <element signature="e#11276#11530#0" expanded="true" />
+            <element signature="e#11553#11680#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/inputreader.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="779" max-vertical-offset="1140">
@@ -509,23 +648,12 @@
           <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -557,23 +685,12 @@
           <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -605,23 +722,12 @@
           <caret line="170" column="0" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -653,23 +759,12 @@
           <caret line="170" column="0" selection-start-line="170" selection-start-column="0" selection-end-line="170" selection-end-column="0" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -701,23 +796,12 @@
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -749,23 +833,12 @@
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -797,23 +870,12 @@
           <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="33" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -845,23 +907,12 @@
           <caret line="146" column="40" selection-start-line="146" selection-start-column="40" selection-end-line="146" selection-end-column="40" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -893,23 +944,12 @@
           <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -928,55 +968,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/local/lib/python3.3/logging/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.08272506" vertical-offset="9287" max-vertical-offset="11970">
-          <caret line="1630" column="4" selection-start-line="1630" selection-start-column="4" selection-end-line="1630" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classdefs.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1368">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.3/subprocess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0019305019" vertical-offset="2393" max-vertical-offset="5586">
-          <caret line="528" column="4" selection-start-line="528" selection-start-column="4" selection-end-line="528" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.3/locale.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2338" max-vertical-offset="26543">
-          <caret line="576" column="0" selection-start-line="576" selection-start-column="0" selection-end-line="576" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/lib/python3.3/runpy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1331" max-vertical-offset="2185">
-          <caret line="230" column="0" selection-start-line="230" selection-start-column="0" selection-end-line="231" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="741" max-vertical-offset="3059">
-          <caret line="39" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inputreader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="274" max-vertical-offset="912">
-          <caret line="44" column="35" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.67146975" vertical-offset="470" max-vertical-offset="817">
@@ -984,60 +975,107 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classfactory.py">
+    <entry file="file:///usr/lib64/python2.6/runpy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21279761" vertical-offset="1453" max-vertical-offset="2527">
-          <caret line="248" column="0" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.3601896" vertical-offset="228" max-vertical-offset="1216">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/aquaclasses.py">
+    <entry file="file://$PROJECT_DIR$/.hgtags">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16843702" vertical-offset="4107" max-vertical-offset="6802">
-          <caret line="357" column="0" selection-start-line="357" selection-start-column="0" selection-end-line="357" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="451">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-1247972724/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.07272727" vertical-offset="1355" max-vertical-offset="36309">
+          <caret line="228" column="4" selection-start-line="228" selection-start-column="4" selection-end-line="228" selection-end-column="4" />
+          <folding>
+            <element signature="e#7671#7962#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="627">
+          <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.275862" vertical-offset="1176" max-vertical-offset="1653">
+          <caret line="135" column="20" selection-start-line="135" selection-start-column="20" selection-end-line="135" selection-end-column="20" />
+          <folding>
+            <element signature="e#3922#4130#0" expanded="false" />
+            <element signature="e#5073#5706#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classdefs.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1368">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/aqua.log">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1919">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="440">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
+    <entry file="file://$PROJECT_DIR$/inputreader.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="154" max-vertical-offset="627">
-          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="513" max-vertical-offset="1159">
+          <caret line="41" column="40" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="40" />
+          <folding>
+            <element signature="e#561#705#0" expanded="true" />
+            <element signature="e#751#984#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classfactory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1013" max-vertical-offset="3914">
+          <caret line="69" column="0" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+          <folding>
+            <element signature="e#300#310#0" expanded="true" />
+            <element signature="e#1807#1881#0" expanded="true" />
+            <element signature="e#2870#2969#0" expanded="true" />
+            <element signature="e#5162#5257#0" expanded="true" />
+            <element signature="e#6135#6571#0" expanded="true" />
+            <element signature="e#8515#8695#0" expanded="true" />
+            <element signature="e#8717#8915#0" expanded="true" />
+            <element signature="e#9123#9476#0" expanded="true" />
+            <element signature="e#11276#11530#0" expanded="true" />
+            <element signature="e#11553#11680#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generico.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.7876344" vertical-offset="1026" max-vertical-offset="6764">
-          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.10166919" vertical-offset="788" max-vertical-offset="4066">
+          <caret line="67" column="7" selection-start-line="67" selection-start-column="7" selection-end-line="67" selection-end-column="7" />
           <folding>
             <element signature="e#430#444#0" expanded="true" />
-            <element signature="e#890#1136#0" expanded="true" />
-            <element signature="e#1263#1659#0" expanded="true" />
-            <element signature="e#1694#1966#0" expanded="true" />
-            <element signature="e#1997#2269#0" expanded="true" />
-            <element signature="e#2304#2687#0" expanded="true" />
-            <element signature="e#2734#3232#0" expanded="true" />
-            <element signature="e#3269#3477#0" expanded="true" />
-            <element signature="e#3517#3857#0" expanded="true" />
-            <element signature="e#3886#4047#0" expanded="true" />
-            <element signature="e#4073#4274#0" expanded="true" />
-            <element signature="e#4307#4450#0" expanded="true" />
-            <element signature="e#4496#4746#0" expanded="true" />
-            <element signature="e#4788#4962#0" expanded="true" />
-            <element signature="e#4991#5314#0" expanded="true" />
-            <element signature="e#5346#5874#0" expanded="true" />
-            <element signature="e#5992#7455#0" expanded="true" />
-            <element signature="e#7817#8402#0" expanded="true" />
+            <element signature="e#897#1119#0" expanded="true" />
+            <element signature="e#2008#2099#0" expanded="true" />
+            <element signature="e#2136#2284#0" expanded="true" />
+            <element signature="e#2323#2535#0" expanded="true" />
+            <element signature="e#3530#3738#0" expanded="true" />
+            <element signature="e#6244#7778#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1057,6 +1095,16 @@
         </settings>
       </state>
     </states>
+  </component>
+  <component name="regexState">
+    <option name="map">
+      <map>
+        <entry key="flags" value="0" />
+        <entry key="mode" value="0" />
+        <entry key="regex" value="(19||20)\d\d([- /.])(0[1-9]||1[012])\2(0[1-9]||[12][0-9]||3[01])" />
+        <entry key="text" value="1900-01-01 2007/08/13 1900.01.01 1900 01 01 1900-01.01 1900 13 01 1900 02 31" />
+      </map>
+    </option>
   </component>
 </project>
 

@@ -17,11 +17,11 @@ Fatpro	FP-GARAGE,s,1
 Fatpro	FP-DATA-LET,dt,8
 Fatpro	FP-TIPO-LET,s,1
 Fatpro	FP-PERIODO,i,5
- 
+
 Fatproc	FPC-BCODART,s,5
 Fatproc	FPC-QTA,d,5.3
 Fatproc	FPC-COSTO,d,4.6
- 
+
 Fatpros	FPS-BCODART,s,5
 Fatpros	FPS-QTA,d,5.3
 Fatpros	FPS-COSTO,d,4.6
@@ -45,7 +45,7 @@ Fatprol	FPL-DATA-LET-R,dt,8
 Fatprol	FPL-NUMERI-R,i,6
 Fatprol	FPL-PERIODO-C,i,5
 Fatprol	FPL-CONSUMO,i,6
- 
+
 Fatprot	FPT-VIGORE,dt,8
 Fatprot	FPT-CODTAR,s,5
 Fatprot	FPT-COLONNA,i,2

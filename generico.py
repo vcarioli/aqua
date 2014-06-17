@@ -17,25 +17,24 @@ from inputreader import InputReader
 
 #=##################################################################################################
 
-fpro = None			# Dati di fatturazione
+fpro = None		# Dati di fatturazione dell'azienda
+fprol = []		# letture
+fproc = []		# costi
+fprot = []		# tariffe
+fpros = []		# scaglioni
 tipo_lettura = []
-
-fprol = []			# letture
-fproc = []			# costi
-fprot = []			# tariffe
-fpros = []			# scaglioni
 
 
 #=##################################################################################################
 def out_results(results):
 	"""
 	Scrive i risultati nel file di output
-	:rtype : None
+	:type results: list<Output>
+	:rtype: None
 	:param results: Lista di Output()
 	"""
 	with open(output_filename, "w") as fout:
 		fout.writelines([str(o) + '\n' for o in results])
-	logging.info('Results written to ' + output_filename)
 
 
 #=##################################################################################################
@@ -43,7 +42,7 @@ def ricerca_indici():
 	"""
 	Ricerca indici valori per Quota fissa, Fogna e Depurazione
 	:return: Indici (interi) di Quota fissa, Fogna e Depurazione
-	:rtype : int,int,int
+	:rtype : (int, int, int)
 	"""
 	qfissa, fogna, depur = 0, 0, 0
 	for i in range(len(fprot)):
@@ -59,30 +58,46 @@ def ricerca_indici():
 def tariffe_scaglioni_acqua():
 	"""
 	Tariffe e scaglioni Acqua
-	:rtype : list
+	:rtype: list((Fprot, int))
 	:return: Lista di coppie [Fprot(), costo_scaglione]
 	"""
 	ta = [x for x in fprot if x.fpt_codtar[0] == 'A']
 	sa = [round(x.fpt_quota * fpro.fp_periodo / 1000) if x.fpt_quota < 99999 else 99999 for x in ta]
 	return zip(ta, sa)
 
+def letture(lista_letture, tipo_lettura):
+	"""
 
-def letture_casa_garage():
+	:rtype : list
 	"""
-	Isolamento letture casa da letture garage
-	:rtype : list,list
-	:return: Lista letture Casa. Lista letture Garage. ([Fatprol()], [Fatprol()])
+	return [x for x in lista_letture if x.fpl_garage == tipo_lettura]
+
+
+def letture_casa(lista_letture):
 	"""
-	casa = [x for x in fprol if x.fpl_garage == '']
-	garage = [x for x in fprol if x.fpl_garage == 'G']
-	return casa, garage
+	Letture casa (fpl_garage == '')
+	:type lista_letture: object
+	:return: Lista letture Casa ([Fatprol()])
+	"""
+	return letture(lista_letture, '')
+
+
+def letture_garage(lista_letture):
+	"""
+	Letture garage
+	:rtype : list
+	:param lista_letture: lista_letture: [Fatprol, ...]
+	:type lista_letture: list(Fatprol())
+	:return: Lista letture Garage. ([Fatprol()])
+	"""
+	return letture(lista_letture, 'G')
 
 
 def costo(index, numfat, qta):
 	"""
 	Prepara un record di Output() di costi
 	:param index: Indice della tariffa
-	:param numfat: Numero della fattura
+	:param numfat: Numero fattura (per l'ordinamento delle righe di output)
 	:param qta: Quantità
 	:rtype : Output()
 	"""
@@ -98,14 +113,10 @@ def costo(index, numfat, qta):
 def addebito_acqua(fpt, sca, mct, numfat):
 	"""
 	Prepara un record di Output() di addebiti
-	:type fpt : Fatprot
 	:param fpt : Tariffa
-	:type sca : Decimal
 	:param sca : Scaglione
-	:type mct : Decimal
 	:param mct : Metri cubi totali
-	:type numfat : int
-	:param numfat : Numero fattura
+	:param numfat : Numero fattura (per l'ordinamento delle righe di output)
 	:return: Output()
 	:rtype : Output()
 	"""
@@ -135,23 +146,24 @@ def costo_acqua_calda(qta, numfat):
 	"""
 	Calcola il costo dell'acqua calda
 	:param qta:
-	:param numfat:
+	:param numfat: Numero fattura (per l'ordinamento delle righe di output)
 	:return: Output()
 	"""
-	iAc, iAcs = indici_valori_acqua_calda()
+	iac, iacs = indici_valori_acqua_calda()
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'C'
-	o.fpo_bcodart = fproc[iAcs].fpc_bcodart if tipo_lettura == 'S' else fproc[iAc].fpc_bcodart
-	o.fpo_costo = fproc[iAc].fpc_costo
+	o.fpo_bcodart = fproc[iacs].fpc_bcodart if tipo_lettura == 'S' else fproc[iac].fpc_bcodart
+	o.fpo_costo = fproc[iac].fpc_costo
 	o.fpo_qta = qta
 	return o
 
 
 def get_numfat(bcodart):
 	"""
+	Decodifica il numero di fattura dal codice articolo
 	:param bcodart: string - Codice articolo
-	:return: Numero fattura di partenza
+	:return: Numero fattura di partenza (per l'ordinamento delle righe di output)
 	"""
 	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999}
 	return numfat[bcodart]
@@ -171,13 +183,13 @@ def altri_costi(fpc):
 	return o
 
 
-def consumo_totale_mc(casa):
+def consumo_totale_mc(lista_letture):
 	"""
-	Consumo totale in metri cubi escluso garage
+	Consumo totale in metri cubi
 	:rtype : int
-	:param casa: Lista letture casa
+	:param lista_letture: Lista letture
 	"""
-	return sum([x.fpl_consumo for x in casa])
+	return sum([x.fpl_consumo for x in lista_letture])
 
 
 def consumo_totale_mc_fredda_calda(casa):
@@ -191,22 +203,12 @@ def consumo_totale_mc_fredda_calda(casa):
 	return fredda, calda
 
 
-def consumo_totale_mc_garage(garage):
-	"""
-	Consumo totale garage (fredda + eventuale calda)
-	:rtype : int
-	:type garage: list
-	:param garage: Lista letture garage
-	"""
-	return sum([x.fpl_consumo for x in garage])
-
-
 def storno(fps, numfat):
 	"""
-	Calcola lo storno
+	Calcolo dello storno
 	:rtype : object
 	:param fps: Fatpros() Storno
-	:param numfat: Numero fattura
+	:param numfat: Numero fattura (per l'ordinamento delle righe di output)
 	:return: Output() Risultato
 	"""
 	o = Output()
@@ -218,15 +220,15 @@ def storno(fps, numfat):
 	return o
 
 
-def compatta_storni(fpros):
+def compatta_storni(storni):
 	"""
 	Compattazione e ordinamento degli storni
 	:rtype : list
-	:param fpros: Lista degli storni
+	:param storni: Lista degli storni
 	:return: Lista degli storni ordinati secondo il campo fps_bubicaz
 	"""
 	s = {}
-	for fps in fpros:
+	for fps in storni:
 		k = (fps.fps_bcodart, fps.fps_costo, fps.fps_bubicaz)
 		s[k] = fps.fps_qta if k not in s else s[k] + fps.fps_qta
 
@@ -246,45 +248,46 @@ def compatta_storni(fpros):
 
 def main():
 	# Isolamento letture casa da letture garage
-	casa, garage = letture_casa_garage()
+	casa = letture_casa(fprol)
+	garage = letture_garage(fprol)
 
-	# Calcolo consumo totale in metri cubi esclusi garage
-	Mc_Tot = consumo_totale_mc(casa)
+	# Calcolo consumo totale casa in metri cubi
+	mc_tot = consumo_totale_mc(casa)
 
-	# Calcolo consumo totale fredda e calda esclusi garage
-	Mc_F, Mc_C = consumo_totale_mc_fredda_calda(casa)
+	# Calcolo consumo totale fredda e calda casa
+	mc_f, mc_c = consumo_totale_mc_fredda_calda(casa)
 
 	# Calcolo consumo totale garage (fredda + eventuale calda)
-	Mc_G = consumo_totale_mc_garage(garage)
+	mc_g = consumo_totale_mc(garage)
 
 	results = []
 	numfat = 0
 
 	# Calcolo righe addebito acqua totale consumata
-	mct = Mc_Tot
+	mct = mc_tot
 	for (fpt, sca) in tariffe_scaglioni_acqua():
 		if mct > 0:
 			results.append(addebito_acqua(fpt, sca, mct, numfat))
 			mct -= sca if mct > sca else mct
 			numfat += 1
 
-	iQf, iFogna, iDepur = ricerca_indici()
+	iqf, ifogna, idepur = ricerca_indici()
 
 	# Fognatura
-	results.append(costo(iFogna, numfat, Mc_Tot))
+	results.append(costo(ifogna, numfat, mc_tot))
 	numfat += 1
 
 	# Depurazione
-	results.append(costo(iDepur, numfat, Mc_Tot))
+	results.append(costo(idepur, numfat, mc_tot))
 	numfat += 1
 
 	# Quota fissa (in realta' non e' differenziata per lettura s/r)
-	results.append(costo(iQf, numfat, fpro.fp_periodo))
+	results.append(costo(iqf, numfat, fpro.fp_periodo))
 	numfat += 1
 
 	# Acqua calda, se presente
-	if Mc_C > 0:
-		results.append(costo_acqua_calda(Mc_C, numfat))
+	if mc_c > 0:
+		results.append(costo_acqua_calda(mc_c, numfat))
 		numfat += 1
 
 	# BA	Bocche Antincendio
@@ -304,6 +307,7 @@ def main():
 			numfat += 1
 
 	out_results(results)
+	logging.info('generico.py: main(): Results written to ' + output_filename)
 
 
 #=##################################################################################################
@@ -318,8 +322,6 @@ def initialize():
 	:return: None
 	"""
 	global aqua_data, fpro, tipo_lettura, fprol, fproc, fprot, fpros
-
-	logging.info('generico.py: initialize()')
 
 	try:
 		aqua_data = InputReader(aqua_classes, input_filename).read()
@@ -339,12 +341,21 @@ def initialize():
 
 #=##################################################################################################
 if __name__ == '__main__':
+	logging.info('generico.py: starting initialize()')
 	initialize()
+	logging.info('generico.py: initialize() done')
 
 	try:
-		logging.info('generico.py: main()')
+		logging.info('generico.py: starting main()')
 		main()
+		logging.info('generico.py: main() done')
 	except:
 		logging.error(
-			'Azienda: {0}, lettura: {1}/{2}, utente: {3}'.format(fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa, fpro.fp_aconto))
+			'Azienda: {0}, lettura: {1}/{2}, utente: {3}'.format(
+				fpro.fp_azienda,
+				fpro.fp_numlet_pr,
+				fpro.fp_numlet_aa,
+				fpro.fp_aconto
+			)
+		)
 		raise
