@@ -1,0 +1,14 @@
+# use glob syntax.
+syntax: glob
+
+*.log
+aquaclasses.py
+out.txt
+.hgignore
+# .idea
+*.pyc
+*~
+
+# switch to regexp syntax.
+syntax: regexp
+
