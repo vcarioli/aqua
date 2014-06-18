@@ -58,10 +58,10 @@ class AquaBase():
 
 	def _create_fields_dict(self):
 		funcs = {
-				'i':	["_set_int",	"_chk_int",		"_out_int"],
-				's':	["_set_str",	"_chk_str",		"_out_str"],
-				'dt':	["_set_date",	"_chk_date",	"_out_date"],
-				'd':	["_set_dec",	"_chk_dec",		"_out_dec"]
+				'i': ["_set_int", "_chk_int", "_out_int"],
+				's': ["_set_str", "_chk_str", "_out_str"],
+				'dt': ["_set_date", "_chk_date", "_out_date"],
+				'd': ["_set_dec", "_chk_dec", "_out_dec"]
 		}
 		fields = OrderedDict()
 		for fld in [x.strip('\r') for x in self._spec[1:]]:
@@ -188,7 +188,7 @@ class ClassFactory(AquaBase):
 		self.fields = AquaBase(classname, spec)._create_fields_dict()
 
 	@property
-	def get_class_definition(self):
+	def class_definition(self):
 		types = {'i': "int()", 's': "str()", 'dt': "None", 'd': "Decimal('0.{0}')"}
 		c = []
 
@@ -203,10 +203,13 @@ class ClassFactory(AquaBase):
 			typ = field['field_type']
 			c += ["		self._{0} = {1}".format(key, types[typ].format('0' * field['dec_len']))]
 
-		c += [
-			"		self.fields = " + str(self.fields),
-			""
-		]
+		c += ["		self.fields = OrderedDict(["]
+		i, n = 0, len(self.fields)
+		for k in self.fields.keys():
+			i += 1
+			c += ["			('{0}', {1}){2}".format(k, str(self.fields[k]), "," if i < n else "")]
+		c += ["		])", ""]
+
 		# >>> __init__ -----------------------------------------------------------------------------
 
 		# _get_XXX, set_XXX, xxx = property(...)
@@ -214,10 +217,10 @@ class ClassFactory(AquaBase):
 			c += [
 				"	def _get_{0}(self):".format(key),
 				"		return self._{0}".format(key),
-
+				"",
 				"	def _set_{0}(self, value):".format(key),
 				"		self.{0}('{1}', value)".format(self.fields[key]['set'], key),
-
+				"",
 				"	{0} = property(_get_{0}, _set_{0})".format(key),
 				""
 			]
@@ -225,7 +228,7 @@ class ClassFactory(AquaBase):
 		# __str__()
 		c += [
 			"	def __str__(self):",
-			"		return " + ' + '.join(["self.{0}('{1}')".format(self.fields[k]['out'], k) for k in self.fields.keys()]),
+			"		return	" + ' + \\\n\t\t\t\t'.join(["self.{0}('{1}')".format(self.fields[k]['out'], k) for k in self.fields.keys()]),
 			""
 		]
 
@@ -233,8 +236,7 @@ class ClassFactory(AquaBase):
 		c += [
 			"	def __repr__(self):",
 			"		s = ['\t{0}:\t<{1}>\\n'.format(x, getattr(self, x)) for x in self.fields.keys()]",
-			"		return '<class: {0}>\\n'.format(self.__class__.__name__) + ''.join(s)",
-			""
+			"		return '<class: {0}>\\n'.format(self.__class__.__name__) + ''.join(s)"
 		]
 
 		# >>> class --------------------------------------------------------------------------------
@@ -242,7 +244,7 @@ class ClassFactory(AquaBase):
 
 	@property
 	def get_class(self):
-		c = self.get_class_definition
+		c = self.class_definition
 		exec('\n'.join(c))
 		return locals()[self._class_name]
 
@@ -271,11 +273,11 @@ class ClassDefinitionReader():
 
 #=##################################################################################################
 class ClassModuleUpdater():
-	def __init__(self, classdefs_filename, input_filename, output_filename):
-		self._classdefs_file = os.path.join(os.path.dirname(sys.argv[0]), 'classdefs.txt') if classdefs_filename is None else classdefs_filename
+	def __init__(self, classdefs_fn, input_fn, output_fn):
+		self._classdefs_file = os.path.join(os.path.dirname(sys.argv[0]), 'classdefs.txt') if classdefs_fn is None else classdefs_fn
 		self._out_file = os.path.join(os.path.dirname(self._classdefs_file), 'aquaclasses.py')
-		self._input_filename = input_filename
-		self._output_filename = output_filename
+		self._input_filename = input_fn
+		self._output_filename = output_fn
 		self._classes = {}
 		self._definitions = {}
 
@@ -293,7 +295,6 @@ class ClassModuleUpdater():
 			"from collections import OrderedDict",
 			"from decimal import Decimal",
 			"from classfactory import AquaBase",
-			"",
 			sep,
 			'class AssignmentError(Exception):',
 			'	"""An error from assigning a wrong type or value to a field."""',
@@ -302,8 +303,7 @@ class ClassModuleUpdater():
 			'		self.fieldname, self.msg = fieldname, message',
 			'',
 			'	def __str__(self):',
-			'		return "field {0}: {1}".format(self.fieldname, self.msg)',
-			''
+			'		return "field {0}: {1}".format(self.fieldname, self.msg)'
 		]
 
 		with open(self._out_file, 'w') as outfile:
@@ -311,25 +311,20 @@ class ClassModuleUpdater():
 
 			for k in self._definitions.keys():
 				outfile.write('{sep}\n{code}\n'.format(code="\n".join(self._definitions[k]), sep=sep))
+			outfile.write(sep)
 
-			outfile.write('{sep}\n\n{code}'.format(code="aqua_classes = dict(", sep=sep))
+			outfile.write('\n\naqua_classes = dict(' + ", ".join(['{key}={key}'.format(key=k) for k in self._definitions.keys()]) + ')')
 
-			comma = ""
-			for k in self._definitions.keys():
-				outfile.write('{sep}\n\t\t{code}\t= {code}'.format(code=k, sep=comma))
-				comma = ","
+			outfile.write('\n\ninput_filename = "' + self._input_filename + '"')
+			outfile.write('\noutput_filename = "' + self._output_filename + '"')
 
-			outfile.write('\n\t)')
-			outfile.write('{sep}\n\n{code}'.format(code='input_filename = "' + self._input_filename + '"', sep=sep))
-			outfile.write('{sep}\n\n{code}'.format(code='output_filename = "' + self._output_filename + '"', sep=sep))
-
-			outfile.write('{sep}\n'.format(sep=sep))
+			outfile.write(sep + '\n')
 
 	def get_classes(self):
 		classdefs = ClassDefinitionReader(self._classdefs_file).parse()
 		for k in classdefs.keys():
 			factory = ClassFactory(k, classdefs[k])
-			self._definitions[k] = factory.get_class_definition
+			self._definitions[k] = factory.class_definition
 			self._classes[k] = factory.get_class
 
 		return self._classes
