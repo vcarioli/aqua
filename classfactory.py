@@ -161,10 +161,7 @@ class AquaBase():
 
 	def _get_date(self, field_name):
 		dt = getattr(self, field_name)
-		if sys.version_info < (3,0):
-			return dt.format('%Y%m%d') if dt is not None else '        '
-		else:
-			return dt.strftime('%Y%m%d') if dt is not None else '        '
+		return dt.strftime('%Y%m%d') if dt is not None else '        '
 
 	# _set_str(), _chk_str(), _get_str()
 	def _set_str(self, field_name, value):
