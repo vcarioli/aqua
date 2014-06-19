@@ -11,7 +11,6 @@
 
 import logging
 from aquaclasses import *
-
 from inputreader import InputReader
 
 

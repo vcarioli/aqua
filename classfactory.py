@@ -58,10 +58,10 @@ class AquaBase():
 
 	def _create_fields_dict(self):
 		funcs = {
-				'i': ["_set_int", "_chk_int", "_out_int"],
-				's': ["_set_str", "_chk_str", "_out_str"],
-				'dt': ["_set_date", "_chk_date", "_out_date"],
-				'd': ["_set_dec", "_chk_dec", "_out_dec"]
+				'i': ["_set_int", "_chk_int", "_get_int", "_out_int"],
+				's': ["_set_str", "_chk_str", "_get_str", "_get_str"],
+				'dt': ["_set_date", "_chk_date", "_get_date", "_get_date"],
+				'd': ["_set_dec", "_chk_dec", "_get_dec", "_out_dec"]
 		}
 		fields = OrderedDict()
 		for fld in [x.strip('\r') for x in self._spec[1:]]:
@@ -82,14 +82,15 @@ class AquaBase():
 					dec_len=dec_len,
 					set=funcs[typ][0],
 					chk=funcs[typ][1],
-					out=funcs[typ][2],
+					get=funcs[typ][2],
+					out=funcs[typ][3]
 				)
 			except:
 				logging.error("classfactory.py: _create_fields_dict(self): error decoding [{0}][{1}]".format(self._spec[0], fld))
 				raise
 		return fields
 
-	# _set_int(), _chk_int(), _out_int()
+	# _set_int(), _chk_int(), _get_int(), _out_int()
 	def _set_int(self, field_name, value):
 		value = str(value)
 		self._chk_int(field_name, value)
@@ -105,12 +106,15 @@ class AquaBase():
 				'{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value)
 			)
 
-	def _out_int(self, field_name):
+	def _get_int(self, field_name, sign='+'):
 		d = self.fields[field_name]
 		field_len = d['field_len']
-		return '{:0=+{w}n}'.format(getattr(self, field_name), w=(field_len + 1))
+		return '{:0={s}{w}n}'.format(getattr(self, field_name), s=sign, w=(field_len + len(sign)))
 
-	# _set_dec(), _chk_dec(), _out_dec()
+	def _out_int(self, field_name):
+		return self._get_int(field_name, sign='')
+
+	# _set_dec(), _chk_dec(), _get_dec(), _out_dec()
 	def _set_dec(self, field_name, value):
 		v = str(value).replace(',', '.').split('.')
 		if len(v) > 1:
@@ -133,12 +137,15 @@ class AquaBase():
 				'{0} fractional part length is {1}: trying to assign value [{2}]'.format(field_name, dec_len, value)
 			)
 
-	def _out_dec(self, field_name):
+	def _get_dec(self, field_name, dec_sep='', sign='+'):
 		d = self.fields[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
-		return '{:0=+{w}.{p}f}'.format(float(getattr(self, field_name)), w=field_len + dec_len + 2, p=dec_len).replace('.', '')
+		return '{:0={s}{w}.{p}f}'.format(float(getattr(self, field_name)), s=sign, w=field_len + dec_len + 1 + len(sign), p=dec_len).replace('.', dec_sep)
 
-	# _set_date(), _chk_date(), _out_date()
+	def _out_dec(self, field_name):
+		return self._get_dec(field_name, dec_sep=',', sign='')
+
+	# _set_date(), _chk_date(), _get_date()
 	def _set_date(self, field_name, value):
 		if type(value) is str:
 			value = datetime.strptime(value, '%Y%m%d').date()
@@ -152,11 +159,14 @@ class AquaBase():
 		if type(value) not in [type(None), date]:
 			raise AssignmentError(field_name, 'trying to assign value [{0}] of type {1} to a date field'.format(value, type(value)))
 
-	def _out_date(self, field_name):
+	def _get_date(self, field_name):
 		dt = getattr(self, field_name)
-		return dt.strftime('%Y%m%d') if dt is not None else '        '
+		if sys.version_info < (3,0):
+			return dt.format('%Y%m%d') if dt is not None else '        '
+		else:
+			return dt.strftime('%Y%m%d') if dt is not None else '        '
 
-	# _set_str(), _chk_str(), _out_str()
+	# _set_str(), _chk_str(), _get_str()
 	def _set_str(self, field_name, value):
 		value = value.rstrip()
 		self._chk_str(field_name, value)
@@ -170,9 +180,28 @@ class AquaBase():
 		if len(str(value)) > field_len:
 			raise OverflowError('{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value))
 
-	def _out_str(self, field_name):
+	def _get_str(self, field_name):
 		field_len = self.fields[field_name]['field_len']
 		return '{: <{w}.{w}s}'.format(getattr(self, field_name), w=field_len)
+
+	@property
+	def input_line(self):
+		return '{: <8.8s}\t'.format(self.__class__.__name__) + '\t'.join([eval('self.' + self.fields[k]['out'] + '(k)') for k in self.fields.keys()])
+
+	def pretty_print(self, prefix=''):
+		fmts = {'i': '{val}', 'd': '{val}', 's': '"{val}"', 'dt': '"{val}"'}
+		s = prefix + ('# ' if prefix == '' else ' = ') + self.__class__.__name__ + '()'
+		prefix += '' if prefix == '' else '.';
+		for k in self.fields.keys():
+			funcs = {
+				'i': 'self.' + k,
+				'd': 'self.' + k,
+				's': 'self.' + self.fields[k]['out'] + '(k)',
+				'dt': 'self.' + self.fields[k]['out'] + '(k)'
+			}
+			t = self.fields[k]['field_type']
+			s += ('\n\t{pfx}{name} = ' + fmts[t]).format(name=k, pfx=prefix, val=eval(funcs[t]))
+		return s
 
 
 #=##################################################################################################
@@ -228,7 +257,7 @@ class ClassFactory(AquaBase):
 		# __str__()
 		c += [
 			"	def __str__(self):",
-			"		return	" + ' + \\\n\t\t\t\t'.join(["self.{0}('{1}')".format(self.fields[k]['out'], k) for k in self.fields.keys()]),
+			"		return	" + ' + \\\n\t\t\t\t'.join(["self.{0}('{1}')".format(self.fields[k]['get'], k) for k in self.fields.keys()]),
 			""
 		]
 
