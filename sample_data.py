@@ -37,7 +37,7 @@ def main():
 	print(sep)
 
 	print(fpro.pretty_print('fpr'))
-	print(sep)
+	print('\n' + sep)
 	for i in fproc: print(i.pretty_print('fpc')); print()
 	print(sep)
 	for i in fpros: print(i.pretty_print('fps')); print()

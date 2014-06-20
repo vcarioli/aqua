@@ -147,11 +147,9 @@ class AquaBase():
 
 	# _set_date(), _chk_date(), _get_date()
 	def _set_date(self, field_name, value):
-		if type(value) is str and (value.rstrip(' ') == '' or value.rstrip('0') == ''):
-			value = None
 		if type(value) is str:
-			value = datetime.strptime(value, '%Y%m%d').date()
-		if type(value) is datetime:
+			value = None if value.rstrip(' ') == '' or value.rstrip('0') == '' else datetime.strptime(value, '%Y%m%d').date()
+		elif type(value) is datetime:
 			value = value.date()
 		self._chk_date(field_name, value)
 		setattr(self, '_' + field_name, value)
@@ -199,7 +197,7 @@ class AquaBase():
 				'dt': 'self.' + self.fields[k]['out'] + '(k)'
 			}
 			t = self.fields[k]['field_type']
-			s += ('\n\t{pfx}{name} = ' + fmts[t]).format(name=k, pfx=prefix, val=eval(funcs[t]))
+			s += ('\n{pfx}{name} = ' + fmts[t]).format(name=k, pfx=prefix, val=eval(funcs[t]))
 		return s
 
 
