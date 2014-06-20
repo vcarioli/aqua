@@ -52,7 +52,7 @@ def main():
 	print(fpro.csv_header)
 	print(fpro.csv)
 	print()
-	print(fprot[0].csv_header)
+	print(fproc[0].csv_header)
 	for i in fproc: print(i.csv)
 	print()
 	print(fpros[0].csv_header)
