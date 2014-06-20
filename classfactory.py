@@ -147,6 +147,8 @@ class AquaBase():
 
 	# _set_date(), _chk_date(), _get_date()
 	def _set_date(self, field_name, value):
+		if type(value) is str and (value.rstrip(' ') == '' or value.rstrip('0') == ''):
+			value = None
 		if type(value) is str:
 			value = datetime.strptime(value, '%Y%m%d').date()
 		if type(value) is datetime:
@@ -188,7 +190,7 @@ class AquaBase():
 	def pretty_print(self, prefix=''):
 		fmts = {'i': '{val}', 'd': '{val}', 's': '"{val}"', 'dt': '"{val}"'}
 		s = prefix + ('# ' if prefix == '' else ' = ') + self.__class__.__name__ + '()'
-		prefix += '' if prefix == '' else '.';
+		prefix += '' if prefix == '' else '.'
 		for k in self.fields.keys():
 			funcs = {
 				'i': 'self.' + k,
