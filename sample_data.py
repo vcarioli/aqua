@@ -47,6 +47,25 @@ def main():
 	for i in fprot: print(i.pretty_print('fpt')); print()
 	print(sep)
 
+	print(sep)
+
+	print(fpro.csv_header)
+	print(fpro.csv)
+	print()
+	print(fprot[0].csv_header)
+	for i in fproc: print(i.csv)
+	print()
+	print(fpros[0].csv_header)
+	for i in fpros: print(i.csv)
+	print()
+	print(fprol[0].csv_header)
+	for i in fprol: print(i.csv)
+	print()
+	print(fprot[0].csv_header)
+	for i in fprot: print(i.csv)
+	print()
+
+	print(sep)
 
 # =##################################################################################################
 if __name__ == '__main__':
