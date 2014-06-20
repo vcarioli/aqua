@@ -200,6 +200,15 @@ class AquaBase():
 			s += ('\n{pfx}{name} = ' + fmts[t]).format(name=k, pfx=prefix, val=eval(funcs[t]))
 		return s
 
+	@property
+	def csv_header(self):
+		return ','.join(self.fields.keys())
+
+	@property
+	def csv(self):
+		fmts = {'i': '{0}', 'd': '{0}', 's': '"{0}"', 'dt': '"{0}"'}
+		return ','.join([fmts[self.fields[k]['field_type']].format(eval('self.' + k)) for k in self.fields.keys()])
+
 
 #=##################################################################################################
 class ClassFactory(AquaBase):
