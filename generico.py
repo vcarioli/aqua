@@ -64,12 +64,13 @@ def tariffe_scaglioni_acqua():
 	sa = [round(x.fpt_quota * fpro.fp_periodo / 1000) if x.fpt_quota < 99999 else 99999 for x in ta]
 	return zip(ta, sa)
 
-def letture(lista_letture, tipo_lettura):
+
+def letture(lista_letture, tipo_lett):
 	"""
 
 	:rtype : list
 	"""
-	return [x for x in lista_letture if x.fpl_garage == tipo_lettura]
+	return [x for x in lista_letture if x.fpl_garage == tipo_lett]
 
 
 def letture_casa(lista_letture):
@@ -283,6 +284,8 @@ def main():
 	# Quota fissa (in realta' non e' differenziata per lettura s/r)
 	results.append(costo(iqf, numfat, fpro.fp_periodo))
 	numfat += 1
+
+#-----------
 
 	# Acqua calda, se presente
 	if mc_c > 0:

@@ -33,7 +33,6 @@ class InputReader():
 			return None if int(value) == 0 else datetime.strptime(value, '%Y%m%d').date()
 
 	def read(self):
-		lines = []
 		with open(self._file_name, 'r') as fin:
 			lines = map(lambda x: x.strip('\n'), fin.readlines())
 		lineslist = list(map(lambda x: x.split('\t'), lines))
@@ -50,8 +49,8 @@ class InputReader():
 			values = line[1:]
 
 			c = self._aqua_classes[key]()
-			for fld, val in zip(c.fields.keys(), values):
-				setattr(c, fld, self._convert(c.fields[fld]['field_type'], val))
+			for fld, val in zip(c.__fields__.keys(), values):
+				setattr(c, fld, self._convert(c.__fields__[fld]['field_type'], val))
 
 			if key not in data:
 				data[key] = []

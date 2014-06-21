@@ -53,18 +53,18 @@ class UnknownFieldTypeError(Exception):
 #=##################################################################################################
 class AquaBase():
 	def __init__(self, classname, spec):
-		self._spec = [classname] + spec
-		self.fields = self._create_fields_dict()
+		self.__spec__ = [classname] + spec
+		self.__fields__ = self.__create_fields_dict__()
 
-	def _create_fields_dict(self):
+	def __create_fields_dict__(self):
 		funcs = {
-				'i': ["_set_int", "_chk_int", "_get_int", "_out_int"],
-				's': ["_set_str", "_chk_str", "_get_str", "_get_str"],
-				'dt': ["_set_date", "_chk_date", "_get_date", "_get_date"],
-				'd': ["_set_dec", "_chk_dec", "_get_dec", "_out_dec"]
+				'i': ["__set_int__", "__chk_int__", "__get_int__", "__out_int__"],
+				's': ["__set_str__", "__chk_str__", "__get_str__", "__get_str__"],
+				'dt': ["__set_date__", "__chk_date", "__get_date__", "__get_date__"],
+				'd': ["__set_dec__", "__chk_dec__", "__get_dec__", "__out_dec__"]
 		}
 		fields = OrderedDict()
-		for fld in [x.strip('\r') for x in self._spec[1:]]:
+		for fld in [x.strip('\r') for x in self.__spec__[1:]]:
 			try:
 				d = fld.split(',')
 				typ = d[1]
@@ -86,46 +86,46 @@ class AquaBase():
 					out=funcs[typ][3]
 				)
 			except:
-				logging.error("classfactory.py: _create_fields_dict(self): error decoding [{0}][{1}]".format(self._spec[0], fld))
+				logging.error("classfactory.py: __create_fields_dict__(self): error decoding [{0}][{1}]".format(self.__spec__[0], fld))
 				raise
 		return fields
 
-	# _set_int(), _chk_int(), _get_int(), _out_int()
-	def _set_int(self, field_name, value):
+	# __set_int__(), __chk_int__(), __get_int__(), __out_int__()
+	def __set_int__(self, field_name, value):
 		value = str(value)
-		self._chk_int(field_name, value)
-		setattr(self, '_' + field_name, int(value))
+		self.__chk_int__(field_name, value)
+		setattr(self, '__' + field_name + '__', int(value))
 
-	def _chk_int(self, field_name, value):
-		d = self.fields[field_name]
+	def __chk_int__(self, field_name, value):
+		d = self.__fields__[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
 		if dec_len != 0:
-			raise AssignmentError(field_name, 'int fields can not have decimals')
+			raise AssignmentError(field_name, 'int __fields__ can not have decimals')
 		if len(str(value).strip('-+')) > field_len:
 			raise OverflowError(
 				'{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value)
 			)
 
-	def _get_int(self, field_name, sign='+'):
-		d = self.fields[field_name]
+	def __get_int__(self, field_name, sign='+'):
+		d = self.__fields__[field_name]
 		field_len = d['field_len']
 		return '{:0={s}{w}n}'.format(getattr(self, field_name), s=sign, w=(field_len + len(sign)))
 
-	def _out_int(self, field_name):
-		return self._get_int(field_name, sign='')
+	def __out_int__(self, field_name):
+		return self.__get_int__(field_name, sign='')
 
-	# _set_dec(), _chk_dec(), _get_dec(), _out_dec()
-	def _set_dec(self, field_name, value):
+	# __set_dec__(), __chk_dec__(), __get_dec__(), __out_dec__()
+	def __set_dec__(self, field_name, value):
 		v = str(value).replace(',', '.').split('.')
 		if len(v) > 1:
-			dec_len = self.fields[field_name]['dec_len']
+			dec_len = self.__fields__[field_name]['dec_len']
 			v[1] = v[1][:dec_len]
 			value = Decimal('.'.join(v))
-		self._chk_dec(field_name, value)
-		setattr(self, '_' + field_name, Decimal(value))
+		self.__chk_dec__(field_name, value)
+		setattr(self, '__' + field_name + '__', Decimal(value))
 
-	def _chk_dec(self, field_name, value):
-		d = self.fields[field_name]
+	def __chk_dec__(self, field_name, value):
+		d = self.__fields__[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
 		v = str(value).replace('+', '').replace('-', '').split('.')
 		if len(v[0]) > field_len:
@@ -137,77 +137,92 @@ class AquaBase():
 				'{0} fractional part length is {1}: trying to assign value [{2}]'.format(field_name, dec_len, value)
 			)
 
-	def _get_dec(self, field_name, dec_sep='', sign='+'):
-		d = self.fields[field_name]
+	def __get_dec__(self, field_name, dec_sep='', sign='+'):
+		d = self.__fields__[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
 		return '{:0={s}{w}.{p}f}'.format(float(getattr(self, field_name)), s=sign, w=field_len + dec_len + 1 + len(sign), p=dec_len).replace('.', dec_sep)
 
-	def _out_dec(self, field_name):
-		return self._get_dec(field_name, dec_sep=',', sign='')
+	def __out_dec__(self, field_name):
+		return self.__get_dec__(field_name, dec_sep=',', sign='')
 
-	# _set_date(), _chk_date(), _get_date()
-	def _set_date(self, field_name, value):
+	# __set_date__(), __chk_date__(), __get_date__()
+	def __set_date__(self, field_name, value):
 		if type(value) is str:
 			value = None if value.rstrip(' ') == '' or value.rstrip('0') == '' else datetime.strptime(value, '%Y%m%d').date()
 		elif type(value) is datetime:
 			value = value.date()
-		self._chk_date(field_name, value)
-		setattr(self, '_' + field_name, value)
+		self.__chk_date__(field_name, value)
+		setattr(self, '__' + field_name + '__', value)
 
 	@staticmethod
-	def _chk_date(field_name, value):
+	def __chk_date__(field_name, value):
 		if type(value) not in [type(None), date]:
 			raise AssignmentError(field_name, 'trying to assign value [{0}] of type {1} to a date field'.format(value, type(value)))
 
-	def _get_date(self, field_name):
+	def __get_date__(self, field_name):
 		dt = getattr(self, field_name)
 		return dt.strftime('%Y%m%d') if dt is not None else '        '
 
-	# _set_str(), _chk_str(), _get_str()
-	def _set_str(self, field_name, value):
+	# __set_str__(), __chk_str__(), __get_str__()
+	def __set_str__(self, field_name, value):
 		value = value.rstrip()
-		self._chk_str(field_name, value)
-		setattr(self, '_' + field_name, value)
+		self.__chk_str__(field_name, value)
+		setattr(self, '__' + field_name + '__', value)
 
-	def _chk_str(self, field_name, value):
-		d = self.fields[field_name]
+	def __chk_str__(self, field_name, value):
+		d = self.__fields__[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
 		if dec_len != 0:
-			raise AssignmentError(field_name, 'string fields can not have decimals')
+			raise AssignmentError(field_name, 'string __fields__ can not have decimals')
 		if len(str(value)) > field_len:
 			raise OverflowError('{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value))
 
-	def _get_str(self, field_name):
-		field_len = self.fields[field_name]['field_len']
+	def __get_str__(self, field_name):
+		field_len = self.__fields__[field_name]['field_len']
 		return '{: <{w}.{w}s}'.format(getattr(self, field_name), w=field_len)
 
-	@property
-	def input_line(self):
-		return '{: <8.8s}\t'.format(self.__class__.__name__) + '\t'.join([eval('self.' + self.fields[k]['out'] + '(k)') for k in self.fields.keys()])
+	def get_input_line(self):
+		return '{: <8.8s}\t'.format(self.__class__.__name__) + '\t'.join([eval('self.' + self.__fields__[k]['out'] + '(k)') for k in self.__fields__.keys()])
 
 	def pretty_print(self, prefix=''):
 		fmts = {'i': '{val}', 'd': '{val}', 's': '"{val}"', 'dt': '"{val}"'}
 		s = prefix + ('# ' if prefix == '' else ' = ') + self.__class__.__name__ + '()'
 		prefix += '' if prefix == '' else '.'
-		for k in self.fields.keys():
+		for k in self.__fields__.keys():
 			funcs = {
 				'i': 'self.' + k,
 				'd': 'self.' + k,
-				's': 'self.' + self.fields[k]['out'] + '(k)',
-				'dt': 'self.' + self.fields[k]['out'] + '(k)'
+				's': 'self.' + self.__fields__[k]['out'] + '(k)',
+				'dt': 'self.' + self.__fields__[k]['out'] + '(k)'
 			}
-			t = self.fields[k]['field_type']
+			t = self.__fields__[k]['field_type']
 			s += ('\n{pfx}{name} = ' + fmts[t]).format(name=k, pfx=prefix, val=eval(funcs[t]))
 		return s
 
-	@property
-	def csv_header(self):
-		return ','.join(self.fields.keys())
+	def get_csv_hdr(self, sep='\t'):
+		"""
+		Ritorna una riga con i nomi dei campi
+		:param sep: Separatore da utilizzare (default = tab)
+		:return: string
+		"""
+		return sep.join(self.__fields__.keys())
 
-	@property
-	def csv(self):
-		fmts = {'i': '{0}', 'd': '{0}', 's': '"{0}"', 'dt': '"{0}"'}
-		return ','.join([fmts[self.fields[k]['field_type']].format(eval('self.' + k)) for k in self.fields.keys()])
+	def get_csv_row(self, sep='\t', delim='"'):
+		"""
+		Ritorna una riga con i valori dei campi
+		:param sep:		Carattere da utilizzare per separare i campi (default tab)
+		:param delim:	Caratteri da utilizzare per delimitare date e stringhe (default '"')
+						Se si specifica una stringa vuota ('') non sarà utilizzato il delimitatore
+						Se si specificano due (o più) caratteri, il primo sarà utilizzato per
+						il delimitatore di sinistra e il secondo per quello di destra (quelli dopo
+						il secondo saranno ignorati)
+		:return: string
+		"""
+		ldelim = delim[0] if len(delim) > 0 else delim
+		rdelim = delim[1] if len(delim) > 1 else ldelim
+		fmts = dict(i='{0}', d='{0}', s=ldelim + '{0}' + rdelim, dt=ldelim + '{0}' + rdelim)
+
+		return sep.join([fmts[self.__fields__[k]['field_type']].format(eval('self.' + k)) for k in self.__fields__.keys()])
 
 
 #=##################################################################################################
@@ -217,10 +232,10 @@ class ClassFactory(AquaBase):
 		if classname is None or len(classname.strip()) == 0:
 			raise ArgumentError("classname", "can't be None or empty")
 		if spec is None or len(spec) == 0 or type(spec) is not list:
-			raise ArgumentError("spec", "can't be None or empty and must be a list object")
-		self._spec = [classname] + spec
-		self._class_name = self._spec[0]
-		self.fields = AquaBase(classname, spec)._create_fields_dict()
+			raise ArgumentError("__spec__", "can't be None or empty and must be a list object")
+		self.__spec__ = [classname] + spec
+		self.class_name = self.__spec__[0]
+		self.__fields__ = AquaBase(classname, spec).__create_fields_dict__()
 
 	@property
 	def class_definition(self):
@@ -228,49 +243,49 @@ class ClassFactory(AquaBase):
 		c = []
 
 		# <<< class --------------------------------------------------------------------------------
-		c += ["class {0}(AquaBase):".format(self._class_name)]
+		c += ["class {0}(AquaBase):".format(self.class_name)]
 
 		# <<< __init__ -----------------------------------------------------------------------------
 		c += ["	def __init__(self):"]
 
-		for key in self.fields.keys():
-			field = self.fields[key]
+		for key in self.__fields__.keys():
+			field = self.__fields__[key]
 			typ = field['field_type']
-			c += ["		self._{0} = {1}".format(key, types[typ].format('0' * field['dec_len']))]
+			c += ["		self.__{0}__ = {1}".format(key, types[typ].format('0' * field['dec_len']))]
 
-		c += ["		self.fields = OrderedDict(["]
-		i, n = 0, len(self.fields)
-		for k in self.fields.keys():
+		c += ["		self.__fields__ = OrderedDict(["]
+		i, n = 0, len(self.__fields__)
+		for k in self.__fields__.keys():
 			i += 1
-			c += ["			('{0}', {1}){2}".format(k, str(self.fields[k]), "," if i < n else "")]
+			c += ["			('{0}', {1}){2}".format(k, str(self.__fields__[k]), "," if i < n else "")]
 		c += ["		])", ""]
 
 		# >>> __init__ -----------------------------------------------------------------------------
 
 		# _get_XXX, set_XXX, xxx = property(...)
-		for key in self.fields.keys():
+		for key in self.__fields__.keys():
 			c += [
-				"	def _get_{0}(self):".format(key),
-				"		return self._{0}".format(key),
+				"	def __get_{0}__(self):".format(key),
+				"		return self.__{0}__".format(key),
 				"",
-				"	def _set_{0}(self, value):".format(key),
-				"		self.{0}('{1}', value)".format(self.fields[key]['set'], key),
+				"	def __set_{0}__(self, value):".format(key),
+				"		self.{0}('{1}', value)".format(self.__fields__[key]['set'], key),
 				"",
-				"	{0} = property(_get_{0}, _set_{0})".format(key),
+				"	{0} = property(__get_{0}__, __set_{0}__)".format(key),
 				""
 			]
 
 		# __str__()
 		c += [
 			"	def __str__(self):",
-			"		return	" + ' + \\\n\t\t\t\t'.join(["self.{0}('{1}')".format(self.fields[k]['get'], k) for k in self.fields.keys()]),
+			"		return	" + ' + \\\n\t\t\t\t'.join(["self.{0}('{1}')".format(self.__fields__[k]['get'], k) for k in self.__fields__.keys()]),
 			""
 		]
 
 		# __repr__()
 		c += [
 			"	def __repr__(self):",
-			"		s = ['\t{0}:\t<{1}>\\n'.format(x, getattr(self, x)) for x in self.fields.keys()]",
+			"		s = ['\t{0}:\t<{1}>\\n'.format(x, getattr(self, x)) for x in self.__fields__.keys()]",
 			"		return '<class: {0}>\\n'.format(self.__class__.__name__) + ''.join(s)"
 		]
 
@@ -281,7 +296,7 @@ class ClassFactory(AquaBase):
 	def get_class(self):
 		c = self.class_definition
 		exec('\n'.join(c))
-		return locals()[self._class_name]
+		return locals()[self.class_name]
 
 
 #=##################################################################################################

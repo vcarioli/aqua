@@ -13,7 +13,6 @@ def main():
 	aqua_data = InputReader(aqua_classes, input_filename).read()
 
 	fpro = aqua_data['Fatpro'][0]
-	tipo_lettura = fpro.fp_tipo_let
 
 	fprol = aqua_data['Fatprol']
 	fproc = aqua_data['Fatproc']
@@ -22,15 +21,15 @@ def main():
 
 	print(sep)
 
-	print(fpro.input_line)
+	print(fpro.get_input_line)
 	print()
-	for i in fproc: print(i.input_line)
+	print('\n'.join([i.get_input_line() for i in fproc]))
 	print()
-	for i in fpros: print(i.input_line)
+	print('\n'.join([i.get_input_line() for i in fpros]))
 	print()
-	for i in fprol: print(i.input_line)
+	print('\n'.join([i.get_input_line() for i in fprol]))
 	print()
-	for i in fprot: print(i.input_line)
+	print('\n'.join([i.get_input_line() for i in fprot]))
 	print()
 
 	print(sep)
@@ -38,31 +37,31 @@ def main():
 
 	print(fpro.pretty_print('fpr'))
 	print('\n' + sep)
-	for i in fproc: print(i.pretty_print('fpc')); print()
-	print(sep)
-	for i in fpros: print(i.pretty_print('fps')); print()
-	print(sep)
-	for i in fprol: print(i.pretty_print('fpl')); print()
-	print(sep)
-	for i in fprot: print(i.pretty_print('fpt')); print()
-	print(sep)
+	print('\n\n'.join([i.pretty_print('fpc') for i in fproc]))
+	print('\n' + sep)
+	print('\n\n'.join([i.pretty_print('fps') for i in fpros]))
+	print('\n' + sep)
+	print('\n\n'.join([i.pretty_print('fpl') for i in fpros]))
+	print('\n' + sep)
+	print('\n\n'.join([i.pretty_print('fpt') for i in fprot]))
+	print('\n' + sep)
 
 	print(sep)
 
-	print(fpro.csv_header)
-	print(fpro.csv)
+	print(fpro.get_csv_hdr())
+	print(fpro.get_csv_row())
 	print()
-	print(fproc[0].csv_header)
-	for i in fproc: print(i.csv)
+	print(fproc[0].get_csv_hdr())
+	print('\n'.join([i.get_csv_row() for i in fproc]))
 	print()
-	print(fpros[0].csv_header)
-	for i in fpros: print(i.csv)
+	print(fpros[0].get_csv_hdr())
+	print('\n'.join([i.get_csv_row() for i in fpros]))
 	print()
-	print(fprol[0].csv_header)
-	for i in fprol: print(i.csv)
+	print(fprol[0].get_csv_hdr())
+	print('\n'.join([i.get_csv_row() for i in fprol]))
 	print()
-	print(fprot[0].csv_header)
-	for i in fprot: print(i.csv)
+	print(fprot[0].get_csv_hdr())
+	print('\n'.join([i.get_csv_row() for i in fprot]))
 	print()
 
 	print(sep)
