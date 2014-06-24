@@ -270,7 +270,9 @@ def main():
 
 	write_output(results)
 
-	print('\n\n'.join([i.pretty_print('o') for i in results]))
+#	print('\n\n'.join([i.pretty_print('o') for i in results]))
+#	print(results[0].get_csv_hdr())
+#	print('\n'.join([i.get_csv_row() for i in results]))
 
 	logging.info('generico.py: main(): Results written to ' + output_filename)
 
