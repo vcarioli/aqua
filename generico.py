@@ -25,12 +25,11 @@ tipo_lettura = []
 
 
 #=##################################################################################################
-def out_results(results):
+def write_output(results):
 	"""
 	Scrive i risultati nel file di output
-	:type results: list<Output>
-	:rtype: None
-	:param results: Lista di Output()
+	:param results: <[Output()]>
+	:return; <None>
 	"""
 	with open(output_filename, "w") as fout:
 		fout.writelines([str(o) + '\n' for o in results])
@@ -40,8 +39,7 @@ def out_results(results):
 def ricerca_indici():
 	"""
 	Ricerca indici valori per Quota fissa, Fogna e Depurazione
-	:return: Indici (interi) di Quota fissa, Fogna e Depurazione
-	:rtype : (int, int, int)
+	:return: <(int, int, int)> - Quota fissa, Fogna, Depurazione
 	"""
 	qfissa, fogna, depur = 0, 0, 0
 	for i in range(len(fprot)):
@@ -57,48 +55,19 @@ def ricerca_indici():
 def tariffe_scaglioni_acqua():
 	"""
 	Tariffe e scaglioni Acqua
-	:rtype: list((Fprot, int))
-	:return: Lista di coppie [Fprot(), costo_scaglione]
+	:return: <[(Fatprot(), Dec(5.2))]> - Lista di coppie Fatprot(), costo_scaglione
 	"""
 	ta = [x for x in fprot if x.fpt_codtar[0] == 'A']
 	sa = [round(x.fpt_quota * fpro.fp_periodo / 1000) if x.fpt_quota < 99999 else 99999 for x in ta]
 	return zip(ta, sa)
 
 
-def letture(lista_letture, tipo_lett):
-	"""
-
-	:rtype : list
-	"""
-	return [x for x in lista_letture if x.fpl_garage == tipo_lett]
-
-
-def letture_casa(lista_letture):
-	"""
-	Letture casa (fpl_garage == '')
-	:type lista_letture: object
-	:return: Lista letture Casa ([Fatprol()])
-	"""
-	return letture(lista_letture, '')
-
-
-def letture_garage(lista_letture):
-	"""
-	Letture garage
-	:rtype : list
-	:param lista_letture: lista_letture: [Fatprol, ...]
-	:type lista_letture: list(Fatprol())
-	:return: Lista letture Garage. ([Fatprol()])
-	"""
-	return letture(lista_letture, 'G')
-
-
 def costo(index, numfat, qta):
 	"""
 	Prepara un record di Output() di costi
-	:param index: Indice della tariffa
-	:param numfat: Numero fattura (per l'ordinamento delle righe di output)
-	:param qta: Quantità
+	:param index: <int> - Indice della tariffa
+	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
+	:param qta: <Dec(5.3> - Quantità
 	:rtype : Output()
 	"""
 	o = Output()
@@ -113,12 +82,11 @@ def costo(index, numfat, qta):
 def addebito_acqua(fpt, sca, mct, numfat):
 	"""
 	Prepara un record di Output() di addebiti
-	:param fpt : Tariffa
-	:param sca : Scaglione
-	:param mct : Metri cubi totali
-	:param numfat : Numero fattura (per l'ordinamento delle righe di output)
-	:return: Output()
-	:rtype : Output()
+	:param fpt : <Fatprot()> - Tariffa
+	:param sca : <Dec(5.2)> - Scaglione
+	:param mct : <int> - Metri cubi totali
+	:param numfat : <int> - Numero fattura (per l'ordinamento delle righe di output)
+	:return : <Output()>
 	"""
 	o = Output()
 	o.fpo_numfat = numfat
@@ -129,31 +97,25 @@ def addebito_acqua(fpt, sca, mct, numfat):
 	return o
 
 
-def indici_valori_acqua_calda():
-	"""
-	Ricerca indici valori per Acqua calda (s/r)
-	"""
-	ac, acs = 0, 0
-	for i in range(len(fproc)):
-		if fproc[i].fpc_bcodart == 'ACS':
-			acs = i
-		elif fproc[i].fpc_bcodart == 'AC':
-			ac = i
-	return ac, acs
-
-
 def costo_acqua_calda(qta, numfat):
 	"""
 	Calcola il costo dell'acqua calda
-	:param qta:
-	:param numfat: Numero fattura (per l'ordinamento delle righe di output)
-	:return: Output()
+	:param qta: <int> - Quantità consumata
+	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
+	:return: <Output()>
 	"""
-	iac, iacs = indici_valori_acqua_calda()
+	# Ricerca indici valori per Acqua calda (s/r)
+	iac, iacs = 0, 0
+	for i in range(len(fproc)):
+		if fproc[i].fpc_bcodart == 'AC':
+			iac = i
+		elif fproc[i].fpc_bcodart == 'ACS':
+			iacs = i
+
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'C'
-	o.fpo_bcodart = fproc[iacs].fpc_bcodart if tipo_lettura == 'S' else fproc[iac].fpc_bcodart
+	o.fpo_bcodart = fproc[iacs if tipo_lettura == 'S' else iac].fpc_bcodart
 	o.fpo_costo = fproc[iac].fpc_costo
 	o.fpo_qta = qta
 	return o
@@ -162,54 +124,60 @@ def costo_acqua_calda(qta, numfat):
 def get_numfat(bcodart):
 	"""
 	Decodifica il numero di fattura dal codice articolo
-	:param bcodart: string - Codice articolo
-	:return: Numero fattura di partenza (per l'ordinamento delle righe di output)
+	:param bcodart: <string> - Codice articolo
+	:return: <int> - Numero fattura di partenza (per l'ordinamento delle righe di output) <int>
 	"""
 	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999}
 	return numfat[bcodart]
 
 
-def altri_costi(fpc):
+def altri_costi():
 	"""
-	:param fpc:
-	:return: Output()
+	Produce una lista di costi aggiuntivi
+		- BA	Bocche Antincendio
+		- CS	Competenze servizio
+		- MC	Manutenzione contatori
+		- QAC	Quota Fissa acqua calda
+		- SDB	Spese domiciliazione bolletta
+
+	:return: <[Output()]>
 	"""
-	o = Output()
-	o.fpo_numfat = get_numfat(fpc.fpc_bcodart)
-	o.fpo_cs = 'C'
-	o.fpo_bcodart = fpc.fpc_bcodart
-	o.fpo_costo = fpc.fpc_costo
-	o.fpo_qta = 1
-	return o
+	costi = [
+	#	'BA',	# Bocche Antincendio
+	#	'SDB',	# Spese domiciliazione bolletta
+		'CS',	# Competenze servizio
+		'MC',	# Manutenzione contatori
+		'QAC',	# Quota Fissa acqua calda
+	]
+	results = []
+	for c in fproc:
+		if c.fpc_bcodart in costi:
+			o = Output()
+			o.fpo_numfat = get_numfat(c.fpc_bcodart)
+			o.fpo_cs = 'C'
+			o.fpo_bcodart = c.fpc_bcodart
+			o.fpo_costo = c.fpc_costo
+			o.fpo_qta = 1
+			results.append(o)
+
+	return results
 
 
-def consumo_totale_mc(lista_letture):
+def consumo_mc(letture):
 	"""
-	Consumo totale in metri cubi
-	:rtype : int
-	:param lista_letture: Lista letture
+	Consumo in metri cubi
+	:param letture: <[Fatprol()]> - Lista letture
+	:return : <int> - Consumo (mc)
 	"""
-	return sum([x.fpl_consumo for x in lista_letture])
-
-
-def consumo_totale_mc_fredda_calda(casa):
-	"""
-	Consumo totale fredda e calda esclusi garage
-	:rtype : int,int
-	:param casa: Lista letture casa
-	"""
-	fredda = sum([x.fpl_consumo for x in casa if x.fpl_fc == 0])
-	calda = sum([x.fpl_consumo for x in casa if x.fpl_fc == 1])
-	return fredda, calda
+	return sum([x.fpl_consumo for x in letture])
 
 
 def storno(fps, numfat):
 	"""
 	Calcolo dello storno
-	:rtype : object
-	:param fps: Fatpros() Storno
-	:param numfat: Numero fattura (per l'ordinamento delle righe di output)
-	:return: Output() Risultato
+	:param fps: <Fatpros()> - Storno
+	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
+	:return: <Output()> Risultato
 	"""
 	o = Output()
 	o.fpo_numfat = numfat
@@ -223,9 +191,8 @@ def storno(fps, numfat):
 def compatta_storni(storni):
 	"""
 	Compattazione e ordinamento degli storni
-	:rtype : list
-	:param storni: Lista degli storni
-	:return: Lista degli storni ordinati secondo il campo fps_bubicaz
+	:param storni: <[Fatpros()]> - Lista degli storni
+	:return: <[Fatpros()]> - Lista degli storni compattati e ordinati secondo il campo fps_bubicaz
 	"""
 	s = {}
 	for fps in storni:
@@ -248,59 +215,52 @@ def compatta_storni(storni):
 
 def main():
 	# Isolamento letture casa da letture garage
-	casa = letture_casa(fprol)
-	garage = letture_garage(fprol)
+	letture_casa = [x for x in fprol if x.fpl_garage == '']
+	letture_garage = [x for x in fprol if x.fpl_garage == 'G']
 
-	# Calcolo consumo totale casa in metri cubi
-	mc_tot = consumo_totale_mc(casa)
+	# Consumi casa
+	casa_consumo_fredda_mc = consumo_mc([x for x in letture_casa if x.fpl_fc == 0])
+	casa_consumo_calda_mc = consumo_mc([x for x in letture_casa if x.fpl_fc == 1])
+	casa_consumo_totale_mc = casa_consumo_calda_mc +  casa_consumo_fredda_mc
 
-	# Calcolo consumo totale fredda e calda casa
-	mc_f, mc_c = consumo_totale_mc_fredda_calda(casa)
-
-	# Calcolo consumo totale garage (fredda + eventuale calda)
-	mc_g = consumo_totale_mc(garage)
+	# Consumi garage
+	garage_consumo_fredda_mc = consumo_mc([x for x in letture_garage if x.fpl_fc == 0])
+	garage_consumo_calda_mc = consumo_mc([x for x in letture_garage if x.fpl_fc == 1])
+	garage_consumo_totale_mc = garage_consumo_calda_mc +  garage_consumo_fredda_mc
 
 	results = []
 	numfat = 0
 
 	# Calcolo righe addebito acqua totale consumata
-	mct = mc_tot
-	for (fpt, sca) in tariffe_scaglioni_acqua():
-		if mct > 0:
-			results.append(addebito_acqua(fpt, sca, mct, numfat))
-			mct -= sca if mct > sca else mct
+	tot_mc = casa_consumo_totale_mc
+	for (tariffa, scaglione) in tariffe_scaglioni_acqua():
+		if tot_mc > 0:
+			results.append(addebito_acqua(tariffa, scaglione, tot_mc, numfat))
+			tot_mc -= scaglione if tot_mc > scaglione else tot_mc
 			numfat += 1
 
-	iqf, ifogna, idepur = ricerca_indici()
+	ix_qfissa, ix_fogna, ix_depur = ricerca_indici()
 
 	# Fognatura
-	results.append(costo(ifogna, numfat, mc_tot))
+	results.append(costo(ix_fogna, numfat, casa_consumo_totale_mc))
 	numfat += 1
 
 	# Depurazione
-	results.append(costo(idepur, numfat, mc_tot))
+	results.append(costo(ix_depur, numfat, casa_consumo_totale_mc))
 	numfat += 1
 
 	# Quota fissa (in realta' non e' differenziata per lettura s/r)
-	results.append(costo(iqf, numfat, fpro.fp_periodo))
+	results.append(costo(ix_qfissa, numfat, fpro.fp_periodo))
 	numfat += 1
 
 #-----------
 
 	# Acqua calda, se presente
-	if mc_c > 0:
-		results.append(costo_acqua_calda(mc_c, numfat))
+	if casa_consumo_calda_mc > 0:
+		results.append(costo_acqua_calda(casa_consumo_calda_mc, numfat))
 		numfat += 1
 
-	# BA	Bocche Antincendio
-	# CS	Competenze servizio
-	# MC	Manutenzione contatori
-	# QAC	Quota Fissa acqua calda
-	# SDB	Spese domiciliazione bolletta
-
-	for fpc in fproc:
-		if fpc.fpc_bcodart in ['MC', 'QAC', 'CS']:
-			results.append(altri_costi(fpc))
+	results += altri_costi()
 
 	if fpros:
 		numfat = 50000
@@ -308,7 +268,10 @@ def main():
 			results.append(storno(fps, numfat))
 			numfat += 1
 
-	out_results(results)
+	write_output(results)
+
+	print('\n\n'.join([i.pretty_print('o') for i in results]))
+
 	logging.info('generico.py: main(): Results written to ' + output_filename)
 
 
