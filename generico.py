@@ -221,22 +221,24 @@ def main():
 	# Consumi casa
 	casa_consumo_fredda_mc = consumo_mc([x for x in letture_casa if x.fpl_fc == 0])
 	casa_consumo_calda_mc = consumo_mc([x for x in letture_casa if x.fpl_fc == 1])
-	casa_consumo_totale_mc = casa_consumo_calda_mc +  casa_consumo_fredda_mc
+	casa_consumo_totale_mc = casa_consumo_fredda_mc + casa_consumo_calda_mc
 
 	# Consumi garage
 	garage_consumo_fredda_mc = consumo_mc([x for x in letture_garage if x.fpl_fc == 0])
 	garage_consumo_calda_mc = consumo_mc([x for x in letture_garage if x.fpl_fc == 1])
-	garage_consumo_totale_mc = garage_consumo_calda_mc +  garage_consumo_fredda_mc
+	garage_consumo_totale_mc = garage_consumo_fredda_mc + garage_consumo_calda_mc
+
+	consumo_totale_mc = casa_consumo_totale_mc + garage_consumo_totale_mc
 
 	results = []
 	numfat = 0
 
 	# Calcolo righe addebito acqua totale consumata
-	tot_mc = casa_consumo_totale_mc
+	consumo = consumo_totale_mc
 	for (tariffa, scaglione) in tariffe_scaglioni_acqua():
-		if tot_mc > 0:
-			results.append(addebito_acqua(tariffa, scaglione, tot_mc, numfat))
-			tot_mc -= scaglione if tot_mc > scaglione else tot_mc
+		if consumo > 0:
+			results.append(addebito_acqua(tariffa, scaglione, consumo, numfat))
+			consumo -= scaglione if consumo > scaglione else consumo
 			numfat += 1
 
 	ix_qfissa, ix_fogna, ix_depur = ricerca_indici()
@@ -249,7 +251,7 @@ def main():
 	results.append(costo(ix_depur, numfat, casa_consumo_totale_mc))
 	numfat += 1
 
-	# Quota fissa (in realta' non e' differenziata per lettura s/r)
+	# Quota fissa (non e' differenziata per lettura s/r)
 	results.append(costo(ix_qfissa, numfat, fpro.fp_periodo))
 	numfat += 1
 
