@@ -11,6 +11,7 @@
 
 import logging
 from aquaclasses import *
+from decimal import Decimal
 from inputreader import InputReader
 
 
@@ -41,15 +42,15 @@ def ricerca_indici():
 	Ricerca indici valori per Quota fissa, Fogna e Depurazione
 	:return: <(int, int, int)> - Quota fissa, Fogna, Depurazione
 	"""
-	qfissa, fogna, depur = 0, 0, 0
+	ix_quota_fissa, ix_fogna, ix_depuratore = 0, 0, 0
 	for i in range(len(fprot)):
 		if fprot[i].fpt_codtar[0] == 'Q':
-			qfissa = i
+			ix_quota_fissa = i
 		elif fprot[i].fpt_codtar == 'FOGNA':
-			fogna = i
+			ix_fogna = i
 		elif fprot[i].fpt_codtar == 'DEPUR':
-			depur = i
-	return qfissa, fogna, depur
+			ix_depuratore = i
+	return ix_quota_fissa, ix_fogna, ix_depuratore
 
 
 def tariffe_scaglioni_acqua():
@@ -58,42 +59,51 @@ def tariffe_scaglioni_acqua():
 	:return: <[(Fatprot(), Dec(5.2))]> - Lista di coppie Fatprot(), costo_scaglione
 	"""
 	ta = [x for x in fprot if x.fpt_codtar[0] == 'A']
-	sa = [round(x.fpt_quota * fpro.fp_periodo / 1000) if x.fpt_quota < 99999 else 99999 for x in ta]
+	sa = [Decimal(round(x.fpt_quota * fpro.fp_periodo / 1000)) if x.fpt_quota < 99999 else 99999 for x in ta]
 	return zip(ta, sa)
 
 
-def costo(index, numfat, qta):
+def costo(tariffa, numfat, qta):
 	"""
 	Prepara un record di Output() di costi
-	:param index: <int> - Indice della tariffa
+	:param tariffa: <Fatprot()> - Tariffa applicata
 	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:param qta: <Dec(5.3> - Quantità
-	:rtype : Output()
+	:return: Output()
 	"""
+	assert isinstance(tariffa, Fatprot)
+	assert isinstance(numfat, int)
+	assert isinstance(qta, int)
+
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'C'
-	o.fpo_bcodart = fprot[index].fpt_bcodart_s if tipo_lettura == 'S' else fprot[index].fpt_bcodart_r
-	o.fpo_costo = fprot[index].fpt_costo_tot
+	o.fpo_bcodart = tariffa.fpt_bcodart_s if tipo_lettura == 'S' else tariffa.fpt_bcodart_r
+	o.fpo_costo = tariffa.fpt_costo_tot
 	o.fpo_qta = qta
 	return o
 
 
-def addebito_acqua(fpt, sca, mct, numfat):
+def addebito_acqua(tariffa, scaglione, mc_totali, numfat):
 	"""
 	Prepara un record di Output() di addebiti
-	:param fpt : <Fatprot()> - Tariffa
-	:param sca : <Dec(5.2)> - Scaglione
-	:param mct : <int> - Metri cubi totali
+	:param tariffa : <Fatprot()> - Tariffa
+	:param scaglione : <Dec(5.2)> - Scaglione
+	:param mc_totali : <int> - Metri cubi totali
 	:param numfat : <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:return : <Output()>
 	"""
+	assert isinstance(tariffa, Fatprot)
+	assert isinstance(scaglione, (int, Decimal))
+	assert isinstance(mc_totali, (int, Decimal))
+	assert isinstance(numfat, int)
+
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'C'
-	o.fpo_bcodart = fpt.fpt_bcodart_s if tipo_lettura == 'S' else fpt.fpt_bcodart_r
-	o.fpo_costo = fpt.fpt_costo_tot
-	o.fpo_qta = sca if mct > sca else mct
+	o.fpo_bcodart = tariffa.fpt_bcodart_s if tipo_lettura == 'S' else tariffa.fpt_bcodart_r
+	o.fpo_costo = tariffa.fpt_costo_tot
+	o.fpo_qta = scaglione if mc_totali > scaglione else mc_totali
 	return o
 
 
@@ -104,6 +114,9 @@ def costo_acqua_calda(qta, numfat):
 	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:return: <Output()>
 	"""
+	assert isinstance(qta, int)
+	assert isinstance(numfat, int)
+
 	# Ricerca indici valori per Acqua calda (s/r)
 	iac, iacs = 0, 0
 	for i in range(len(fproc)):
@@ -127,6 +140,8 @@ def get_numfat(bcodart):
 	:param bcodart: <string> - Codice articolo
 	:return: <int> - Numero fattura di partenza (per l'ordinamento delle righe di output) <int>
 	"""
+	assert isinstance(bcodart, str)
+
 	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999}
 	return numfat[bcodart]
 
@@ -143,11 +158,11 @@ def altri_costi():
 	:return: <[Output()]>
 	"""
 	costi = [
-	#	'BA',	# Bocche Antincendio
-	#	'SDB',	# Spese domiciliazione bolletta
-		'CS',	# Competenze servizio
-		'MC',	# Manutenzione contatori
-		'QAC',	# Quota Fissa acqua calda
+		# 'BA',		# Bocche Antincendio
+		# 'SDB',	# Spese domiciliazione bolletta
+		'CS',		# Competenze servizio
+		'MC',		# Manutenzione contatori
+		'QAC',		# Quota Fissa acqua calda
 	]
 	results = []
 	for c in fproc:
@@ -169,22 +184,28 @@ def consumo_mc(letture):
 	:param letture: <[Fatprol()]> - Lista letture
 	:return : <int> - Consumo (mc)
 	"""
+	if letture:
+		assert isinstance(letture[0], Fatprol)
+
 	return sum([x.fpl_consumo for x in letture])
 
 
-def storno(fps, numfat):
+def calcolo_storno(storno, numfat):
 	"""
 	Calcolo dello storno
-	:param fps: <Fatpros()> - Storno
+	:param storno: <Fatpros()> - Storno
 	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:return: <Output()> Risultato
 	"""
+	assert isinstance(storno, Fatpros)
+	assert isinstance(numfat, int)
+
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'S'
-	o.fpo_qta = -1 * fps.fps_qta
-	o.fpo_costo = fps.fps_costo
-	o.fpo_bcodart = 'S' + fps.fps_bcodart[0:len(fps.fps_bcodart) - 1]
+	o.fpo_qta = -1 * storno.fps_qta
+	o.fpo_costo = storno.fps_costo
+	o.fpo_bcodart = 'S' + storno.fps_bcodart[0:len(storno.fps_bcodart) - 1]
 	return o
 
 
@@ -192,11 +213,14 @@ def compatta_storni(storni):
 	"""
 	Compattazione e ordinamento degli storni
 	:param storni: <[Fatpros()]> - Lista degli storni
-	:return: <[Fatpros()]> - Lista degli storni compattati e ordinati secondo il campo fps_bubicaz
+	:return: <[Fatpros()]> - Lista degli storni compattati e ordinati secondo il campo fps_bgiorni
 	"""
+	if storni:
+		assert isinstance(storni[0], Fatpros)
+
 	s = {}
 	for fps in storni:
-		k = (fps.fps_bcodart, fps.fps_costo, fps.fps_bubicaz)
+		k = (fps.fps_bcodart, fps.fps_costo, fps.fps_bgiorni)
 		s[k] = fps.fps_qta if k not in s else s[k] + fps.fps_qta
 
 	storni = []
@@ -204,11 +228,11 @@ def compatta_storni(storni):
 		fps = Fatpros()
 		fps.fps_bcodart = k[0]
 		fps.fps_costo = k[1]
-		fps.fps_bubicaz = k[2]
+		fps.fps_bgiorni = k[2]
 		fps.fps_qta = s[k]
 		storni.append(fps)
 
-	return sorted(storni, key=lambda x: x.fps_bubicaz)
+	return sorted(storni, key=lambda x: x.fps_bgiorni)
 
 
 #=##################################################################################################
@@ -219,22 +243,22 @@ def main():
 	letture_garage = [x for x in fprol if x.fpl_garage == 'G']
 
 	# Consumi casa
-	casa_consumo_fredda_mc = consumo_mc([x for x in letture_casa if x.fpl_fc == 0])
-	casa_consumo_calda_mc = consumo_mc([x for x in letture_casa if x.fpl_fc == 1])
-	casa_consumo_totale_mc = casa_consumo_fredda_mc + casa_consumo_calda_mc
+	mc_consumo_fredda_casa = consumo_mc([x for x in letture_casa if x.fpl_fc == 0])
+	mc_consumo_calda_casa = consumo_mc([x for x in letture_casa if x.fpl_fc == 1])
+	mc_consumo_totale_casa = mc_consumo_fredda_casa + mc_consumo_calda_casa
 
 	# Consumi garage
-	garage_consumo_fredda_mc = consumo_mc([x for x in letture_garage if x.fpl_fc == 0])
-	garage_consumo_calda_mc = consumo_mc([x for x in letture_garage if x.fpl_fc == 1])
-	garage_consumo_totale_mc = garage_consumo_fredda_mc + garage_consumo_calda_mc
+	mc_consumo_fredda_garage = consumo_mc([x for x in letture_garage if x.fpl_fc == 0])
+	mc_consumo_calda_garage = consumo_mc([x for x in letture_garage if x.fpl_fc == 1])
+	mc_consumo_totale_garage = mc_consumo_fredda_garage + mc_consumo_calda_garage
 
-	consumo_totale_mc = casa_consumo_totale_mc + garage_consumo_totale_mc
+	mc_consumo_totale = mc_consumo_totale_casa + mc_consumo_totale_garage
 
 	results = []
 	numfat = 0
 
 	# Calcolo righe addebito acqua totale consumata
-	consumo = consumo_totale_mc
+	consumo = mc_consumo_totale
 	for (tariffa, scaglione) in tariffe_scaglioni_acqua():
 		if consumo > 0:
 			results.append(addebito_acqua(tariffa, scaglione, consumo, numfat))
@@ -244,22 +268,20 @@ def main():
 	ix_qfissa, ix_fogna, ix_depur = ricerca_indici()
 
 	# Fognatura
-	results.append(costo(ix_fogna, numfat, casa_consumo_totale_mc))
+	results.append(costo(fprot[ix_fogna], numfat, mc_consumo_totale_casa))
 	numfat += 1
 
 	# Depurazione
-	results.append(costo(ix_depur, numfat, casa_consumo_totale_mc))
+	results.append(costo(fprot[ix_depur], numfat, mc_consumo_totale_casa))
 	numfat += 1
 
 	# Quota fissa (non e' differenziata per lettura s/r)
-	results.append(costo(ix_qfissa, numfat, fpro.fp_periodo))
+	results.append(costo(fprot[ix_qfissa], numfat, fpro.fp_periodo))
 	numfat += 1
 
-#-----------
-
 	# Acqua calda, se presente
-	if casa_consumo_calda_mc > 0:
-		results.append(costo_acqua_calda(casa_consumo_calda_mc, numfat))
+	if mc_consumo_calda_casa > 0:
+		results.append(costo_acqua_calda(mc_consumo_calda_casa, numfat))
 		numfat += 1
 
 	results += altri_costi()
@@ -267,12 +289,12 @@ def main():
 	if fpros:
 		numfat = 50000
 		for fps in compatta_storni(fpros):
-			results.append(storno(fps, numfat))
+			results.append(calcolo_storno(fps, numfat))
 			numfat += 1
 
 	write_output(results)
 
-#	print('\n\n'.join([i.pretty_print('o') for i in results]))
+#	print('\n\n'.join([i.pretty_print() for i in results]))
 #	print(results[0].get_csv_hdr())
 #	print('\n'.join([i.get_csv_row() for i in results]))
 
@@ -299,7 +321,7 @@ def initialize():
 		tipo_lettura = fpro.fp_tipo_let
 
 		fprol = aqua_data['Fatprol']
-		fproc = aqua_data['Fatproc']
+		fproc = aqua_data['Fatproc'] if 'Fatproc' in aqua_data else None
 		fprot = aqua_data['Fatprot']
 		fpros = aqua_data['Fatpros'] if 'Fatpros' in aqua_data else None
 
