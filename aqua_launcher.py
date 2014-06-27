@@ -85,13 +85,17 @@ log_filename = abspath(pjoin(base_path, 'aqua.log') if options.log_filename is N
 
 #=##################################################################################################
 def start_logging():
-	logging.basicConfig(filename=log_filename, format='%(asctime)s %(levelname)-8s %(message)s', level=logging.DEBUG)
+	logging.basicConfig(
+		filename=log_filename,
+		format='%(asctime)s %(levelname)-8s %(message)s',
+		level=logging.DEBUG
+	)
 	logging.info('--------------------------------------------------------------- begin session')
 
 
 #=##################################################################################################
 def stop_logging(ret_code):
-	logging.info('--------------------------------------------------- end session (exit code {0})'.format(ret_code))
+	logging.info('--------------------------------------------------- end session (exit code %d)' % ret_code)
 
 
 #=##################################################################################################
@@ -123,7 +127,7 @@ def main():
 		from classfactory import ClassModuleUpdater
 		ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()
 
-	logging.info('aqua_launcher.py: Executing %s', main_program_filename)
+	logging.debug('aqua_launcher.py: Executing %s', main_program_filename)
 	runpy.run_path(main_program_filename, run_name='__main__')
 
 

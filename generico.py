@@ -17,12 +17,26 @@ from inputreader import InputReader
 
 #=##################################################################################################
 
+
 fpro = None		# Dati di fatturazione dell'azienda
 fprol = []		# letture
 fproc = []		# costi
 fprot = []		# tariffe
 fpros = []		# scaglioni
 tipo_lettura = []
+
+
+#=##################################################################################################
+class DataMissingError(Exception):
+	"""
+	Relevant input-data is missing.
+	"""
+
+	def __init__(self, cls_name, message):
+		self.cls_name, self.msg = cls_name, message
+
+	def __str__(self):
+		return "Class {0}: {1}".format(self.cls_name, self.msg)
 
 
 #=##################################################################################################
@@ -42,7 +56,7 @@ def ricerca_indici():
 	Ricerca indici valori per Quota fissa, Fogna e Depurazione
 	:return: <(int, int, int)> - Quota fissa, Fogna, Depurazione
 	"""
-	ix_quota_fissa, ix_fogna, ix_depuratore = 0, 0, 0
+	ix_quota_fissa, ix_fogna, ix_depuratore = None, None, None
 	for i in range(len(fprot)):
 		if fprot[i].fpt_codtar[0] == 'Q':
 			ix_quota_fissa = i
@@ -118,7 +132,7 @@ def costo_acqua_calda(qta, numfat):
 	assert isinstance(numfat, int)
 
 	# Ricerca indici valori per Acqua calda (s/r)
-	iac, iacs = 0, 0
+	iac, iacs = None, None
 	for i in range(len(fproc)):
 		if fproc[i].fpc_bcodart == 'AC':
 			iac = i
@@ -128,8 +142,20 @@ def costo_acqua_calda(qta, numfat):
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'C'
-	o.fpo_bcodart = fproc[iacs if tipo_lettura == 'S' else iac].fpc_bcodart
-	o.fpo_costo = fproc[iac].fpc_costo
+
+	#
+	# todo:	Verificare che il comportamento sia corretto in caso di mancanza degli indici
+	#
+
+	# o.fpo_bcodart = fproc[iacs if tipo_lettura == 'S' else iac].fpc_bcodart
+	if tipo_lettura == 'S':
+		o.fpo_bcodart = fproc[iacs].fpc_bcodart if iacs else ''
+	else:
+		o.fpo_bcodart = fproc[iac].fpc_bcodart if iac else ''
+
+	# o.fpo_costo = fproc[iac].fpc_costo
+	o.fpo_costo = fproc[iac].fpc_costo if iac else 0
+
 	o.fpo_qta = qta
 	return o
 
@@ -268,19 +294,37 @@ def main():
 	ix_qfissa, ix_fogna, ix_depur = ricerca_indici()
 
 	# Fognatura
-	results.append(costo(fprot[ix_fogna], numfat, mc_consumo_totale_casa))
-	numfat += 1
+	if ix_fogna:
+		results.append(costo(fprot[ix_fogna], numfat, mc_consumo_totale))
+		numfat += 1
+	else:
+		logging.info(">>>>>>>>>>\t- Non sono presenti costi [FOGNA]")
 
 	# Depurazione
-	results.append(costo(fprot[ix_depur], numfat, mc_consumo_totale_casa))
-	numfat += 1
+	if ix_depur:
+		results.append(costo(fprot[ix_depur], numfat, mc_consumo_totale))
+		numfat += 1
+	else:
+		logging.info(">>>>>>>>>>\t- Non sono presenti costi [DEPUR]")
 
 	# Quota fissa (non e' differenziata per lettura s/r)
-	results.append(costo(fprot[ix_qfissa], numfat, fpro.fp_periodo))
-	numfat += 1
+	if ix_qfissa:
+		results.append(costo(fprot[ix_qfissa], numfat, fpro.fp_periodo))
+		numfat += 1
+	else:
+		logging.info(">>>>>>>>>>\t- Non sono presenti costi [quota fissa]")
+
+	#
+	# todo:	Verificare il comportamento in caso di mancanza del costo dell'acqua calda
+	#
 
 	# Acqua calda, se presente
 	if mc_consumo_calda_casa > 0:
+		if not fproc:
+			raise DataMissingError(
+				"Fatproc",
+				"Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_calda_casa
+			)
 		results.append(costo_acqua_calda(mc_consumo_calda_casa, numfat))
 		numfat += 1
 
@@ -317,12 +361,23 @@ def initialize():
 	try:
 		aqua_data = InputReader(aqua_classes, input_filename).read()
 
+		#
+		# todo: Verificare co Andrea
+		#
+
+		if not 'Fatpro' in aqua_data:
+			raise DataMissingError('Fatpro', "Mancano i dati dell'azienda")
+		if not 'Fatprol' in aqua_data:
+			raise DataMissingError('Fatprol', "Mancano le letture")
+		if not 'Fatprot' in aqua_data:
+			raise DataMissingError('Fatprot', "Mancano le tariffe")
+
 		fpro = aqua_data['Fatpro'][0]
 		tipo_lettura = fpro.fp_tipo_let
 
-		fprol = aqua_data['Fatprol']
+		fprol = aqua_data['Fatprol'] if 'Fatprol' in aqua_data else None
 		fproc = aqua_data['Fatproc'] if 'Fatproc' in aqua_data else None
-		fprot = aqua_data['Fatprot']
+		fprot = aqua_data['Fatprot'] if 'Fatprot' in aqua_data else None
 		fpros = aqua_data['Fatpros'] if 'Fatpros' in aqua_data else None
 
 	except:
@@ -332,21 +387,15 @@ def initialize():
 
 #=##################################################################################################
 if __name__ == '__main__':
-	logging.info('generico.py: starting initialize()')
+	logging.debug('generico.py: starting initialize()')
 	initialize()
-	logging.info('generico.py: initialize() done')
+	logging.debug('generico.py: initialize() done')
 
 	try:
-		logging.info('generico.py: starting main()')
+		logging.debug('generico.py: starting main()')
+		logging.info(">>>>>>>>>> Utente: %d %s, lettura: %d/%d", fpro.fp_aconto, fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa)
 		main()
-		logging.info('generico.py: main() done')
+		logging.debug('generico.py: main() done')
 	except:
-		logging.error(
-			'Azienda: {0}, lettura: {1}/{2}, utente: {3}'.format(
-				fpro.fp_azienda,
-				fpro.fp_numlet_pr,
-				fpro.fp_numlet_aa,
-				fpro.fp_aconto
-			)
-		)
+		logging.error("Utente: %d %s, lettura: %d/%d", fpro.fp_aconto, fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa)
 		raise

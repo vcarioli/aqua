@@ -383,7 +383,7 @@ class ClassModuleUpdater():
 		if not self._classes:
 			self.get_classes()
 		self._write_class_module()
-		logging.info('{0} recreated'.format(self._out_file))
+		logging.debug('%s recreated', self._out_file)
 
 
 #=##################################################################################################
