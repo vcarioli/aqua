@@ -35,11 +35,12 @@
 								sulla linea di comando
 """
 
-import sys
-import logging
-import runpy
+AQUA_CLASSES = "aquaclasses.py"
 
-from os.path import abspath, dirname, exists, getmtime, join as pjoin
+from logger import Logger
+from sys import argv, exit
+from runpy import run_path
+from os.path import abspath, dirname, exists, getmtime, basename, join
 
 
 #=##################################################################################################
@@ -78,24 +79,22 @@ def get_command_line_options():
 #=##################################################################################################
 
 
-base_path = dirname(abspath(sys.argv[0]))
+base_path = dirname(__file__)
 (options, args) = get_command_line_options()
-log_filename = abspath(pjoin(base_path, 'aqua.log') if options.log_filename is None else options.log_filename)
+log_filename = abspath(join(base_path, 'aqua.log') if options.log_filename is None else options.log_filename)
+
+logger = Logger(log_filename=log_filename, filename=__file__, prefix='---  ', debug_mode=False)
+logger.config()
 
 
 #=##################################################################################################
 def start_logging():
-	logging.basicConfig(
-		filename=log_filename,
-		format='%(asctime)s %(levelname)-8s %(message)s',
-		level=logging.DEBUG
-	)
-	logging.info('--------------------------------------------------------------- begin session')
+	logger.info_centered('Begin Session')
 
 
 #=##################################################################################################
 def stop_logging(ret_code):
-	logging.info('--------------------------------------------------- end session (exit code %d)' % ret_code)
+	logger.info_centered('End Session (Exit Code: %d)' % ret_code)
 
 
 #=##################################################################################################
@@ -122,13 +121,23 @@ def main():
 	input_filename			= abspath(options.input_filename)
 	output_filename			= abspath(options.output_filename)
 
-	aquaclasses_py = pjoin(base_path, 'aquaclasses.py')
+	logger.info('Working directory:      [%s]' % base_path)
+	logger.info('Log file name:          [%s]', basename(log_filename))
+	logger.info('Input file name:        [%s]', basename(input_filename))
+	logger.info('Output file name:       [%s]', basename(output_filename))
+	logger.info('Class definitions file: [%s]', basename(classdefs_filename))
+
+	aquaclasses_py = join(base_path, AQUA_CLASSES)
 	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(classdefs_filename):
 		from classfactory import ClassModuleUpdater
 		ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()
+		logger.info('Recreated class file:   [%s]', AQUA_CLASSES)
 
-	logging.debug('aqua_launcher.py: Executing %s', main_program_filename)
-	runpy.run_path(main_program_filename, run_name='__main__')
+	logger.info_centered()
+
+	logger.debug('%s: Starting', basename(main_program_filename))
+	run_path(main_program_filename, run_name='__main__')
+	logger.debug('%s: Done', basename(main_program_filename))
 
 
 #=##################################################################################################
@@ -140,8 +149,8 @@ if __name__ == '__main__':
 		check_command_line_options(options)
 		main()
 	except Exception as ex:
-		logging.exception(ex)
+		logger.exception(ex)
 		exit_code = 1
 
 	stop_logging(exit_code)
-	sys.exit(exit_code)
+	exit(exit_code)

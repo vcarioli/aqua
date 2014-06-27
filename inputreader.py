@@ -7,10 +7,16 @@ from os.path import dirname
 from datetime import datetime
 from decimal import Decimal
 import sys
-import logging
 
 
 __all__ = ["InputReader"]
+
+
+INFO_LVL = 0
+
+from logger import Logger
+
+logger = Logger(filename=__file__, prefix='---  ', info_level=0)
 
 
 #=##################################################################################################
@@ -42,7 +48,8 @@ class InputReader():
 
 		data = {}
 		for line in lineslist:
-#			logging.info(str(line))
+			logger.info_with_prefix(str(line))
+
 			if line == [''] or line[0].startswith('#'):
 				continue
 			key = line[0]

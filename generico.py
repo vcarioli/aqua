@@ -9,14 +9,15 @@
 #	Gestione del garage
 #-------------------------------------------------------------------------------
 
-import logging
-from aquaclasses import *
 from decimal import Decimal
 from inputreader import InputReader
-
+from os.path import basename
+from logger import Logger
+from aquaclasses import *
 
 #=##################################################################################################
 
+logger = Logger(filename=__file__, prefix='---  ', debug_mode=False)
 
 fpro = None		# Dati di fatturazione dell'azienda
 fprol = []		# letture
@@ -24,6 +25,8 @@ fproc = []		# costi
 fprot = []		# tariffe
 fpros = []		# scaglioni
 tipo_lettura = []
+
+results = []
 
 
 #=##################################################################################################
@@ -264,6 +267,8 @@ def compatta_storni(storni):
 #=##################################################################################################
 
 def main():
+	global results
+
 	# Isolamento letture casa da letture garage
 	letture_casa = [x for x in fprol if x.fpl_garage == '']
 	letture_garage = [x for x in fprol if x.fpl_garage == 'G']
@@ -280,7 +285,6 @@ def main():
 
 	mc_consumo_totale = mc_consumo_totale_casa + mc_consumo_totale_garage
 
-	results = []
 	numfat = 0
 
 	# Calcolo righe addebito acqua totale consumata
@@ -298,21 +302,21 @@ def main():
 		results.append(costo(fprot[ix_fogna], numfat, mc_consumo_totale))
 		numfat += 1
 	else:
-		logging.info(">>>>>>>>>>\t- Non sono presenti costi [FOGNA]")
+		logger.info_with_prefix("Non sono presenti costi [FOGNA]")
 
 	# Depurazione
 	if ix_depur:
 		results.append(costo(fprot[ix_depur], numfat, mc_consumo_totale))
 		numfat += 1
 	else:
-		logging.info(">>>>>>>>>>\t- Non sono presenti costi [DEPUR]")
+		logger.info_with_prefix("Non sono presenti costi [DEPUR]")
 
 	# Quota fissa (non e' differenziata per lettura s/r)
 	if ix_qfissa:
 		results.append(costo(fprot[ix_qfissa], numfat, fpro.fp_periodo))
 		numfat += 1
 	else:
-		logging.info(">>>>>>>>>>\t- Non sono presenti costi [quota fissa]")
+		logger.info_with_prefix("Non sono presenti costi [quota fissa]")
 
 	#
 	# todo:	Verificare il comportamento in caso di mancanza del costo dell'acqua calda
@@ -338,11 +342,7 @@ def main():
 
 	write_output(results)
 
-#	print('\n\n'.join([i.pretty_print() for i in results]))
-#	print(results[0].get_csv_hdr())
-#	print('\n'.join([i.get_csv_row() for i in results]))
-
-	logging.info('generico.py: main(): Results written to ' + output_filename)
+	logger.debug('main(): Results written to %s', basename(output_filename))
 
 
 #=##################################################################################################
@@ -356,13 +356,16 @@ def initialize():
 	Lettura dei dati dal file di input e inizializzazione delle variabili globali
 	:return: None
 	"""
-	global aqua_data, fpro, tipo_lettura, fprol, fproc, fprot, fpros
+	global aqua_data, fpro, tipo_lettura, fprol, fproc, fprot, fpros, logger
+	logger.prefix = '---  '
 
 	try:
+		logger.debug('InputReader().read(): Starting')
 		aqua_data = InputReader(aqua_classes, input_filename).read()
+		logger.debug('InputReader().read(): Done')
 
 		#
-		# todo: Verificare co Andrea
+		# todo: Verificare con Andrea
 		#
 
 		if not 'Fatpro' in aqua_data:
@@ -375,27 +378,38 @@ def initialize():
 		fpro = aqua_data['Fatpro'][0]
 		tipo_lettura = fpro.fp_tipo_let
 
-		fprol = aqua_data['Fatprol'] if 'Fatprol' in aqua_data else None
+		fprol = aqua_data['Fatprol']  # if 'Fatprol' in aqua_data else None
+		fprot = aqua_data['Fatprot']  # if 'Fatprot' in aqua_data else None
 		fproc = aqua_data['Fatproc'] if 'Fatproc' in aqua_data else None
-		fprot = aqua_data['Fatprot'] if 'Fatprot' in aqua_data else None
 		fpros = aqua_data['Fatpros'] if 'Fatpros' in aqua_data else None
 
+		logger.info_with_prefix("Utente:\t[%d/%s]", fpro.fp_aconto, fpro.fp_azienda)
+		logger.info_with_prefix("Lettura:\t[%s/%d/%d]", tipo_lettura, fpro.fp_numlet_pr, fpro.fp_numlet_aa)
+		if not 'Fatproc' in aqua_data:
+			logger.info_with_prefix("Non ci sono Costi [Fatproc]")
+		if not 'Fatpros' in aqua_data:
+			logger.info_with_prefix("Non ci sono Storni [Fatpros]")
+
 	except:
-		logging.error("Errore durante l'inizializzazione.")
+		logger.error("%s: Errore durante l'inizializzazione.", basename(__file__))
 		raise
 
 
 #=##################################################################################################
 if __name__ == '__main__':
-	logging.debug('generico.py: starting initialize()')
+	logger.debug('initialize(): Starting ')
 	initialize()
-	logging.debug('generico.py: initialize() done')
+	logger.debug('initialize(): Done')
 
 	try:
-		logging.debug('generico.py: starting main()')
-		logging.info(">>>>>>>>>> Utente: %d %s, lettura: %d/%d", fpro.fp_aconto, fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa)
+		logger.debug('main(): Starting')
 		main()
-		logging.debug('generico.py: main() done')
+
+		# print('\n\n'.join([i.pretty_print() for i in results]))
+		# print(results[0].get_csv_hdr())
+		# print('\n'.join([i.get_csv_row() for i in results]))
+
+		logger.debug('main(): Done')
 	except:
-		logging.error("Utente: %d %s, lettura: %d/%d", fpro.fp_aconto, fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa)
+		logger.error("Utente: %d/%s, lettura: %d/%d", fpro.fp_aconto, fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa)
 		raise

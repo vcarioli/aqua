@@ -6,14 +6,14 @@
 
 __all__ = ["ClassModuleUpdater", "AssignmentError"]
 
-import sys
-import logging
-import os.path
-
+from sys import argv
+from logger import Logger
+from os.path import join, dirname
 from collections import OrderedDict
 from datetime import datetime, date
 from decimal import Decimal
 
+logger = Logger(__file__)
 
 #=##################################################################################################
 class ArgumentError(Exception):
@@ -86,7 +86,7 @@ class AquaBase():
 					out=funcs[typ][3]
 				)
 			except:
-				logging.error("classfactory.py: __create_fields_dict__(self): error decoding [{0}][{1}]".format(self.__spec__[0], fld))
+				logger.error("__create_fields_dict__(self): error decoding [{0}][{1}]".format(self.__spec__[0], fld))
 				raise
 		return fields
 
@@ -324,8 +324,8 @@ class ClassDefinitionReader():
 #=##################################################################################################
 class ClassModuleUpdater():
 	def __init__(self, classdefs_fn, input_fn, output_fn):
-		self._classdefs_file = os.path.join(os.path.dirname(sys.argv[0]), 'classdefs.txt') if classdefs_fn is None else classdefs_fn
-		self._out_file = os.path.join(os.path.dirname(self._classdefs_file), 'aquaclasses.py')
+		self._classdefs_file = join(dirname(argv[0]), 'classdefs.txt') if classdefs_fn is None else classdefs_fn
+		self._out_file = join(dirname(self._classdefs_file), 'aquaclasses.py')
 		self._input_filename = input_fn
 		self._output_filename = output_fn
 		self._classes = {}
@@ -383,20 +383,22 @@ class ClassModuleUpdater():
 		if not self._classes:
 			self.get_classes()
 		self._write_class_module()
-		logging.debug('%s recreated', self._out_file)
 
 
 #=##################################################################################################
 #=##################################################################################################
 
 if __name__ == '__main__':
-	classdefs_filename	= sys.argv[1]
-	input_filename		= sys.argv[2]
-	output_filename		= sys.argv[3]
+	classdefs_filename	= argv[1]
+	input_filename		= argv[2]
+	output_filename		= argv[3]
 
 	##### Serve solo per debug quando si lancia da linea di comado #####
-	log_filename = sys.argv[4]
-	logging.basicConfig(filename=log_filename, format='%(asctime)s %(levelname)-8s %(message)s', level=logging.DEBUG)
+
+	log_filename = argv[4]
+
+	logger.config(log_filename=log_filename )
+
 	####################################################################
 
 	ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()
