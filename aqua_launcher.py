@@ -3,6 +3,7 @@
 # -------------------------------------------------------------------------------
 # Name:		aqua_launcher
 # -------------------------------------------------------------------------------
+
 """uso:
 	python aqua_launcher.py -m main_program.py -i input.txt -o output.txt -c classdefs.txt -l aqualog.log
 
@@ -37,32 +38,14 @@
 
 AQUA_CLASSES = "aquaclasses.py"
 
-from logger import Logger
-from sys import argv, exit
+from sys import exit, version_info as pyver
 from runpy import run_path
 from os.path import abspath, dirname, exists, getmtime, basename, join
+from aquaerrors import NoFileError
+from logger import Logger
 
 
-#=##################################################################################################
-class AquaClassesGenerationError(Exception):
-	"""Error generating the file aquaclasses.py."""
-
-	def __str__(self):
-		return 'Error during generation of "aquaclasses.py"'
-
-
-#=##################################################################################################
-class NoFileError(Exception):
-	"""An error from referencing a file that does not exists"""
-
-	def __init__(self, filename, message=None):
-		self.argname, self.msg = filename, message if message else "does not exist"
-
-	def __str__(self):
-		return 'argument {0}: {1}'.format(self.argname, self.msg)
-
-
-#=##################################################################################################
+#=##############################################################################
 def get_command_line_options():
 	from optparse import OptionParser, make_option
 
@@ -76,7 +59,7 @@ def get_command_line_options():
 		]
 	).parse_args()
 
-#=##################################################################################################
+#=##############################################################################
 
 
 base_path = dirname(__file__)
@@ -87,17 +70,17 @@ logger = Logger(log_filename=log_filename, filename=__file__, prefix='---  ', de
 logger.config()
 
 
-#=##################################################################################################
+#=##############################################################################
 def start_logging():
-	logger.info_centered('Begin Session')
+	logger.info_centered('Begin Session [Python v{v0}.{v1}.{v2}]'.format(v0=pyver[0], v1=pyver[1], v2=pyver[2]))
 
 
-#=##################################################################################################
+#=##############################################################################
 def stop_logging(ret_code):
 	logger.info_centered('End Session (Exit Code: %d)' % ret_code)
 
 
-#=##################################################################################################
+#=##############################################################################
 def check_command_line_options(opts):
 	if not exists(abspath(opts.main_program_filename)):
 		raise NoFileError(opts.main_program_filename)
@@ -114,7 +97,7 @@ def check_command_line_options(opts):
 		raise NoFileError(opts.output_filename, "can't open for output")
 
 
-#=##################################################################################################
+#=##############################################################################
 def main():
 	main_program_filename	= abspath(options.main_program_filename)
 	classdefs_filename		= abspath(options.classdefs_filename)
@@ -129,7 +112,7 @@ def main():
 
 	aquaclasses_py = join(base_path, AQUA_CLASSES)
 	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(classdefs_filename):
-		from classfactory import ClassModuleUpdater
+		from classmoduleupdater import ClassModuleUpdater
 		ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()
 		logger.info('Recreated class file:   [%s]', AQUA_CLASSES)
 
@@ -140,7 +123,7 @@ def main():
 	logger.debug('%s: Done', basename(main_program_filename))
 
 
-#=##################################################################################################
+#=##############################################################################
 if __name__ == '__main__':
 	start_logging()
 

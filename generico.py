@@ -1,7 +1,7 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
 # -------------------------------------------------------------------------------
-# Name:		main_program
+# Name:		generico
 # -------------------------------------------------------------------------------
 # Da fare:
 #   Logging errori più intelleggibile
@@ -10,12 +10,13 @@
 #-------------------------------------------------------------------------------
 
 from decimal import Decimal
-from inputreader import InputReader
 from os.path import basename
+from aquaerrors import DataMissingError
+from inputreader import InputReader
 from logger import Logger
 from aquaclasses import *
 
-#=##################################################################################################
+#=##############################################################################
 
 logger = Logger(filename=__file__, prefix='---  ', debug_mode=False)
 
@@ -29,31 +30,18 @@ tipo_lettura = []
 results = []
 
 
-#=##################################################################################################
-class DataMissingError(Exception):
-	"""
-	Relevant input-data is missing.
-	"""
-
-	def __init__(self, cls_name, message):
-		self.cls_name, self.msg = cls_name, message
-
-	def __str__(self):
-		return "Class {0}: {1}".format(self.cls_name, self.msg)
-
-
-#=##################################################################################################
-def write_output(results):
+#=##############################################################################
+def write_output(res):
 	"""
 	Scrive i risultati nel file di output
-	:param results: <[Output()]>
+	:param res: <[Output()]>
 	:return; <None>
 	"""
 	with open(output_filename, "w") as fout:
-		fout.writelines([str(o) + '\n' for o in results])
+		fout.writelines([str(o) + '\n' for o in res])
 
 
-#=##################################################################################################
+#=##############################################################################
 def ricerca_indici():
 	"""
 	Ricerca indici valori per Quota fissa, Fogna e Depurazione
@@ -193,7 +181,7 @@ def altri_costi():
 		'MC',		# Manutenzione contatori
 		'QAC',		# Quota Fissa acqua calda
 	]
-	results = []
+	res = []
 	for c in fproc:
 		if c.fpc_bcodart in costi:
 			o = Output()
@@ -202,9 +190,9 @@ def altri_costi():
 			o.fpo_bcodart = c.fpc_bcodart
 			o.fpo_costo = c.fpc_costo
 			o.fpo_qta = 1
-			results.append(o)
+			res.append(o)
 
-	return results
+	return res
 
 
 def consumo_mc(letture):
@@ -264,7 +252,7 @@ def compatta_storni(storni):
 	return sorted(storni, key=lambda x: x.fps_bgiorni)
 
 
-#=##################################################################################################
+#=##############################################################################
 
 def main():
 	global results
@@ -345,12 +333,12 @@ def main():
 	logger.debug('main(): Results written to %s', basename(output_filename))
 
 
-#=##################################################################################################
+#=##############################################################################
 # Non modificare dopo questa linea
-#=##################################################################################################
+#=##############################################################################
 
 
-#=##################################################################################################
+#=##############################################################################
 def initialize():
 	"""
 	Lettura dei dati dal file di input e inizializzazione delle variabili globali
@@ -395,7 +383,7 @@ def initialize():
 		raise
 
 
-#=##################################################################################################
+#=##############################################################################
 if __name__ == '__main__':
 	logger.debug('initialize(): Starting ')
 	initialize()

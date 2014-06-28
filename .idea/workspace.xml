@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AnalysisUIOptions">
-    <option name="SCOPE_TYPE" value="3" />
-  </component>
   <component name="ChangeListManager">
     <list default="true" id="e805f4d5-8394-4c99-bd77-2d1f47eb4d9c" name="Default" comment="" />
     <ignored path="aqua.iws" />
@@ -26,21 +23,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="aqua_launcher.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
+      <file leaf-file-name="sample_data.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sample_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2085" max-vertical-offset="2888">
-              <caret line="132" column="4" selection-start-line="132" selection-start-column="4" selection-end-line="132" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="5" max-vertical-offset="1824">
+              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding>
-                <element signature="e#248#1937#1" expanded="true" />
-                <element signature="e#1972#1997#0" expanded="true" />
-                <element signature="e#2414#2466#0" expanded="true" />
-                <element signature="e#2709#2784#0" expanded="true" />
-                <element signature="e#2808#2865#0" expanded="true" />
-                <element signature="e#3002#3639#0" expanded="true" />
-                <element signature="e#4090#4144#0" expanded="true" />
-                <element signature="e#4277#4339#0" expanded="true" />
+                <element signature="e#350#375#0" expanded="true" />
+                <element signature="e#589#2255#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="classmoduleupdater.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classmoduleupdater.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="1710">
+              <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+              <folding>
+                <element signature="e#253#286#0" expanded="true" />
+                <element signature="e#584#877#0" expanded="true" />
+                <element signature="e#913#2096#0" expanded="true" />
+                <element signature="e#2124#2374#0" expanded="true" />
+                <element signature="e#2397#2469#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_pydev_execfile.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="145" max-vertical-offset="817">
+              <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -48,23 +65,9 @@
       <file leaf-file-name="aqua.log" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/aqua.log">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="417">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5467626" vertical-offset="0" max-vertical-offset="417">
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="inputreader.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inputreader.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="146" max-vertical-offset="1197">
-              <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
-              <folding>
-                <element signature="e#244#271#0" expanded="true" />
-                <element signature="e#654#798#0" expanded="true" />
-                <element signature="e#1098#1760#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -72,32 +75,13 @@
       <file leaf-file-name="logger.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/logger.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="37" max-vertical-offset="2071">
-              <caret line="8" column="141" selection-start-line="8" selection-start-column="141" selection-end-line="8" selection-end-column="141" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1370" max-vertical-offset="1805">
+              <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
               <folding>
-                <element signature="e#46#60#0" expanded="true" />
-                <element signature="e#250#505#0" expanded="true" />
-                <element signature="e#547#574#0" expanded="true" />
-                <element signature="e#609#635#0" expanded="true" />
-                <element signature="e#741#768#0" expanded="true" />
-                <element signature="e#802#828#0" expanded="true" />
-                <element signature="e#925#949#0" expanded="true" />
-                <element signature="e#989#1014#0" expanded="true" />
-                <element signature="e#1109#1137#0" expanded="true" />
-                <element signature="e#1180#1209#0" expanded="true" />
-                <element signature="e#1309#1331#0" expanded="true" />
-                <element signature="e#1368#1391#0" expanded="true" />
-                <element signature="e#1476#1501#0" expanded="true" />
-                <element signature="e#1541#1567#0" expanded="true" />
-                <element signature="e#1658#1680#0" expanded="true" />
-                <element signature="e#1717#1740#0" expanded="true" />
-                <element signature="e#1834#1895#0" expanded="true" />
-                <element signature="e#1950#2050#0" expanded="true" />
-                <element signature="e#2110#2398#0" expanded="true" />
-                <element signature="e#2442#2581#0" expanded="true" />
-                <element signature="e#2625#2693#0" expanded="true" />
-                <element signature="e#2750#2789#0" expanded="true" />
-                <element signature="e#2831#3003#0" expanded="true" />
+                <element signature="e#263#332#0" expanded="true" />
+                <element signature="e#604#859#0" expanded="true" />
+                <element signature="e#2455#2702#0" expanded="true" />
+                <element signature="e#2746#2860#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -116,18 +100,22 @@
         <option value="$PROJECT_DIR$/aqua_2.log" />
         <option value="$PROJECT_DIR$/gen_test_output.py" />
         <option value="$PROJECT_DIR$/gen_test_data.py" />
-        <option value="$PROJECT_DIR$/testdata.py" />
         <option value="$PROJECT_DIR$/run.sh" />
-        <option value="$PROJECT_DIR$/sample_data.py" />
         <option value="$PROJECT_DIR$/classdefs.txt" />
         <option value="$PROJECT_DIR$/aquaclasses.py" />
-        <option value="$PROJECT_DIR$/aqua.log" />
         <option value="$PROJECT_DIR$/input.txt" />
         <option value="$PROJECT_DIR$/logfunctions.py" />
-        <option value="$PROJECT_DIR$/classfactory.py" />
-        <option value="$PROJECT_DIR$/inputreader.py" />
+        <option value="$PROJECT_DIR$/aqua.log" />
+        <option value="$PROJECT_DIR$/classmoduleupdater.py" />
         <option value="$PROJECT_DIR$/generico.py" />
+        <option value="$PROJECT_DIR$/aquabase.py" />
+        <option value="$PROJECT_DIR$/testdata.py" />
+        <option value="$PROJECT_DIR$/sample_data.py" />
         <option value="$PROJECT_DIR$/logger.py" />
+        <option value="$PROJECT_DIR$/inputreader.py" />
+        <option value="$PROJECT_DIR$/classfactory.py" />
+        <option value="$PROJECT_DIR$/classdefinitionreader.py" />
+        <option value="$PROJECT_DIR$/aquaerrors.py" />
         <option value="$PROJECT_DIR$/aqua_launcher.py" />
       </list>
     </option>
@@ -180,61 +168,12 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="aqua" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.4.1 (/usr/local/bin/python3.4m) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aqua" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.4.1 (/usr/local/bin/python3.4m) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="python3.4" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aqua" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="&lt; Python 3.4.1 (/usr/local/bin/python3.4m) &gt;" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="python3.4" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="logging" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -249,6 +188,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -260,7 +200,7 @@
     <property name="recentsLimit" value="5" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/testdata.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/aquaerrors.py" />
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/valerio/aqua-clone/classfactory.py" />
   </component>
@@ -494,7 +434,7 @@
         <option name="RunConfigurationTask" enabled="true" run_configuration_name="cleanup" run_configuration_type="BashConfigurationType" />
       </method>
     </configuration>
-    <configuration default="false" name="classfactory" type="PythonConfigurationType" factoryName="Python">
+    <configuration default="false" name="updater" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -506,7 +446,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="aqua" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classfactory.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classmoduleupdater.py" />
       <option name="PARAMETERS" value="classdefs.txt input.txt out.txt aqua.log" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -578,7 +518,7 @@
         <option name="RunConfigurationTask" enabled="true" run_configuration_name="cleanup" run_configuration_type="BashConfigurationType" />
       </method>
     </configuration>
-    <configuration default="false" name="classfactory 2.7.7" type="PythonConfigurationType" factoryName="Python">
+    <configuration default="false" name="updater 2.7.7" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -590,7 +530,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="aqua" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classfactory.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classmoduleupdater.py" />
       <option name="PARAMETERS" value="classdefs.txt input.txt out.txt aqua.log" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -637,11 +577,11 @@
     <list size="10">
       <item index="0" class="java.lang.String" itemvalue="Bash.cleanup" />
       <item index="1" class="java.lang.String" itemvalue="Python.aqua_launcher" />
-      <item index="2" class="java.lang.String" itemvalue="Python.classfactory" />
+      <item index="2" class="java.lang.String" itemvalue="Python.updater" />
       <item index="3" class="java.lang.String" itemvalue="Python.generico" />
       <item index="4" class="java.lang.String" itemvalue="Python.sample_data" />
       <item index="5" class="java.lang.String" itemvalue="Python.aqua_launcher 2.7.7" />
-      <item index="6" class="java.lang.String" itemvalue="Python.classfactory 2.7.7" />
+      <item index="6" class="java.lang.String" itemvalue="Python.updater 2.7.7" />
       <item index="7" class="java.lang.String" itemvalue="Python.generico 2.7.7" />
       <item index="8" class="java.lang.String" itemvalue="Python.sample_data 2.7.7" />
       <item index="9" class="java.lang.String" itemvalue="Python.testdata" />
@@ -699,9 +639,8 @@
     <frame x="-4" y="25" width="1448" height="847" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="139" y="149" width="1248" height="647" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3067047" sideWeight="0.49964765" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38516405" sideWeight="0.49964765" order="8" side_tool="false" content_ui="tabs" x="200" y="207" width="1107" height="588" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31383738" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3195435" sideWeight="0.8245243" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2590604" sideWeight="0.50069445" order="9" side_tool="true" content_ui="tabs" />
@@ -710,16 +649,17 @@
       <window_info id="Regex Tester" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281027" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3281027" sideWeight="0.49964765" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2149401" sideWeight="0.49643368" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1702432" sideWeight="0.49532712" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964234" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16913319" sideWeight="0.49532712" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28388017" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36376604" sideWeight="0.49930555" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="139" y="149" width="1248" height="647" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32904148" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2853067" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24964234" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -767,8 +707,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/testdata.py</url>
-          <line>21</line>
+          <line>27</line>
           <option name="timeStamp" value="74" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/classmoduleupdater.py</url>
+          <line>80</line>
+          <option name="timeStamp" value="100" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -779,24 +724,10 @@
           <properties exception="BaseException" />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="100" />
+      <option name="time" value="101" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3021">
-          <caret line="137" column="12" selection-start-line="137" selection-start-column="12" selection-end-line="137" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classfactory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3279" max-vertical-offset="6479">
-          <caret line="178" column="0" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/generico.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3098" max-vertical-offset="4598">
@@ -1028,28 +959,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.29442972" vertical-offset="440" max-vertical-offset="817">
-          <caret line="29" column="41" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testdata.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="4503">
-          <caret line="115" column="0" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sample_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.4190872" vertical-offset="240" max-vertical-offset="1691">
-          <caret line="75" column="37" selection-start-line="75" selection-start-column="37" selection-end-line="75" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.41468254" vertical-offset="0" max-vertical-offset="504">
@@ -1106,102 +1015,188 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33173078" vertical-offset="11091" max-vertical-offset="12521">
           <caret line="1781" column="31" selection-start-line="1781" selection-start-column="4" selection-end-line="1781" selection-end-column="31" />
-          <folding>
-            <element signature="e#57876#62057#0" expanded="false" />
-            <element signature="e#62933#63205#0" expanded="false" />
-            <element signature="e#63248#63524#0" expanded="false" />
-            <element signature="e#64367#64639#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classfactory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.8965516" vertical-offset="0" max-vertical-offset="3382">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-          <folding>
-            <element signature="e#1995#2972#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inputreader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="146" max-vertical-offset="1197">
-          <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
-          <folding>
-            <element signature="e#244#271#0" expanded="true" />
-            <element signature="e#654#798#0" expanded="true" />
-            <element signature="e#1098#1760#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logger.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="37" max-vertical-offset="2071">
-          <caret line="8" column="141" selection-start-line="8" selection-start-column="141" selection-end-line="8" selection-end-column="141" />
-          <folding>
-            <element signature="e#46#60#0" expanded="true" />
-            <element signature="e#250#505#0" expanded="true" />
-            <element signature="e#547#574#0" expanded="true" />
-            <element signature="e#609#635#0" expanded="true" />
-            <element signature="e#741#768#0" expanded="true" />
-            <element signature="e#802#828#0" expanded="true" />
-            <element signature="e#925#949#0" expanded="true" />
-            <element signature="e#989#1014#0" expanded="true" />
-            <element signature="e#1109#1137#0" expanded="true" />
-            <element signature="e#1180#1209#0" expanded="true" />
-            <element signature="e#1309#1331#0" expanded="true" />
-            <element signature="e#1368#1391#0" expanded="true" />
-            <element signature="e#1476#1501#0" expanded="true" />
-            <element signature="e#1541#1567#0" expanded="true" />
-            <element signature="e#1658#1680#0" expanded="true" />
-            <element signature="e#1717#1740#0" expanded="true" />
-            <element signature="e#1834#1895#0" expanded="true" />
-            <element signature="e#1950#2050#0" expanded="true" />
-            <element signature="e#2110#2398#0" expanded="true" />
-            <element signature="e#2442#2581#0" expanded="true" />
-            <element signature="e#2625#2693#0" expanded="true" />
-            <element signature="e#2750#2789#0" expanded="true" />
-            <element signature="e#2831#3003#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generico.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.47029704" vertical-offset="171" max-vertical-offset="4351">
-          <caret line="19" column="35" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="325" max-vertical-offset="7771">
+          <caret line="32" column="80" selection-start-line="32" selection-start-column="80" selection-end-line="32" selection-end-column="80" />
           <folding>
-            <element signature="e#430#455#0" expanded="true" />
-            <element signature="e#7287#9650#0" expanded="true" />
-            <element signature="e#10012#11507#0" expanded="true" />
+            <element signature="e#426#453#0" expanded="true" />
+            <element signature="e#1040#1223#0" expanded="true" />
+            <element signature="e#1327#1767#0" expanded="true" />
+            <element signature="e#1802#2096#0" expanded="true" />
+            <element signature="e#2133#2669#0" expanded="true" />
+            <element signature="e#2732#3430#0" expanded="true" />
+            <element signature="e#3470#4400#0" expanded="true" />
+            <element signature="e#4429#4735#0" expanded="true" />
+            <element signature="e#4758#5415#0" expanded="true" />
+            <element signature="e#5444#5655#0" expanded="true" />
+            <element signature="e#5695#6144#0" expanded="true" />
+            <element signature="e#6177#6790#0" expanded="true" />
+            <element signature="e#6888#9250#0" expanded="true" />
+            <element signature="e#9552#11047#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testdata.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4617">
+          <caret line="14" column="21" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classfactory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1230" max-vertical-offset="1710">
+          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+          <folding>
+            <element signature="e#247#276#0" expanded="true" />
+            <element signature="e#495#947#0" expanded="true" />
+            <element signature="e#991#2781#0" expanded="true" />
+            <element signature="e#2818#2899#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classdefinitionreader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="234" max-vertical-offset="703">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding>
+            <element signature="e#437#464#0" expanded="true" />
+            <element signature="e#486#666#0" expanded="true" />
+            <element signature="e#688#886#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2085" max-vertical-offset="2888">
-          <caret line="132" column="4" selection-start-line="132" selection-start-column="4" selection-end-line="132" selection-end-column="4" />
+        <state vertical-scroll-proportion="-2.0693069" vertical-offset="1083" max-vertical-offset="1900">
+          <caret line="43" column="34" selection-start-line="43" selection-start-column="34" selection-end-line="43" selection-end-column="34" />
           <folding>
-            <element signature="e#248#1937#1" expanded="true" />
-            <element signature="e#1972#1997#0" expanded="true" />
-            <element signature="e#2414#2466#0" expanded="true" />
-            <element signature="e#2709#2784#0" expanded="true" />
-            <element signature="e#2808#2865#0" expanded="true" />
-            <element signature="e#3002#3639#0" expanded="true" />
-            <element signature="e#4090#4144#0" expanded="true" />
-            <element signature="e#4277#4339#0" expanded="true" />
+            <element signature="e#2292#2929#0" expanded="true" />
+            <element signature="e#4358#5467#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aquabase.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.217822" vertical-offset="3320" max-vertical-offset="3724">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#242#277#0" expanded="true" />
+            <element signature="e#609#693#0" expanded="true" />
+            <element signature="e#732#1709#0" expanded="true" />
+            <element signature="e#1818#1928#0" expanded="true" />
+            <element signature="e#1975#2324#0" expanded="true" />
+            <element signature="e#2374#2527#0" expanded="true" />
+            <element signature="e#2567#2611#0" expanded="true" />
+            <element signature="e#2720#2985#0" expanded="true" />
+            <element signature="e#3032#3513#0" expanded="true" />
+            <element signature="e#3575#3807#0" expanded="true" />
+            <element signature="e#3847#3904#0" expanded="true" />
+            <element signature="e#4002#4285#0" expanded="true" />
+            <element signature="e#4342#4507#0" expanded="true" />
+            <element signature="e#4548#4643#0" expanded="true" />
+            <element signature="e#4737#4846#0" expanded="true" />
+            <element signature="e#4893#5224#0" expanded="true" />
+            <element signature="e#5264#5388#0" expanded="true" />
+            <element signature="e#5419#5568#0" expanded="true" />
+            <element signature="e#5608#6140#0" expanded="true" />
+            <element signature="e#6178#6342#0" expanded="true" />
+            <element signature="e#6391#7201#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aquaerrors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6378897" vertical-offset="0" max-vertical-offset="836">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+          <folding>
+            <element signature="e#503#770#0" expanded="false" />
+            <element signature="e#892#1181#0" expanded="false" />
+            <element signature="e#1295#1643#0" expanded="false" />
+            <element signature="e#1295#1374#1" expanded="true" />
+            <element signature="e#1418#1478#0" expanded="true" />
+            <element signature="e#1502#1559#0" expanded="true" />
+            <element signature="e#1762#1998#0" expanded="false" />
+            <element signature="e#1870#1915#0" expanded="true" />
+            <element signature="e#1939#1995#0" expanded="true" />
+            <element signature="e#2125#2251#0" expanded="false" />
+            <element signature="e#2196#2248#0" expanded="true" />
+            <element signature="e#2368#2575#0" expanded="false" />
+            <element signature="e#2368#2409#1" expanded="true" />
+            <element signature="e#2453#2496#0" expanded="true" />
+            <element signature="e#2520#2575#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inputreader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="513">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sample_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5" max-vertical-offset="1824">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="e#350#375#0" expanded="true" />
+            <element signature="e#589#2255#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logger.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1370" max-vertical-offset="1805">
+          <caret line="107" column="0" selection-start-line="107" selection-start-column="0" selection-end-line="107" selection-end-column="0" />
+          <folding>
+            <element signature="e#263#332#0" expanded="true" />
+            <element signature="e#604#859#0" expanded="true" />
+            <element signature="e#2455#2702#0" expanded="true" />
+            <element signature="e#2746#2860#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classmoduleupdater.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="1710">
+          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+          <folding>
+            <element signature="e#253#286#0" expanded="true" />
+            <element signature="e#584#877#0" expanded="true" />
+            <element signature="e#913#2096#0" expanded="true" />
+            <element signature="e#2124#2374#0" expanded="true" />
+            <element signature="e#2397#2469#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="369" max-vertical-offset="817">
+          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/aqua.log">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="417">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.5467626" vertical-offset="0" max-vertical-offset="417">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
         </state>
       </provider>
