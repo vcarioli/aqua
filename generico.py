@@ -25,9 +25,9 @@ fprol = []		# letture
 fproc = []		# costi
 fprot = []		# tariffe
 fpros = []		# scaglioni
-tipo_lettura = []
 
 results = []
+tipo_lettura = ''
 
 
 #=##############################################################################
@@ -130,22 +130,19 @@ def costo_acqua_calda(qta, numfat):
 		elif fproc[i].fpc_bcodart == 'ACS':
 			iacs = i
 
-	o = Output()
-	o.fpo_numfat = numfat
-	o.fpo_cs = 'C'
-
 	#
 	# todo:	Verificare che il comportamento sia corretto in caso di mancanza degli indici
 	#
+	#	if iac is None or IACS is none:
+	#		# E' un errore?
+	#		# Cosa fare? (Nulla ?)
+	#
 
-	# o.fpo_bcodart = fproc[iacs if tipo_lettura == 'S' else iac].fpc_bcodart
-	if tipo_lettura == 'S':
-		o.fpo_bcodart = fproc[iacs].fpc_bcodart if iacs else ''
-	else:
-		o.fpo_bcodart = fproc[iac].fpc_bcodart if iac else ''
-
-	# o.fpo_costo = fproc[iac].fpc_costo
-	o.fpo_costo = fproc[iac].fpc_costo if iac else 0
+	o = Output()
+	o.fpo_numfat = numfat
+	o.fpo_cs = 'C'
+	o.fpo_bcodart = fproc[iacs if tipo_lettura == 'S' else iac].fpc_bcodart
+	o.fpo_costo = fproc[iac].fpc_costo
 
 	o.fpo_qta = qta
 	return o
@@ -279,7 +276,8 @@ def main():
 	consumo = mc_consumo_totale
 	for (tariffa, scaglione) in tariffe_scaglioni_acqua():
 		if consumo > 0:
-			results.append(addebito_acqua(tariffa, scaglione, consumo, numfat))
+			o = addebito_acqua(tariffa, scaglione, consumo, numfat)
+			results.append(o)
 			consumo -= scaglione if consumo > scaglione else consumo
 			numfat += 1
 
@@ -290,25 +288,23 @@ def main():
 		results.append(costo(fprot[ix_fogna], numfat, mc_consumo_totale))
 		numfat += 1
 	else:
-		logger.info_with_prefix("Non sono presenti costi [FOGNA]")
+		logger.info_with_prefix("Non sono presenti costi fogna [FOGNA]")
 
 	# Depurazione
 	if ix_depur:
 		results.append(costo(fprot[ix_depur], numfat, mc_consumo_totale))
 		numfat += 1
 	else:
-		logger.info_with_prefix("Non sono presenti costi [DEPUR]")
+		logger.info_with_prefix("Non sono presenti costi depuratore [DEPUR]")
 
 	# Quota fissa (non e' differenziata per lettura s/r)
 	if ix_qfissa:
 		results.append(costo(fprot[ix_qfissa], numfat, fpro.fp_periodo))
 		numfat += 1
 	else:
-		logger.info_with_prefix("Non sono presenti costi [quota fissa]")
+		logger.info_with_prefix("Non sono presenti costi quota fissa [Qxxx]")
 
-	#
 	# todo:	Verificare il comportamento in caso di mancanza del costo dell'acqua calda
-	#
 
 	# Acqua calda, se presente
 	if mc_consumo_calda_casa > 0:
@@ -325,7 +321,8 @@ def main():
 	if fpros:
 		numfat = 50000
 		for fps in compatta_storni(fpros):
-			results.append(calcolo_storno(fps, numfat))
+			o = calcolo_storno(fps, numfat)
+			results.append(o)
 			numfat += 1
 
 	write_output(results)
@@ -345,16 +342,13 @@ def initialize():
 	:return: None
 	"""
 	global aqua_data, fpro, tipo_lettura, fprol, fproc, fprot, fpros, logger
-	logger.prefix = '---  '
 
 	try:
 		logger.debug('InputReader().read(): Starting')
 		aqua_data = InputReader(aqua_classes, input_filename).read()
 		logger.debug('InputReader().read(): Done')
 
-		#
-		# todo: Verificare con Andrea
-		#
+		# todo: Verificare con Andrea la congruità dei dati
 
 		if not 'Fatpro' in aqua_data:
 			raise DataMissingError('Fatpro', "Mancano i dati dell'azienda")
@@ -394,8 +388,8 @@ if __name__ == '__main__':
 		main()
 
 		# print('\n\n'.join([i.pretty_print() for i in results]))
-		# print(results[0].get_csv_hdr())
-		# print('\n'.join([i.get_csv_row() for i in results]))
+		print(results[0].get_csv_hdr())
+		print('\n'.join([i.get_csv_row() for i in results]))
 
 		logger.debug('main(): Done')
 	except:
