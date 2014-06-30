@@ -18,18 +18,18 @@ logger = Logger(filename=__file__)
 #=##############################################################################
 class AquaBase():
 	def __init__(self, classname, spec):
-		self.__spec__ = [classname] + spec
-		self.__fields__ = self.__create_fields_dict__()
+		self._spec = [classname] + spec
+		self.fields = self.create_fields_dict()
 
-	def __create_fields_dict__(self):
+	def create_fields_dict(self):
 		funcs = {
-				'i': ["__set_int__", "__chk_int__", "__get_int__", "__out_int__"],
-				's': ["__set_str__", "__chk_str__", "__get_str__", "__get_str__"],
-				'dt': ["__set_date__", "__chk_date", "__get_date__", "__get_date__"],
-				'd': ["__set_dec__", "__chk_dec__", "__get_dec__", "__out_dec__"]
+				'i': ["_set_int", "_chk_int", "_get_int", "_out_int"],
+				's': ["_set_str", "_chk_str", "_get_str", "_get_str"],
+				'dt': ["_set_date", "_chk_date", "_get_date", "_get_date"],
+				'd': ["_set_dec", "_chk_dec", "_get_dec", "_out_dec"]
 		}
 		fields = OrderedDict()
-		for fld in [x.strip('\r') for x in self.__spec__[1:]]:
+		for fld in [x.strip('\r') for x in self._spec[1:]]:
 			try:
 				d = fld.split(',')
 				typ = d[1]
@@ -51,46 +51,50 @@ class AquaBase():
 					out=funcs[typ][3]
 				)
 			except:
-				logger.error("__create_fields_dict__(self): error decoding [{0}][{1}]".format(self.__spec__[0], fld))
+				logger.error("create_fields_dict(self): error decoding [{0}][{1}]".format(self._spec[0], fld))
 				raise
 		return fields
 
-	# __set_int__(), __chk_int__(), __get_int__(), __out_int__()
-	def __set_int__(self, field_name, value):
-		value = str(value)
-		self.__chk_int__(field_name, value)
-		setattr(self, '__' + field_name + '__', int(value))
+	@staticmethod
+	def _get_internal_name(fieldname):
+		return '_' + fieldname
 
-	def __chk_int__(self, field_name, value):
-		d = self.__fields__[field_name]
+	# _set_int(), _chk_int(), _get_int(), _out_int()
+	def _set_int(self, field_name, value):
+		value = str(value)
+		self._chk_int(field_name, value)
+		setattr(self, self._get_internal_name(field_name), int(value))
+
+	def _chk_int(self, field_name, value):
+		d = self.fields[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
 		if dec_len != 0:
-			raise AssignmentError(field_name, 'int __fields__ can not have decimals')
+			raise AssignmentError(field_name, 'int fields can not have decimals')
 		if len(str(value).strip('-+')) > field_len:
 			raise OverflowError(
 				'{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value)
 			)
 
-	def __get_int__(self, field_name, sign='+'):
-		d = self.__fields__[field_name]
+	def _get_int(self, field_name, sign='+'):
+		d = self.fields[field_name]
 		field_len = d['field_len']
 		return '{:0={s}{w}n}'.format(getattr(self, field_name), s=sign, w=(field_len + len(sign)))
 
-	def __out_int__(self, field_name):
-		return self.__get_int__(field_name, sign='')
+	def _out_int(self, field_name):
+		return self._get_int(field_name, sign='')
 
-	# __set_dec__(), __chk_dec__(), __get_dec__(), __out_dec__()
-	def __set_dec__(self, field_name, value):
+	# _set_dec(), _chk_dec(), _get_dec(), _out_dec()
+	def _set_dec(self, field_name, value):
 		v = str(value).replace(',', '.').split('.')
 		if len(v) > 1:
-			dec_len = self.__fields__[field_name]['dec_len']
+			dec_len = self.fields[field_name]['dec_len']
 			v[1] = v[1][:dec_len]
 			value = Decimal('.'.join(v))
-		self.__chk_dec__(field_name, value)
-		setattr(self, '__' + field_name + '__', Decimal(value))
+		self._chk_dec(field_name, value)
+		setattr(self, self._get_internal_name(field_name), Decimal(value))
 
-	def __chk_dec__(self, field_name, value):
-		d = self.__fields__[field_name]
+	def _chk_dec(self, field_name, value):
+		d = self.fields[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
 		v = str(value).replace('+', '').replace('-', '').split('.')
 		if len(v[0]) > field_len:
@@ -102,65 +106,65 @@ class AquaBase():
 				'{0} fractional part length is {1}: trying to assign value [{2}]'.format(field_name, dec_len, value)
 			)
 
-	def __get_dec__(self, field_name, dec_sep='', sign='+'):
-		d = self.__fields__[field_name]
+	def _get_dec(self, field_name, dec_sep='', sign='+'):
+		d = self.fields[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
 		return '{:0={s}{w}.{p}f}'.format(float(getattr(self, field_name)), s=sign, w=field_len + dec_len + 1 + len(sign), p=dec_len).replace('.', dec_sep)
 
-	def __out_dec__(self, field_name):
-		return self.__get_dec__(field_name, dec_sep=',', sign='')
+	def _out_dec(self, field_name):
+		return self._get_dec(field_name, dec_sep=',', sign='')
 
-	# __set_date__(), __chk_date__(), __get_date__()
-	def __set_date__(self, field_name, value):
+	# _set_date(), _chk_date(), _get_date()
+	def _set_date(self, field_name, value):
 		if type(value) is str:
 			value = None if value.rstrip(' ') == '' or value.rstrip('0') == '' else datetime.strptime(value, '%Y%m%d').date()
 		elif type(value) is datetime:
 			value = value.date()
-		self.__chk_date__(field_name, value)
-		setattr(self, '__' + field_name + '__', value)
+		self._chk_date(field_name, value)
+		setattr(self, self._get_internal_name(field_name), value)
 
 	@staticmethod
-	def __chk_date__(field_name, value):
+	def _chk_date(field_name, value):
 		if type(value) not in [type(None), date]:
 			raise AssignmentError(field_name, 'trying to assign value [{0}] of type {1} to a date field'.format(value, type(value)))
 
-	def __get_date__(self, field_name):
+	def _get_date(self, field_name):
 		dt = getattr(self, field_name)
 		return dt.strftime('%Y%m%d') if dt is not None else '        '
 
-	# __set_str__(), __chk_str__(), __get_str__()
-	def __set_str__(self, field_name, value):
+	# _set_str(), _chk_str(), _get_str()
+	def _set_str(self, field_name, value):
 		value = value.rstrip()
-		self.__chk_str__(field_name, value)
-		setattr(self, '__' + field_name + '__', value)
+		self._chk_str(field_name, value)
+		setattr(self, self._get_internal_name(field_name), value)
 
-	def __chk_str__(self, field_name, value):
-		d = self.__fields__[field_name]
+	def _chk_str(self, field_name, value):
+		d = self.fields[field_name]
 		field_len, dec_len = d['field_len'], d['dec_len']
 		if dec_len != 0:
-			raise AssignmentError(field_name, 'string __fields__ can not have decimals')
+			raise AssignmentError(field_name, 'string fields can not have decimals')
 		if len(str(value)) > field_len:
 			raise OverflowError('{0} max length is {1}: trying to assign value [{2}]'.format(field_name, field_len, value))
 
-	def __get_str__(self, field_name):
-		field_len = self.__fields__[field_name]['field_len']
+	def _get_str(self, field_name):
+		field_len = self.fields[field_name]['field_len']
 		return '{: <{w}.{w}s}'.format(getattr(self, field_name), w=field_len)
 
 	def get_input_line(self):
-		return '{: <8.8s}\t'.format(self.__class__.__name__) + '\t'.join([eval('self.' + self.__fields__[k]['out'] + '(k)') for k in self.__fields__.keys()])
+		return '{: <8.8s}\t'.format(self.__class__.__name__) + '\t'.join([eval('self.' + self.fields[k]['out'] + '(k)') for k in self.fields.keys()])
 
 	def pretty_print(self, prefix=''):
 		fmts = {'i': '{val}', 'd': '{val}', 's': '"{val}"', 'dt': '"{val}"'}
 		s = prefix + ('# ' if prefix == '' else ' = ') + self.__class__.__name__ + '()'
 		prefix += '' if prefix == '' else '.'
-		for k in self.__fields__.keys():
+		for k in self.fields.keys():
 			funcs = {
 				'i': 'self.' + k,
 				'd': 'self.' + k,
-				's': 'self.' + self.__fields__[k]['out'] + '(k)',
-				'dt': 'self.' + self.__fields__[k]['out'] + '(k)'
+				's': 'self.' + self.fields[k]['out'] + '(k)',
+				'dt': 'self.' + self.fields[k]['out'] + '(k)'
 			}
-			t = self.__fields__[k]['field_type']
+			t = self.fields[k]['field_type']
 			s += ('\n{pfx}{name} = ' + fmts[t]).format(name=k, pfx=prefix, val=eval(funcs[t]))
 		return s
 
@@ -170,7 +174,7 @@ class AquaBase():
 		:param sep: Separatore da utilizzare (default = tab)
 		:return: string
 		"""
-		return sep.join(self.__fields__.keys())
+		return sep.join(self.fields.keys())
 
 	def get_csv_row(self, sep='\t', delim='"'):
 		"""
@@ -188,4 +192,4 @@ class AquaBase():
 		fmts = dict(i='{0}', d='{0}', s=ldelim + '{0}' + rdelim, dt=ldelim + '{0}' + rdelim)
 
 		return sep.join(
-			[fmts[self.__fields__[k]['field_type']].format(eval('self.' + k)) for k in self.__fields__.keys()])
+			[fmts[self.fields[k]['field_type']].format(eval('self.' + k)) for k in self.fields.keys()])

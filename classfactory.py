@@ -17,10 +17,10 @@ class ClassFactory(AquaBase):
 		if classname is None or len(classname.strip()) == 0:
 			raise ArgumentError("classname", "can't be None or empty")
 		if spec is None or len(spec) == 0 or type(spec) is not list:
-			raise ArgumentError("__spec__", "can't be None or empty and must be a list object")
-		self.__spec__ = [classname] + spec
-		self.class_name = self.__spec__[0]
-		self.__fields__ = AquaBase(classname, spec).__create_fields_dict__()
+			raise ArgumentError("_spec", "can't be None or empty and must be a list object")
+		self._spec = [classname] + spec
+		self.class_name = self._spec[0]
+		self.fields = AquaBase(classname, spec).create_fields_dict()
 
 	@property
 	def class_definition(self):
@@ -33,44 +33,44 @@ class ClassFactory(AquaBase):
 		# <<< __init__ -----------------------------------------------------------------------------
 		c += ["	def __init__(self):"]
 
-		for key in self.__fields__.keys():
-			field = self.__fields__[key]
+		for key in self.fields.keys():
+			field = self.fields[key]
 			typ = field['field_type']
-			c += ["		self.__{0}__ = {1}".format(key, types[typ].format('0' * field['dec_len']))]
+			c += ["		self._{0} = {1}".format(key, types[typ].format('0' * field['dec_len']))]
 
-		c += ["		self.__fields__ = OrderedDict(["]
-		i, n = 0, len(self.__fields__)
-		for k in self.__fields__.keys():
+		c += ["		self.fields = OrderedDict(["]
+		i, n = 0, len(self.fields)
+		for k in self.fields.keys():
 			i += 1
-			c += ["			('{0}', {1}){2}".format(k, str(self.__fields__[k]), "," if i < n else "")]
+			c += ["			('{0}', {1}){2}".format(k, str(self.fields[k]), "," if i < n else "")]
 		c += ["		])", ""]
 
 		# >>> __init__ -----------------------------------------------------------------------------
 
 		# _get_XXX, set_XXX, xxx = property(...)
-		for key in self.__fields__.keys():
+		for key in self.fields.keys():
 			c += [
-				"	def __get_{0}__(self):".format(key),
-				"		return self.__{0}__".format(key),
+				"	def _get_{0}(self):".format(key),
+				"		return self._{0}".format(key),
 				"",
-				"	def __set_{0}__(self, value):".format(key),
-				"		self.{0}('{1}', value)".format(self.__fields__[key]['set'], key),
+				"	def _set_{0}(self, value):".format(key),
+				"		self.{0}('{1}', value)".format(self.fields[key]['set'], key),
 				"",
-				"	{0} = property(__get_{0}__, __set_{0}__)".format(key),
+				"	{0} = property(_get_{0}, _set_{0})".format(key),
 				""
 			]
 
 		# __str__()
 		c += [
 			"	def __str__(self):",
-			"		return	" + ' + \\\n\t\t\t\t'.join(["self.{0}('{1}')".format(self.__fields__[k]['get'], k) for k in self.__fields__.keys()]),
+			"		return	" + ' + \\\n\t\t\t\t'.join(["self.{0}('{1}')".format(self.fields[k]['get'], k) for k in self.fields.keys()]),
 			""
 		]
 
 		# __repr__()
 		c += [
 			"	def __repr__(self):",
-			"		s = ['\t{0}:\t<{1}>\\n'.format(x, getattr(self, x)) for x in self.__fields__.keys()]",
+			"		s = ['\t{0}:\t<{1}>\\n'.format(x, getattr(self, x)) for x in self.fields.keys()]",
 			"		return '<class: {0}>\\n'.format(self.__class__.__name__) + ''.join(s)"
 		]
 

@@ -51,8 +51,8 @@ class InputReader():
 			values = line[1:]
 
 			c = self._aqua_classes[key]()
-			for fld, val in zip(c.__fields__.keys(), values):
-				setattr(c, fld, self._convert(c.__fields__[fld]['field_type'], val))
+			for fld, val in zip(c.fields.keys(), values):
+				setattr(c, fld, self._convert(c.fields[fld]['field_type'], val))
 
 			if key not in data:
 				data[key] = []

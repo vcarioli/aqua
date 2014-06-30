@@ -4,8 +4,6 @@
 # Name:		sample_data
 #-------------------------------------------------------------------------------
 
-__author__ = 'valerio'
-
 #=##############################################################################
 from aquaclasses import *
 from inputreader import InputReader
