@@ -133,9 +133,9 @@ def costo_acqua_calda(qta, numfat):
 	#
 	# todo:	Verificare che il comportamento sia corretto in caso di mancanza degli indici
 	#
-	#	if iac is None or IACS is none:
+	#	if iac is None or iacs is none:
 	#		# E' un errore?
-	#		# Cosa fare? (Nulla ?)
+	#		# Cosa fare? (Nulla?)
 	#
 
 	o = Output()
@@ -288,21 +288,21 @@ def main():
 		results.append(costo(fprot[ix_fogna], numfat, mc_consumo_totale))
 		numfat += 1
 	else:
-		logger.info_with_prefix("Non sono presenti costi fogna [FOGNA]")
+		logger.prefix_warn("Non sono presenti costi fogna [FOGNA]")
 
 	# Depurazione
 	if ix_depur:
 		results.append(costo(fprot[ix_depur], numfat, mc_consumo_totale))
 		numfat += 1
 	else:
-		logger.info_with_prefix("Non sono presenti costi depuratore [DEPUR]")
+		logger.prefix_warn("Non sono presenti costi depuratore [DEPUR]")
 
 	# Quota fissa (non e' differenziata per lettura s/r)
 	if ix_qfissa:
 		results.append(costo(fprot[ix_qfissa], numfat, fpro.fp_periodo))
 		numfat += 1
 	else:
-		logger.info_with_prefix("Non sono presenti costi quota fissa [Qxxx]")
+		logger.prefix_warn("Non sono presenti costi quota fissa [Qxxx]")
 
 	# todo:	Verificare il comportamento in caso di mancanza del costo dell'acqua calda
 
@@ -365,12 +365,12 @@ def initialize():
 		fproc = aqua_data['Fatproc'] if 'Fatproc' in aqua_data else None
 		fpros = aqua_data['Fatpros'] if 'Fatpros' in aqua_data else None
 
-		logger.info_with_prefix("Utente:\t[%d/%s]", fpro.fp_aconto, fpro.fp_azienda)
-		logger.info_with_prefix("Lettura:\t[%s/%d/%d]", tipo_lettura, fpro.fp_numlet_pr, fpro.fp_numlet_aa)
+		logger.prefix_info("Utente:\t[%d/%s]", fpro.fp_aconto, fpro.fp_azienda)
+		logger.prefix_info("Lettura:\t[%s/%d/%d %s]", tipo_lettura, fpro.fp_numlet_pr, fpro.fp_numlet_aa, fpro.fp_data_let)
 		if not 'Fatproc' in aqua_data:
-			logger.info_with_prefix("Non ci sono Costi [Fatproc]")
+			logger.prefix_warn("Non ci sono Costi [Fatproc]")
 		if not 'Fatpros' in aqua_data:
-			logger.info_with_prefix("Non ci sono Storni [Fatpros]")
+			logger.prefix_warn("Non ci sono Storni [Fatpros]")
 
 	except:
 		logger.error("%s: Errore durante l'inizializzazione.", basename(__file__))

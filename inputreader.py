@@ -43,7 +43,7 @@ class InputReader():
 
 		data = {}
 		for line in lineslist:
-			logger.info_with_prefix(str(line))
+			logger.prefix_info(str(line))
 
 			if line == [''] or line[0].startswith('#'):
 				continue
