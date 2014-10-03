@@ -72,12 +72,12 @@ logger.config()
 
 #=##############################################################################
 def start_logging():
-	logger.info_centered('Begin Session [Python v{v0}.{v1}.{v2}]'.format(v0=pyver[0], v1=pyver[1], v2=pyver[2]))
+	logger.center_info('Begin Session [Python v{v0}.{v1}.{v2}]'.format(v0=pyver[0], v1=pyver[1], v2=pyver[2]))
 
 
 #=##############################################################################
 def stop_logging(ret_code):
-	logger.info_centered('End Session (Exit Code: %d)' % ret_code)
+	logger.center_info('End Session (Exit Code: %d)' % ret_code)
 
 
 #=##############################################################################
@@ -113,10 +113,10 @@ def main():
 	aquaclasses_py = join(base_path, AQUA_CLASSES)
 	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(classdefs_filename):
 		from classmoduleupdater import ClassModuleUpdater
-		ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()
+		ClassModuleUpdater(classdefs_filename, input_filename, output_filename, log_filename).update()
 		logger.info('Recreated class file:   [%s]', AQUA_CLASSES)
 
-	logger.info_centered()
+	logger.center_info()
 
 	logger.debug('%s: Starting', basename(main_program_filename))
 	run_path(main_program_filename, run_name='__main__')
