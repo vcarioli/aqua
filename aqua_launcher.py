@@ -41,6 +41,7 @@ AQUA_CLASSES = "aquaclasses.py"
 from sys import exit, version_info as pyver
 from runpy import run_path
 from os.path import abspath, dirname, exists, getmtime, basename, join
+
 from aquaerrors import NoFileError
 from logger import Logger
 
@@ -62,9 +63,9 @@ def get_command_line_options():
 #=##############################################################################
 
 
-base_path = dirname(__file__)
+base_path = dirname(__file__).replace("\\", "/")
 (options, args) = get_command_line_options()
-log_filename = abspath(join(base_path, 'aqua.log') if options.log_filename is None else options.log_filename)
+log_filename = abspath(join(base_path, 'aqua.log') if options.log_filename is None else options.log_filename).replace("\\", "/")
 
 logger = Logger(log_filename=log_filename, filename=__file__, prefix='---  ', debug_mode=False)
 logger.config()
@@ -99,10 +100,10 @@ def check_command_line_options(opts):
 
 #=##############################################################################
 def main():
-	main_program_filename	= abspath(options.main_program_filename)
-	classdefs_filename		= abspath(options.classdefs_filename)
-	input_filename			= abspath(options.input_filename)
-	output_filename			= abspath(options.output_filename)
+	main_program_filename = abspath(options.main_program_filename).replace("\\", "/")
+	classdefs_filename = abspath(options.classdefs_filename).replace("\\", "/")
+	input_filename = abspath(options.input_filename).replace("\\", "/")
+	output_filename = abspath(options.output_filename).replace("\\", "/")
 
 	logger.info('Working directory:      [%s]' % base_path)
 	logger.info('Log file name:          [%s]', basename(log_filename))
@@ -113,7 +114,8 @@ def main():
 	aquaclasses_py = join(base_path, AQUA_CLASSES)
 	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(classdefs_filename):
 		from classmoduleupdater import ClassModuleUpdater
-		ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()
+
+		ClassModuleUpdater(classdefs_filename, input_filename, output_filename, log_filename).update()
 		logger.info('Recreated class file:   [%s]', AQUA_CLASSES)
 
 	logger.center_info()
@@ -133,7 +135,7 @@ if __name__ == '__main__':
 		main()
 	except Exception as ex:
 		logger.exception(ex)
-		exit_code = 1
+		exit_code = ex.exit_code
 
 	stop_logging(exit_code)
 	exit(exit_code)

@@ -9,9 +9,11 @@ __all__ = ["InputReader"]
 from os.path import dirname, join
 from datetime import datetime
 from decimal import Decimal
+
 from logger import Logger
 
-logger = Logger(filename=__file__, prefix='---  ', info_level=0)
+
+logger = Logger(filename=__file__, prefix='---  ', debug_mode=False,  info_level=0)
 
 
 #=##############################################################################

@@ -4,21 +4,25 @@
 # Name:		generico
 # -------------------------------------------------------------------------------
 # Da fare:
-#   Logging errori più intelleggibile
+#	Logging errori più intelleggibile
 #	Cambio tariffa (in sospeso)
 #	Gestione del garage
 #-------------------------------------------------------------------------------
-
-from decimal import Decimal
+from collections import OrderedDict
 from os.path import basename
+from decimal import Decimal
+from datetime import *
+from math import ceil
+
 from aquaerrors import DataMissingError
 from inputreader import InputReader
 from logger import Logger
-from aquaclasses import *
+from aquaclasses import Fatprot, input_filename, output_filename, log_filename, Fatprol, Output, Fatpros, aqua_classes
 
 #=##############################################################################
 
-logger = Logger(filename=__file__, prefix='---  ', debug_mode=False)
+logger = Logger(filename=__file__, log_filename=log_filename, prefix='---  ', debug_mode=False)
+logger.config()
 
 fpro = None		# Dati di fatturazione dell'azienda
 fprol = []		# letture
@@ -41,7 +45,6 @@ def write_output(res):
 		fout.writelines([str(o) + '\n' for o in res])
 
 
-#=##############################################################################
 def ricerca_indici():
 	"""
 	Ricerca indici valori per Quota fissa, Fogna e Depurazione
@@ -58,14 +61,17 @@ def ricerca_indici():
 	return ix_quota_fissa, ix_fogna, ix_depuratore
 
 
-def tariffe_scaglioni_acqua():
+def scaglione(tar, mc):
 	"""
-	Tariffe e scaglioni Acqua
-	:return: <[(Fatprot(), Dec(5.2))]> - Lista di coppie Fatprot(), costo_scaglione
+	Scaglione Acqua
+	:param tar: Fatprot() - Tariffa
+	:param mc: int - metri cubi
+	:return: Decimal()
 	"""
-	ta = [x for x in fprot if x.fpt_codtar[0] == 'A']
-	sa = [Decimal(round(x.fpt_quota * fpro.fp_periodo / 1000)) if x.fpt_quota < 99999 else 99999 for x in ta]
-	return zip(ta, sa)
+	assert isinstance(tar, Fatprot)
+	assert isinstance(mc, (int, Decimal))
+
+	return Decimal(ceil(tar.fpt_quota * mc / 1000)) if tar.fpt_quota < 99999 else 99999
 
 
 def costo(tariffa, numfat, qta):
@@ -89,26 +95,26 @@ def costo(tariffa, numfat, qta):
 	return o
 
 
-def addebito_acqua(tariffa, scaglione, mc_totali, numfat):
+def addebito_acqua(tar, mc, sc, numfat):
 	"""
 	Prepara un record di Output() di addebiti
-	:param tariffa : <Fatprot()> - Tariffa
-	:param scaglione : <Dec(5.2)> - Scaglione
-	:param mc_totali : <int> - Metri cubi totali
+	:param tar : <Fatprot()> - Tariffa
+	:param mc : <int> - Metri cubi totali
+	:param sc : <int> - Scaglione
 	:param numfat : <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:return : <Output()>
 	"""
-	assert isinstance(tariffa, Fatprot)
-	assert isinstance(scaglione, (int, Decimal))
-	assert isinstance(mc_totali, (int, Decimal))
+	assert isinstance(tar, Fatprot)
+	assert isinstance(mc, (Decimal, int))
+	assert isinstance(sc, (Decimal, int))
 	assert isinstance(numfat, int)
 
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'C'
-	o.fpo_bcodart = tariffa.fpt_bcodart_s if tipo_lettura == 'S' else tariffa.fpt_bcodart_r
-	o.fpo_costo = tariffa.fpt_costo_tot
-	o.fpo_qta = scaglione if mc_totali > scaglione else mc_totali
+	o.fpo_bcodart = tar.fpt_bcodart_s if tipo_lettura == 'S' else tar.fpt_bcodart_r
+	o.fpo_costo = tar.fpt_costo_tot
+	o.fpo_qta = sc if mc > sc else mc
 	return o
 
 
@@ -171,23 +177,28 @@ def altri_costi():
 
 	:return: <[Output()]>
 	"""
-	costi = [
-		# 'BA',		# Bocche Antincendio
-		# 'SDB',	# Spese domiciliazione bolletta
-		'CS',		# Competenze servizio
-		'MC',		# Manutenzione contatori
-		'QAC',		# Quota Fissa acqua calda
-	]
+
 	res = []
-	for c in fproc:
-		if c.fpc_bcodart in costi:
-			o = Output()
-			o.fpo_numfat = get_numfat(c.fpc_bcodart)
-			o.fpo_cs = 'C'
-			o.fpo_bcodart = c.fpc_bcodart
-			o.fpo_costo = c.fpc_costo
-			o.fpo_qta = 1
-			res.append(o)
+	if fproc is not None:
+		costi = [
+			# 'BA',		# Bocche Antincendio
+			# 'SDB',	# Spese domiciliazione bolletta
+			'CS',		# Competenze servizio
+			'MC',		# Manutenzione contatori
+			'QAC',		# Quota Fissa acqua calda
+		]
+		for c in fproc:
+			if c.fpc_bcodart in costi:
+				o = Output()
+				o.fpo_numfat = get_numfat(c.fpc_bcodart)
+				o.fpo_cs = 'C'
+				o.fpo_bcodart = c.fpc_bcodart
+				o.fpo_costo = c.fpc_costo
+				o.fpo_qta = 1
+				res.append(o)
+
+	if len(res) == 0:
+		logger.prefix_warn("Non ci sono costi da fatturare")
 
 	return res
 
@@ -217,7 +228,7 @@ def calcolo_storno(storno, numfat):
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = 'S'
-	o.fpo_qta = -1 * storno.fps_qta
+	o.fpo_qta = -storno.fps_qta
 	o.fpo_costo = storno.fps_costo
 	o.fpo_bcodart = 'S' + storno.fps_bcodart[0:len(storno.fps_bcodart) - 1]
 	return o
@@ -249,8 +260,27 @@ def compatta_storni(storni):
 	return sorted(storni, key=lambda x: x.fps_bgiorni)
 
 
-#=##############################################################################
+def giorni_tariffe_acqua():
+	end_date = fpro.fp_data_let
+	start_date = end_date - timedelta(days=fpro.fp_periodo)
+	tar_acqua = [x for x in fprot if x.fpt_codtar[0] == 'A']
 
+	x = list()
+	for t in tar_acqua:
+		if t.fpt_vigore <= end_date:
+			k = ((t.fpt_vigore, t.fpt_codtar), max(t.fpt_vigore, start_date))
+			if k not in x:
+				x.append(k)
+	x.sort()
+	cons = OrderedDict()
+	lx = len(x) - 1
+	for i in range(lx):
+		cons[x[i][0]] = (x[i + 1][1] - x[i][1]).days
+	cons[x[lx][0]] = (end_date - x[lx][1]).days
+	return cons
+
+
+#=##############################################################################
 def main():
 	global results
 
@@ -270,16 +300,22 @@ def main():
 
 	mc_consumo_totale = mc_consumo_totale_casa + mc_consumo_totale_garage
 
+	# Calcolo righe addebito acqua totale consumata
 	numfat = 0
 
-	# Calcolo righe addebito acqua totale consumata
-	consumo = mc_consumo_totale
-	for (tariffa, scaglione) in tariffe_scaglioni_acqua():
-		if consumo > 0:
-			o = addebito_acqua(tariffa, scaglione, consumo, numfat)
-			results.append(o)
-			consumo -= scaglione if consumo > scaglione else consumo
-			numfat += 1
+	gt = giorni_tariffe_acqua()
+	for k in gt.keys():
+		# ts = tariffe_scaglioni_acqua(gt, k)
+		ts = [x for x in fprot if x.fpt_vigore == k[0] and x.fpt_codtar == k[1]]
+		consumo = Decimal(ceil(Decimal(mc_consumo_totale) / fpro.fp_periodo * gt[k]))
+
+		for tar in ts:
+			if consumo > 0:
+				sc = scaglione(tar, gt[k])
+				o = addebito_acqua(tar, consumo, sc, numfat)
+				results.append(o)
+				consumo -= sc if consumo > sc else consumo
+				numfat += 1
 
 	ix_qfissa, ix_fogna, ix_depur = ricerca_indici()
 
@@ -314,7 +350,6 @@ def main():
 				"Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_calda_casa
 			)
 		results.append(costo_acqua_calda(mc_consumo_calda_casa, numfat))
-		numfat += 1
 
 	results += altri_costi()
 
@@ -345,10 +380,8 @@ def initialize():
 
 	try:
 		logger.debug('InputReader().read(): Starting')
-		aqua_data = InputReader(aqua_classes, input_filename).read()
+		aqua_data = InputReader(aqua_classes, input_filename.replace('\\', '/')).read()
 		logger.debug('InputReader().read(): Done')
-
-		# todo: Verificare con Andrea la congruità dei dati
 
 		if not 'Fatpro' in aqua_data:
 			raise DataMissingError('Fatpro', "Mancano i dati dell'azienda")
@@ -360,8 +393,9 @@ def initialize():
 		fpro = aqua_data['Fatpro'][0]
 		tipo_lettura = fpro.fp_tipo_let
 
-		fprol = aqua_data['Fatprol']  # if 'Fatprol' in aqua_data else None
-		fprot = aqua_data['Fatprot']  # if 'Fatprot' in aqua_data else None
+		fprol = aqua_data['Fatprol'] if 'Fatprol' in aqua_data else None
+		if 'Fatprot' in aqua_data:
+			fprot = sorted(aqua_data['Fatprot'], key=lambda t: (t.fpt_vigore, t.fpt_codtar, t.fpt_colonna))
 		fproc = aqua_data['Fatproc'] if 'Fatproc' in aqua_data else None
 		fpros = aqua_data['Fatpros'] if 'Fatpros' in aqua_data else None
 
@@ -378,6 +412,25 @@ def initialize():
 
 
 #=##############################################################################
+def csv_print():
+	for k in aqua_data.keys():
+		print()
+		print(aqua_data[k][0].get_csv_hdr())
+		print('\n'.join([i.get_csv_row() for i in aqua_data[k]]))
+	print()
+	print(results[0].get_csv_hdr())
+	print('\n'.join([i.get_csv_row() for i in results]))
+
+
+#=##############################################################################
+def pretty_print():
+	print()
+	for k in aqua_data.keys():
+		print('\n\n'.join([i.pretty_print() for i in aqua_data[k]]))
+	print('\n\n'.join([i.pretty_print() for i in results]))
+
+
+#=##############################################################################
 if __name__ == '__main__':
 	logger.debug('initialize(): Starting ')
 	initialize()
@@ -387,9 +440,11 @@ if __name__ == '__main__':
 		logger.debug('main(): Starting')
 		main()
 
+		## Stampe di debug
+		csv_print()
 		# print('\n\n'.join([i.pretty_print() for i in results]))
-		print(results[0].get_csv_hdr())
-		print('\n'.join([i.get_csv_row() for i in results]))
+		# print(results[0].get_csv_hdr())
+		# print('\n'.join([i.get_csv_row() for i in results]))
 
 		logger.debug('main(): Done')
 	except:
