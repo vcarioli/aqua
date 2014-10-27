@@ -1,8 +1,8 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-# -------------------------------------------------------------------------------
-# Name:		aqua_launcher
-# -------------------------------------------------------------------------------
+##----------------------------------------------------------------------------------------------------------------------
+##	Name:		aqua_launcher
+##----------------------------------------------------------------------------------------------------------------------
 
 """uso:
 	python aqua_launcher.py -m main_program.py -i input.txt -o output.txt -c classdefs.txt -l aqualog.log
@@ -45,8 +45,8 @@ from os.path import abspath, dirname, exists, getmtime, basename, join
 from aquaerrors import NoFileError
 from logger import Logger
 
+##======================================================================================================================
 
-#=##############################################################################
 def get_command_line_options():
 	from optparse import OptionParser, make_option
 
@@ -60,8 +60,7 @@ def get_command_line_options():
 		]
 	).parse_args()
 
-#=##############################################################################
-
+##======================================================================================================================
 
 base_path = dirname(__file__).replace("\\", "/")
 (options, args) = get_command_line_options()
@@ -71,17 +70,14 @@ logger = Logger(log_filename=log_filename, filename=__file__, prefix='---  ', de
 logger.config()
 
 
-#=##############################################################################
 def start_logging():
 	logger.center_info('Begin Session [Python v{v0}.{v1}.{v2}]'.format(v0=pyver[0], v1=pyver[1], v2=pyver[2]))
 
 
-#=##############################################################################
 def stop_logging(ret_code):
 	logger.center_info('End Session (Exit Code: %d)' % ret_code)
 
 
-#=##############################################################################
 def check_command_line_options(opts):
 	if not exists(abspath(opts.main_program_filename)):
 		raise NoFileError(opts.main_program_filename)
@@ -98,7 +94,6 @@ def check_command_line_options(opts):
 		raise NoFileError(opts.output_filename, "can't open for output")
 
 
-#=##############################################################################
 def main():
 	main_program_filename = abspath(options.main_program_filename).replace("\\", "/")
 	classdefs_filename = abspath(options.classdefs_filename).replace("\\", "/")
@@ -124,8 +119,8 @@ def main():
 	run_path(main_program_filename, run_name='__main__')
 	logger.debug('%s: Done', basename(main_program_filename))
 
+##======================================================================================================================
 
-#=##############################################################################
 if __name__ == '__main__':
 	start_logging()
 

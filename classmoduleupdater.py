@@ -1,8 +1,8 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-#--------------------------------------------------------------------------------
-# Name:		classmoduleupdater
-#-------------------------------------------------------------------------------
+##----------------------------------------------------------------------------------------------------------------------
+##	Name:		classmoduleupdater
+##----------------------------------------------------------------------------------------------------------------------
 
 from os.path import join, dirname
 from classdefinitionreader import ClassDefinitionReader
@@ -11,7 +11,9 @@ from classfactory import ClassFactory
 __all__ = ["ClassModuleUpdater"]
 
 
-#=##############################################################################
+##======================================================================================================================
+
+
 class ClassModuleUpdater():
 	def __init__(self, classdefs_fn, input_fn, output_fn, log_fn):
 		self.__classdefs_file = join(dirname(argv[0]), 'classdefs.txt') if classdefs_fn is None else classdefs_fn
@@ -68,7 +70,8 @@ class ClassModuleUpdater():
 		self.__write_class_module()
 
 
-#=##############################################################################
+##======================================================================================================================
+
 
 from sys import argv
 from logger import Logger
