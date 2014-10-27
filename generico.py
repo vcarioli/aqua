@@ -371,7 +371,7 @@ def initialize():
 			fpros = aqua_data['Fatpros']
 
 	except:
-		logger.error("%s: Errore durante l'inizializzazione.", basename(__file__))
+		logger.error("Errore durante l'inizializzazione.")
 		raise
 
 

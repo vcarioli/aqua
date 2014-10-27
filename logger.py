@@ -116,6 +116,9 @@ class Logger():
 	def error(self, msg, *args, **kwargs):
 		error(basename(self.filename) + ': ' + msg, *args, **kwargs)
 
+	def usererror(self, msg, *args, **kwargs):
+		error(msg, *args, **kwargs)
+
 	@staticmethod
 	def exception(msg, *args, **kwargs):
 		exception(msg, *args, **kwargs)
