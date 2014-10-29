@@ -10,9 +10,7 @@ from classfactory import ClassFactory
 
 __all__ = ["ClassModuleUpdater"]
 
-
 ##======================================================================================================================
-
 
 class ClassModuleUpdater():
 	def __init__(self, classdefs_fn, input_fn, output_fn, log_fn):
@@ -69,9 +67,7 @@ class ClassModuleUpdater():
 			self.__get_classes()
 		self.__write_class_module()
 
-
 ##======================================================================================================================
-
 
 from sys import argv
 from logger import Logger

@@ -42,7 +42,7 @@ from sys import exit, version_info as pyver
 from runpy import run_path
 from os.path import abspath, dirname, exists, getmtime, basename, join
 
-from aquaerrors import NoFileError, USER_ERROR_BASE
+from aquaerrors import NoFileError, USER_ERROR_BASE, AquaException
 from logger import Logger
 
 ##======================================================================================================================
@@ -69,6 +69,11 @@ log_filename = abspath(join(base_path, 'aqua.log') if options.log_filename is No
 logger = Logger(log_filename=log_filename, filename=__file__, prefix='---  ', debug_mode=False)
 logger.config()
 
+main_program_filename = None
+classdefs_filename = None
+input_filename = None
+output_filename = None
+
 
 def start_logging():
 	logger.center_info('Begin Session [Python v{v0}.{v1}.{v2}]'.format(v0=pyver[0], v1=pyver[1], v2=pyver[2]))
@@ -76,6 +81,7 @@ def start_logging():
 
 def stop_logging(ret_code):
 	logger.center_info('End Session (Exit Code: %d)' % ret_code)
+	logger.writeln()
 
 
 def check_command_line_options(opts):
@@ -95,6 +101,8 @@ def check_command_line_options(opts):
 
 
 def main():
+	global main_program_filename, classdefs_filename, input_filename, output_filename
+
 	main_program_filename = abspath(options.main_program_filename).replace("\\", "/")
 	classdefs_filename = abspath(options.classdefs_filename).replace("\\", "/")
 	input_filename = abspath(options.input_filename).replace("\\", "/")
@@ -128,11 +136,13 @@ if __name__ == '__main__':
 	try:
 		check_command_line_options(options)
 		main()
-	except Exception as ex:
+	except AquaException as ex:
 		if ex.exit_code > USER_ERROR_BASE:
-			logger.usererror("%s: %s" % (ex.args[0], ex.args[1]))
+			logger.usererror("!!!!! %s" % ex)
 		else:
 			logger.exception(ex)
+
+		logger.info_logdata(input_filename)
 		exit_code = ex.exit_code
 
 	stop_logging(exit_code)

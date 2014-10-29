@@ -99,7 +99,7 @@ def costo_acqua_calda(qta, numfat):
 		else:
 			codart = ac.fpc_bcodart
 	except:		# fixme:	Verificare il comportamento in caso di mancanza dei valori per costo e codart
-		raise DataMissingError('Fatproc', "Nei costi manca il codice 'AC' e/o 'ACS'")
+		raise DataMissingError('', "Nei costi mancano i codici 'AC' e/o 'ACS'")
 
 	return output_line(numfat, 'C', codart, qta, costo)
 
@@ -237,9 +237,7 @@ def giorni_tariffe():
 
 	return OrderedDict(sorted(cons.items(), key=lambda i: (i[0][0], i[0][1])))
 
-
 ##======================================================================================================================
-
 
 def main():
 	global results
@@ -262,8 +260,7 @@ def main():
 	mc_consumo_totale_garage	= mc_consumo_fredda_garage + mc_consumo_calda_garage
 	mc_consumo_totale_casa		= mc_consumo_fredda_casa + mc_consumo_calda_casa
 
-	##	NB: Nel totale acqua calda vanno considerati solo i consumi relativi alla casa!
-	mc_consumo_totale_calda		= mc_consumo_calda_casa		#+ mc_consumo_calda_garage
+	mc_consumo_totale_calda		= mc_consumo_calda_casa	+ mc_consumo_calda_garage
 	mc_consumo_totale_fredda	= mc_consumo_fredda_casa + mc_consumo_fredda_garage
 
 	mc_consumo_totale			= mc_consumo_totale_casa + mc_consumo_totale_garage
@@ -314,11 +311,9 @@ def main():
 
 	logger.debug('main(): Results written to %s', basename(output_filename))
 
-
 ##======================================================================================================================
 ##	Inizializzazione e verifica della presenza e congruità dei dati
 ##======================================================================================================================
-
 
 def initialize():
 	"""
@@ -335,7 +330,7 @@ def initialize():
 
 		# Controllo presenza dei dati dell'azienda
 		if not 'Fatpro' in aqua_data:
-			raise DataMissingError('Fatpro', "Non sono stati specificati i dati dell'azienda")
+			raise DataMissingError('', "Mancano i dati dell'azienda.")
 
 		fpro = aqua_data['Fatpro'][0]
 		tipo_lettura = fpro.fp_tipo_let
@@ -345,40 +340,38 @@ def initialize():
 
 		# Controllo della presenza delle letture
 		if not 'Fatprol' in aqua_data:
-			raise DataMissingError('Fatprol', "Non sono state specificate le letture")
+			raise DataMissingError('', "Mancano le letture.")
 
 		fprol = aqua_data['Fatprol'] if 'Fatprol' in aqua_data else None
 
 		# Controllo della presenza delle tariffe
 		if not 'Fatprot' in aqua_data:
-			raise DataMissingError('Fatprot', "Non sono state specificate le tariffe")
+			raise DataMissingError('', "Mancano le tariffe.")
 
 		fprot = sorted(aqua_data['Fatprot'], key=lambda t: (t.fpt_vigore, t.fpt_codtar, t.fpt_colonna))
 
 		# Controllo della presenza dei costi
 		if not 'Fatproc' in aqua_data:
-			raise DataMissingError("Fatproc", "Non sono stati specificati i costi")
+			raise DataMissingError("", "Mancano i costi.")
 
 		fproc = aqua_data['Fatproc']
 		# Il codice 'CS' deve essere presente
 		if len([c for c in fproc if c.fpc_bcodart == 'CS']) == 0:
-			raise CostCodeMissingError("Fatproc", "Nei costi non è stato specificato il codice 'CS'")
+			raise CostCodeMissingError("", "Mancano le Competenze di Servizio (cod. CS).")
 
 		# Controllo della presenza degli storni
 		if not 'Fatpros' in aqua_data:
-			logger.prefix_warn("Non sono stati specificati gli storni")
+			logger.prefix_warn("Non sono stati specificati storni.")
 		else:
 			fpros = aqua_data['Fatpros']
 
 	except:
-		logger.error("Errore durante l'inizializzazione.")
+		logger.error("Errore durante l'inizializzazione!")
 		raise
-
 
 ##======================================================================================================================
 ##	Stampe di debug
 ##======================================================================================================================
-
 
 def csv_print_results():
 	print(results[0].get_csv_hdr())
@@ -398,16 +391,14 @@ def pretty_print_data():
 def pretty_print_results():
 	print('\n\n'.join([i.pretty_print() for i in results]))
 
-
 ##======================================================================================================================
 
-
 if __name__ == '__main__':
-	logger.debug('initialize(): Starting ')
-	initialize()
-	logger.debug('initialize(): Done')
-
 	try:
+		logger.debug('initialize(): Starting ')
+		initialize()
+		logger.debug('initialize(): Done')
+
 		logger.debug('main(): Starting')
 		main()
 
@@ -419,7 +410,6 @@ if __name__ == '__main__':
 
 		logger.debug('main(): Done')
 	except:
-		logger.error("Utente: %d/%s, lettura: %d/%d", fpro.fp_aconto, fpro.fp_azienda, fpro.fp_numlet_pr, fpro.fp_numlet_aa)
 		raise
 
 ##======================================================================================================================

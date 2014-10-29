@@ -9,9 +9,7 @@ from aquaerrors import ArgumentError
 
 __all__ = ["ClassFactory"]
 
-
 ##======================================================================================================================
-
 
 class ClassFactory(AquaBase):
 	def __init__(self, classname, spec):

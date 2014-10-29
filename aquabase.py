@@ -14,9 +14,7 @@ from logger import Logger
 
 logger = Logger(filename=__file__)
 
-
 ##======================================================================================================================
-
 
 class AquaBase():
 	def __init__(self, classname, spec):

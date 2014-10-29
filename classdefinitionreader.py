@@ -6,9 +6,7 @@
 
 __all__ = ["ClassDefinitionReader"]
 
-
 ##======================================================================================================================
-
 
 class ClassDefinitionReader():
 	def __init__(self, file_name):
@@ -29,5 +27,3 @@ class ClassDefinitionReader():
 				classdefs[line[0]] = []
 			classdefs[line[0]] += [line[1]]
 		return classdefs
-
-
