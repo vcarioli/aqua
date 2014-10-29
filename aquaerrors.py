@@ -32,6 +32,7 @@ __all__ = [
 ]
 
 ##======================================================================================================================
+
 class AquaException(Exception):
 	def __init__(self):
 		self.exit_code = 0
@@ -39,6 +40,7 @@ class AquaException(Exception):
 	def __str__(self):
 		pass
 
+##======================================================================================================================
 
 class UnknownFieldTypeError(AquaException):
 	"""An error from creating or using an argument (optional or positional)."""
