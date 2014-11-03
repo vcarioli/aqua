@@ -118,13 +118,14 @@ def main():
 	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(classdefs_filename):
 		from classmoduleupdater import ClassModuleUpdater
 
-		ClassModuleUpdater(classdefs_filename, input_filename, output_filename, log_filename).update()
+		ClassModuleUpdater(classdefs_filename).update()
 		logger.info('Recreated class file:   [%s]', AQUA_CLASSES)
 
 	logger.center_info()
 
 	logger.debug('%s: Starting', basename(main_program_filename))
-	run_path(main_program_filename, run_name='__main__')
+	g = {'input_filename': input_filename, 'output_filename': output_filename, 'log_filename': log_filename}
+	run_path(main_program_filename, run_name='__main__', init_globals=g)
 	logger.debug('%s: Done', basename(main_program_filename))
 
 ##======================================================================================================================
