@@ -7,6 +7,7 @@
     <list default="true" id="e805f4d5-8394-4c99-bd77-2d1f47eb4d9c" name="Default" comment="" />
     <ignored path="aqua.iws" />
     <ignored path=".idea/workspace.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,15 +30,78 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="generico.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="generico.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/generico.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.582846" vertical-offset="3589" max-vertical-offset="4896">
-              <caret line="359" column="0" selection-start-line="359" selection-start-column="0" selection-end-line="359" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.847561" vertical-offset="3453" max-vertical-offset="4710">
+              <caret line="358" column="0" selection-start-line="358" selection-start-column="0" selection-end-line="358" selection-end-column="0" />
               <folding>
-                <element signature="e#5315#5647#0" expanded="true" />
-                <element signature="e#5673#6438#0" expanded="true" />
-                <element signature="e#6575#8997#0" expanded="true" />
+                <element signature="e#323#351#0" expanded="true" />
+                <element signature="e#4273#4635#0" expanded="true" />
+                <element signature="e#4668#5281#0" expanded="true" />
+                <element signature="e#5333#5665#0" expanded="true" />
+                <element signature="e#5691#6397#0" expanded="true" />
+                <element signature="e#6534#8956#0" expanded="true" />
+                <marker date="1422443451980" expanded="true" signature="10110:10181" placeholder="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aqua.log" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/aqua.log">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="735">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aqua_launcher.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1545">
+              <caret line="142" column="13" selection-start-line="142" selection-start-column="13" selection-end-line="142" selection-end-column="13" />
+              <folding>
+                <element signature="e#2052#2095#0" expanded="true" />
+                <element signature="e#4395#5747#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="input.txt" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/input.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="45" max-vertical-offset="255">
+              <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aquaerrors.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/aquaerrors.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1155">
+              <caret line="140" column="0" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
+              <folding>
+                <element signature="e#1123#1193#0" expanded="false" />
+                <element signature="e#1484#1583#0" expanded="true" />
+                <element signature="e#1607#1690#0" expanded="true" />
+                <element signature="e#1730#2028#0" expanded="false" />
+                <element signature="e#2070#2337#0" expanded="false" />
+                <element signature="e#2375#2672#0" expanded="false" />
+                <element signature="e#2718#2992#0" expanded="false" />
+                <element signature="e#3039#3249#0" expanded="false" />
+                <element signature="e#3292#3497#0" expanded="false" />
+                <element signature="e#3377#3458#0" expanded="true" />
+                <element signature="e#3482#3497#0" expanded="true" />
+                <element signature="e#3540#3750#0" expanded="false" />
+                <element signature="e#3540#3586#1" expanded="true" />
+                <element signature="e#3630#3711#0" expanded="true" />
+                <element signature="e#3735#3750#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -54,28 +118,10 @@
     <setting file="file://$PROJECT_DIR$/generico.py" root0="SKIP_INSPECTION" />
   </component>
   <component name="IdeDocumentHistory">
-    <option name="changedFiles">
+    <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/aqua_2.log" />
-        <option value="$PROJECT_DIR$/gen_test_output.py" />
-        <option value="$PROJECT_DIR$/gen_test_data.py" />
-        <option value="$PROJECT_DIR$/run.sh" />
-        <option value="$PROJECT_DIR$/classdefs.txt" />
-        <option value="$PROJECT_DIR$/logfunctions.py" />
-        <option value="$PROJECT_DIR$/out.txt" />
-        <option value="$PROJECT_DIR$/aquabase.py" />
-        <option value="$PROJECT_DIR$/classfactory.py" />
-        <option value="$PROJECT_DIR$/classdefinitionreader.py" />
-        <option value="$PROJECT_DIR$/testdata.py" />
-        <option value="$PROJECT_DIR$/sample_data.py" />
-        <option value="$PROJECT_DIR$/aqua.log" />
-        <option value="$PROJECT_DIR$/inputreader.py" />
-        <option value="$PROJECT_DIR$/logger.py" />
-        <option value="$PROJECT_DIR$/aquaerrors.py" />
-        <option value="$PROJECT_DIR$/aquaclasses.py" />
-        <option value="$PROJECT_DIR$/input.txt" />
         <option value="$PROJECT_DIR$/aqua_launcher.py" />
-        <option value="$PROJECT_DIR$/classmoduleupdater.py" />
+        <option value="$PROJECT_DIR$/aquaerrors.py" />
         <option value="$PROJECT_DIR$/generico.py" />
       </list>
     </option>
@@ -139,16 +185,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aqua" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="aqua" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope">
@@ -156,6 +192,10 @@
         <subPane subId="Project Files">
           <PATH>
             <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="aqua">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -202,6 +242,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testdata.py" />
       <option name="PARAMETERS" value="-m generico.py -i input.txt -o out_2.txt -c classdefs.txt -l aqua_2.log" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -213,10 +254,10 @@
       <option name="INTERPRETER_PATH" value="/bin/bash" />
       <option name="WORKING_DIRECTORY" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <module name="" />
       <option name="SCRIPT_NAME" value="" />
       <option name="PARAMETERS" value="" />
+      <module name="" />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -233,6 +274,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="aqua_launcher.py" />
       <option name="PARAMETERS" value="-m generico.py -i input.txt -o out_2.txt -c classdefs.txt -l aqua_2.log" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -379,10 +421,10 @@
       <option name="INTERPRETER_PATH" value="/bin/bash" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <module name="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cleanup.sh" />
       <option name="PARAMETERS" value="" />
+      <module name="" />
+      <envs />
       <RunnerSettings RunnerId="BashRunner" />
       <ConfigurationWrapper RunnerId="BashRunner" />
       <method />
@@ -401,6 +443,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/aqua_launcher.py" />
       <option name="PARAMETERS" value="-m generico.py -i input.txt -o out.txt -c classdefs.txt -l aqua.log" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -423,6 +466,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classmoduleupdater.py" />
       <option name="PARAMETERS" value="classdefs.txt aqua.log" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -445,6 +489,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/generico.py" />
       <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -465,6 +510,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="sample_data.py" />
       <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -485,6 +531,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="aqua_launcher.py" />
       <option name="PARAMETERS" value="-m generico.py -i input.txt -o out.txt -c classdefs.txt -l aqua.log" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -507,6 +554,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/classmoduleupdater.py" />
       <option name="PARAMETERS" value="classdefs.txt aqua.log" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
@@ -529,6 +577,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="generico.py" />
       <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
@@ -547,6 +596,7 @@
       <module name="aqua" />
       <option name="SCRIPT_NAME" value="sample_data.py" />
       <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
     <list size="10">
@@ -615,15 +665,17 @@
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18201755" sideWeight="0.4925" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18201755" sideWeight="0.49136788" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32536522" sideWeight="0.49964765" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25886992" sideWeight="0.50069445" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2616202" sideWeight="0.49930555" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30677292" sideWeight="0.47002923" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32934928" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2616202" sideWeight="0.499269" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21491228" sideWeight="0.49643368" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38379815" sideWeight="0.49964765" order="8" side_tool="false" content_ui="tabs" x="200" y="207" width="1107" height="588" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30677292" sideWeight="0.8245243" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16938342" sideWeight="0.5075" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18201755" sideWeight="0.5086321" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30677292" sideWeight="0.52997077" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32904148" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32904148" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -679,18 +731,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/aqua_launcher.py</url>
-          <line>141</line>
-          <option name="timeStamp" value="184" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/generico.py</url>
-          <line>208</line>
-          <option name="timeStamp" value="187" />
-        </line-breakpoint>
-      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -699,15 +739,39 @@
           <properties exception="BaseException" />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="188" />
+      <option name="time" value="191" />
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="gt[k]" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/generico.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1635">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#323#351#0" expanded="true" />
+            <element signature="e#4273#4635#0" expanded="true" />
+            <element signature="e#4668#5281#0" expanded="true" />
+            <element signature="e#5333#5665#0" expanded="true" />
+            <element signature="e#5691#6397#0" expanded="true" />
+            <element signature="e#6534#8956#0" expanded="true" />
+            <marker date="1422443451980" expanded="true" signature="10110:10181" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1800" max-vertical-offset="2340">
           <caret line="120" column="20" selection-start-line="120" selection-start-column="20" selection-end-line="120" selection-end-column="20" />
-          <folding />
+          <folding>
+            <element signature="e#2052#2095#0" expanded="true" />
+            <element signature="e#4395#5747#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -977,31 +1041,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="645">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/logger.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="634" max-vertical-offset="1380">
-          <caret line="139" column="117" selection-start-line="139" selection-start-column="117" selection-end-line="139" selection-end-column="117" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/aquabase.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="1485">
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-1247971765/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59417474" vertical-offset="3084" max-vertical-offset="37770">
-          <caret line="803" column="8" selection-start-line="803" selection-start-column="8" selection-end-line="803" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -1012,33 +1055,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/aquaerrors.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40494296" vertical-offset="72" max-vertical-offset="1560">
-          <caret line="19" column="49" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="495">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classmoduleupdater.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1155" max-vertical-offset="1260">
           <caret line="77" column="14" selection-start-line="77" selection-start-column="4" selection-end-line="77" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="601" max-vertical-offset="1410">
-          <caret line="120" column="20" selection-start-line="120" selection-start-column="20" selection-end-line="120" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1046,20 +1066,86 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="327" max-vertical-offset="1105">
           <caret line="44" column="56" selection-start-line="44" selection-start-column="56" selection-end-line="44" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/croara.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5643154" vertical-offset="1647" max-vertical-offset="2685">
+          <caret line="376" column="13" selection-start-line="376" selection-start-column="13" selection-end-line="376" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="255">
+          <caret line="3" column="15" selection-start-line="3" selection-start-column="15" selection-end-line="3" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logger.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3716075" vertical-offset="767" max-vertical-offset="1365">
+          <caret line="87" column="0" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aqua_launcher.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1545">
+          <caret line="142" column="13" selection-start-line="142" selection-start-column="13" selection-end-line="142" selection-end-column="13" />
           <folding>
-            <element signature="e#918#1057#0" expanded="true" />
+            <element signature="e#2052#2095#0" expanded="true" />
+            <element signature="e#4395#5747#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aquaerrors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1155">
+          <caret line="140" column="0" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
+          <folding>
+            <element signature="e#1123#1193#0" expanded="false" />
+            <element signature="e#1484#1583#0" expanded="true" />
+            <element signature="e#1607#1690#0" expanded="true" />
+            <element signature="e#1730#2028#0" expanded="false" />
+            <element signature="e#2070#2337#0" expanded="false" />
+            <element signature="e#2375#2672#0" expanded="false" />
+            <element signature="e#2718#2992#0" expanded="false" />
+            <element signature="e#3039#3249#0" expanded="false" />
+            <element signature="e#3292#3497#0" expanded="false" />
+            <element signature="e#3377#3458#0" expanded="true" />
+            <element signature="e#3482#3497#0" expanded="true" />
+            <element signature="e#3540#3750#0" expanded="false" />
+            <element signature="e#3540#3586#1" expanded="true" />
+            <element signature="e#3630#3711#0" expanded="true" />
+            <element signature="e#3735#3750#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/aqua.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="735">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generico.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.582846" vertical-offset="3589" max-vertical-offset="4896">
-          <caret line="359" column="0" selection-start-line="359" selection-start-column="0" selection-end-line="359" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.847561" vertical-offset="3453" max-vertical-offset="4710">
+          <caret line="358" column="0" selection-start-line="358" selection-start-column="0" selection-end-line="358" selection-end-column="0" />
           <folding>
-            <element signature="e#5315#5647#0" expanded="true" />
-            <element signature="e#5673#6438#0" expanded="true" />
-            <element signature="e#6575#8997#0" expanded="true" />
+            <element signature="e#323#351#0" expanded="true" />
+            <element signature="e#4273#4635#0" expanded="true" />
+            <element signature="e#4668#5281#0" expanded="true" />
+            <element signature="e#5333#5665#0" expanded="true" />
+            <element signature="e#5691#6397#0" expanded="true" />
+            <element signature="e#6534#8956#0" expanded="true" />
+            <marker date="1422443451980" expanded="true" signature="10110:10181" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -1094,4 +1180,3 @@
     </option>
   </component>
 </project>
-

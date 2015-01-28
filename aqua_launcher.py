@@ -42,7 +42,7 @@ from sys import exit, version_info as pyver
 from runpy import run_path
 from os.path import abspath, dirname, exists, getmtime, basename, join
 
-from aquaerrors import NoFileError, USER_ERROR_BASE, AquaException
+from aquaerrors import NoFileError, USER_ERROR_BASE, UNHANDLED_ERROR, AquaException
 from logger import Logger
 
 ##======================================================================================================================
@@ -145,6 +145,10 @@ if __name__ == '__main__':
 
 		logger.info_logdata(input_filename)
 		exit_code = ex.exit_code
+	except Exception as ex:
+		logger.exception(ex)
+		logger.info_logdata(input_filename)
+		exit_code = UNHANDLED_ERROR
 
 	stop_logging(exit_code)
 	exit(exit_code)

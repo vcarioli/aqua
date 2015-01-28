@@ -9,7 +9,7 @@ from decimal import Decimal
 from collections import OrderedDict
 from datetime import timedelta
 
-from aquaerrors import DataMissingError, CostCodeMissingError
+from aquaerrors import DataMissingError, CostCodeMissingError, InvalidDataError
 from inputreader import InputReader
 from logger import Logger
 
@@ -339,6 +339,9 @@ def initialize():
 
 		logger.prefix_info("Utente:\t[%d/%s]", fpro.fp_aconto, fpro.fp_azienda)
 		logger.prefix_info("Lettura:\t[%s/%d/%d %s]", tipo_lettura, fpro.fp_numlet_pr, fpro.fp_numlet_aa, fpro.fp_data_let)
+
+		if fpro.fp_periodo <= 0:
+			raise InvalidDataError('', 'Il periodo non può essere di 0 giorni.')
 
 		# Controllo della presenza delle letture
 		if not 'Fatprol' in aqua_data:

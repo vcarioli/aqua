@@ -5,7 +5,7 @@
 ##----------------------------------------------------------------------------------------------------------------------
 
 # Internal errors
-
+UNHANDLED_ERROR				= -1
 UNKNOWN_FIELD_TYPE_ERROR	= 1
 ARGUMENT_ERROR				= 2
 ASSIGNMENT_ERROR			= 3
@@ -18,6 +18,7 @@ USER_ERROR_BASE = 100
 
 COST_CODE_MISSING_ERROR		= USER_ERROR_BASE + 1
 DATA_MISSING_ERROR			= USER_ERROR_BASE + 2
+INVALID_DATA_ERROR			= USER_ERROR_BASE + 3
 
 ##======================================================================================================================
 
@@ -28,7 +29,8 @@ __all__ = [
 	"NoFileError",
 	"DataConversionError"
 	"CostCodeMissingError",
-	"DataMissingError"
+	"DataMissingError",
+	"InvalidDataError"
 ]
 
 ##======================================================================================================================
@@ -120,6 +122,19 @@ class DataMissingError(AquaException):
 	def __init__(self, cls_name, message):
 		self.cls_name, self.msg = cls_name, message
 		self.exit_code = DATA_MISSING_ERROR
+
+	def __str__(self):
+		return self.msg
+
+
+class InvalidDataError(AquaException):
+	"""
+	Relevant input-data is inconsistent.
+	"""
+
+	def __init__(self, cls_name, message):
+		self.cls_name, self.msg = cls_name, message
+		self.exit_code = INVALID_DATA_ERROR
 
 	def __str__(self):
 		return self.msg
