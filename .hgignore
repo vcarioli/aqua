@@ -10,5 +10,11 @@ out.txt
 *~
 
 # switch to regexp syntax.
+input.txt.ok
+input.txt.orig
+input_old.txt
+tmp/Errore-DateLettura.txt
+tmp/Errore.txt
+tmp/Errore2.txt
 syntax: regexp
 
