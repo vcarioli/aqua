@@ -208,7 +208,8 @@ def calcolo_tariffe(start_date, end_date, tar):
 	lx = len(x) - 1
 	for i in range(lx):
 		cons[x[i][0]] = (x[i + 1][1] - x[i][1]).days
-	cons[x[lx][0]] = (end_date - x[lx][1]).days
+	if lx >= 0:
+		cons[x[lx][0]] = (end_date - x[lx][1]).days
 
 	return cons
 
@@ -272,6 +273,10 @@ def main():
 
 	##	Consumi
 	gt = giorni_tariffe()
+	if len(gt.items()) == 0:
+		ed = fpro.fp_data_let
+		sd = ed - timedelta(days=fpro.fp_periodo)
+		raise InvalidDataError('', 'Nessuna tariffa applicabile al periodo specificato [{sd} - {ed}].'.format(sd=sd, ed=ed))
 
 	for k in gt.keys():
 		ts = [x for x in fprot if x.fpt_vigore == k[0] and x.fpt_codtar == k[1]]
@@ -331,7 +336,7 @@ def initialize():
 		logger.debug('InputReader().read(): Done')
 
 		# Controllo presenza dei dati dell'azienda
-		if not 'Fatpro' in aqua_data:
+		if 'Fatpro' not in aqua_data:
 			raise DataMissingError('', "Mancano i dati dell'azienda.")
 
 		fpro = aqua_data['Fatpro'][0]
@@ -344,13 +349,13 @@ def initialize():
 			raise InvalidDataError('', 'Il periodo non può essere di 0 giorni.')
 
 		# Controllo della presenza delle letture
-		if not 'Fatprol' in aqua_data:
+		if 'Fatprol' not in aqua_data:
 			raise DataMissingError('', "Mancano le letture.")
 
 		fprol = aqua_data['Fatprol'] if 'Fatprol' in aqua_data else None
 
 		# Controllo della presenza delle tariffe
-		if not 'Fatprot' in aqua_data:
+		if 'Fatprot' not in aqua_data:
 			raise DataMissingError('', "Mancano le tariffe.")
 
 		fprot = sorted(aqua_data['Fatprot'], key=lambda t: (t.fpt_vigore, t.fpt_codtar, t.fpt_colonna))
@@ -361,7 +366,7 @@ def initialize():
 		##---------------------------------------------------------------------------------------------
 
 		# Controllo della presenza dei costi
-		if not 'Fatproc' in aqua_data:
+		if 'Fatproc' not in aqua_data:
 			raise DataMissingError("", "Mancano i costi.")
 
 		fproc = aqua_data['Fatproc']
@@ -370,7 +375,7 @@ def initialize():
 			raise CostCodeMissingError("", "Mancano le Competenze di Servizio (cod. CS).")
 
 		# Controllo della presenza degli storni
-		if not 'Fatpros' in aqua_data:
+		if 'Fatpros' not in aqua_data:
 			logger.prefix_warn("Non sono stati specificati storni.")
 		else:
 			fpros = aqua_data['Fatpros']

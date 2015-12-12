@@ -119,16 +119,17 @@ class Logger():
 	def error(self, msg, *args, **kwargs):
 		error(basename(self.filename) + ': ' + msg, *args, **kwargs)
 
-	def usererror(self, msg, *args, **kwargs):
+	@staticmethod
+	def usererror(msg, *args, **kwargs):
 		error(msg, *args, **kwargs)
 
 	def config(self, log_filename=None):
 		logfile = log_filename if log_filename else self.log_filename
 		basicConfig(filename=logfile, format='%(asctime)s %(levelname)-8s %(message)s', level=DEBUG)
 
-	def writeln(self, str=''):
+	def writeln(self, s=''):
 		with open(self.log_filename, 'a') as fout:
-			fout.write(str + '\n')
+			fout.write(s + '\n')
 
 	def info_logdata(self, data_filename):
 		self.writeln('---------------------------------------------------------------------- INIZIO DUMP ----------')

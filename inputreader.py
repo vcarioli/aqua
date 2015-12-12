@@ -14,7 +14,7 @@ from datetime import datetime
 from decimal import Decimal
 from logger import Logger
 
-logger = Logger(filename=__file__, prefix='---  ', debug_mode=False,  info_level=0)
+logger = Logger(filename=__file__, prefix='---  ', debug_mode=False, info_level=0)
 
 ##======================================================================================================================
 
@@ -59,7 +59,7 @@ class InputReader():
 				for fld, val in zip(c.fields.keys(), values):
 					setattr(c, fld, self._convert(c.fields[fld]['field_type'], val))
 			except:
-				raise DataConversionError(fld,"Conversion error assigning value [%s]" % val)
+				raise DataConversionError(fld, "Conversion error assigning value [%s]" % val)
 
 			if key not in data:
 				data[key] = []
