@@ -21,6 +21,8 @@ Fatpro	FP-PERIODO,i,5
 Fatproc	FPC-BCODART,s,5
 Fatproc	FPC-QTA,d,5.3
 Fatproc	FPC-COSTO,d,4.6
+Fatproc	FPC-BGIORNI,i,3
+Fatproc	FPC-BUBICAZ,s,4
 
 Fatpros	FPS-BCODART,s,5
 Fatpros	FPS-QTA,d,5.3

@@ -98,7 +98,7 @@ def costo_acqua_calda(qta, numfat):
 			codart = [x for x in fproc if x.fpc_bcodart == 'ACS'][0].fpc_bcodart
 		else:
 			codart = ac.fpc_bcodart
-	except:		# fixme:	Verificare il comportamento in caso di mancanza dei valori per costo e codart
+	except:
 		raise DataMissingError('', "Nei costi mancano i codici 'AC' e/o 'ACS'")
 
 	return output_line(numfat, 'C', codart, qta, costo)
@@ -112,7 +112,7 @@ def get_numfat(bcodart):
 	"""
 	assert isinstance(bcodart, str)
 
-	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999}
+	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999, 'AFF': 9990}
 	return numfat[bcodart]
 
 
@@ -128,6 +128,7 @@ def altri_costi():
 		costi = [
 			# 'BA',		# Bocche Antincendio
 			# 'SDB',	# Spese domiciliazione bolletta
+			'AFF',
 			'CS',		# Competenze servizio
 			'MC',		# Manutenzione contatori
 			'QAC',		# Quota Fissa acqua calda
@@ -411,8 +412,8 @@ if __name__ == '__main__':
 		main()
 
 		## Stampe di debug
-		# csv_print_data()
-		# csv_print_results()
+		csv_print_data()
+		csv_print_results()
 		# pretty_print_data()
 		# pretty_print_results()
 

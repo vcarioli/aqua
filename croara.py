@@ -98,7 +98,7 @@ def costo_acqua_calda(qta, numfat):
 			codart = [x for x in fproc if x.fpc_bcodart == 'ACS'][0].fpc_bcodart
 		else:
 			codart = ac.fpc_bcodart
-	except:		# fixme:	Verificare il comportamento in caso di mancanza dei valori per costo e codart
+	except:
 		raise DataMissingError('', "Nei costi mancano i codici 'AC' e/o 'ACS'")
 
 	return output_line(numfat, 'C', codart, qta, costo)
