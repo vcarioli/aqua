@@ -1,8 +1,8 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-# -------------------------------------------------------------------------------
-# Name:		aqua_launcher
-# -------------------------------------------------------------------------------
+##----------------------------------------------------------------------------------------------------------------------
+##	Name:		aqua_launcher
+##----------------------------------------------------------------------------------------------------------------------
 
 """uso:
 	python aqua_launcher.py -m main_program.py -i input.txt -o output.txt -c classdefs.txt -l aqualog.log
@@ -41,11 +41,12 @@ AQUA_CLASSES = "aquaclasses.py"
 from sys import exit, version_info as pyver
 from runpy import run_path
 from os.path import abspath, dirname, exists, getmtime, basename, join
-from aquaerrors import NoFileError
+
+from aquaerrors import NoFileError, USER_ERROR_BASE, UNHANDLED_ERROR, AquaException
 from logger import Logger
 
+##======================================================================================================================
 
-#=##############################################################################
 def get_command_line_options():
 	from optparse import OptionParser, make_option
 
@@ -59,28 +60,30 @@ def get_command_line_options():
 		]
 	).parse_args()
 
-#=##############################################################################
+##======================================================================================================================
 
-
-base_path = dirname(__file__)
+base_path = dirname(__file__).replace("\\", "/")
 (options, args) = get_command_line_options()
-log_filename = abspath(join(base_path, 'aqua.log') if options.log_filename is None else options.log_filename)
+log_filename = abspath(join(base_path, 'aqua.log') if options.log_filename is None else options.log_filename).replace("\\", "/")
 
 logger = Logger(log_filename=log_filename, filename=__file__, prefix='---  ', debug_mode=False)
 logger.config()
 
+main_program_filename = None
+classdefs_filename = None
+input_filename = None
+output_filename = None
 
-#=##############################################################################
+
 def start_logging():
-	logger.info_centered('Begin Session [Python v{v0}.{v1}.{v2}]'.format(v0=pyver[0], v1=pyver[1], v2=pyver[2]))
+	logger.center_info('Begin Session [Python v{v0}.{v1}.{v2}]'.format(v0=pyver[0], v1=pyver[1], v2=pyver[2]))
 
 
-#=##############################################################################
 def stop_logging(ret_code):
-	logger.info_centered('End Session (Exit Code: %d)' % ret_code)
+	logger.center_info('End Session (Exit Code: %d)' % ret_code)
+	logger.writeln()
 
 
-#=##############################################################################
 def check_command_line_options(opts):
 	if not exists(abspath(opts.main_program_filename)):
 		raise NoFileError(opts.main_program_filename)
@@ -97,12 +100,13 @@ def check_command_line_options(opts):
 		raise NoFileError(opts.output_filename, "can't open for output")
 
 
-#=##############################################################################
 def main():
-	main_program_filename	= abspath(options.main_program_filename)
-	classdefs_filename		= abspath(options.classdefs_filename)
-	input_filename			= abspath(options.input_filename)
-	output_filename			= abspath(options.output_filename)
+	global main_program_filename, classdefs_filename, input_filename, output_filename
+
+	main_program_filename = abspath(options.main_program_filename).replace("\\", "/")
+	classdefs_filename = abspath(options.classdefs_filename).replace("\\", "/")
+	input_filename = abspath(options.input_filename).replace("\\", "/")
+	output_filename = abspath(options.output_filename).replace("\\", "/")
 
 	logger.info('Working directory:      [%s]' % base_path)
 	logger.info('Log file name:          [%s]', basename(log_filename))
@@ -113,17 +117,19 @@ def main():
 	aquaclasses_py = join(base_path, AQUA_CLASSES)
 	if not exists(aquaclasses_py) or getmtime(aquaclasses_py) < getmtime(classdefs_filename):
 		from classmoduleupdater import ClassModuleUpdater
-		ClassModuleUpdater(classdefs_filename, input_filename, output_filename).update()
+
+		ClassModuleUpdater(classdefs_filename).update()
 		logger.info('Recreated class file:   [%s]', AQUA_CLASSES)
 
-	logger.info_centered()
+	logger.center_info()
 
 	logger.debug('%s: Starting', basename(main_program_filename))
-	run_path(main_program_filename, run_name='__main__')
+	g = {'input_filename': input_filename, 'output_filename': output_filename, 'log_filename': log_filename}
+	run_path(main_program_filename, run_name='__main__', init_globals=g)
 	logger.debug('%s: Done', basename(main_program_filename))
 
+##======================================================================================================================
 
-#=##############################################################################
 if __name__ == '__main__':
 	start_logging()
 
@@ -131,9 +137,18 @@ if __name__ == '__main__':
 	try:
 		check_command_line_options(options)
 		main()
+	except AquaException as ex:
+		if ex.exit_code > USER_ERROR_BASE:
+			logger.usererror("!!!!! %s" % ex)
+		else:
+			logger.exception(ex)
+
+		logger.info_logdata(input_filename)
+		exit_code = ex.exit_code
 	except Exception as ex:
 		logger.exception(ex)
-		exit_code = 1
+		logger.info_logdata(input_filename)
+		exit_code = UNHANDLED_ERROR
 
 	stop_logging(exit_code)
 	exit(exit_code)

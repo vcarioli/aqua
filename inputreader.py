@@ -1,20 +1,23 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-#-------------------------------------------------------------------------------
-# Name:		inputreader
-#-------------------------------------------------------------------------------
+##----------------------------------------------------------------------------------------------------------------------
+##	Name:		inputreader
+##----------------------------------------------------------------------------------------------------------------------
+from aquaerrors import DataConversionError
 
 __all__ = ["InputReader"]
+
+##======================================================================================================================
 
 from os.path import dirname, join
 from datetime import datetime
 from decimal import Decimal
 from logger import Logger
 
-logger = Logger(filename=__file__, prefix='---  ', info_level=0)
+logger = Logger(filename=__file__, prefix='---  ', debug_mode=False, info_level=0)
 
+##======================================================================================================================
 
-#=##############################################################################
 class InputReader():
 	def __init__(self, aqua_classes, file_name=None):
 		if file_name is None:
@@ -43,7 +46,7 @@ class InputReader():
 
 		data = {}
 		for line in lineslist:
-			logger.info_with_prefix(str(line))
+			logger.prefix_info(str(line))
 
 			if line == [''] or line[0].startswith('#'):
 				continue
@@ -51,8 +54,12 @@ class InputReader():
 			values = line[1:]
 
 			c = self._aqua_classes[key]()
-			for fld, val in zip(c.fields.keys(), values):
-				setattr(c, fld, self._convert(c.fields[fld]['field_type'], val))
+			fld, val = None, None
+			try:
+				for fld, val in zip(c.fields.keys(), values):
+					setattr(c, fld, self._convert(c.fields[fld]['field_type'], val))
+			except:
+				raise DataConversionError(fld, "Conversion error assigning value [%s]" % val)
 
 			if key not in data:
 				data[key] = []

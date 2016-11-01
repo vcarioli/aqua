@@ -112,7 +112,7 @@ def get_numfat(bcodart):
 	"""
 	assert isinstance(bcodart, str)
 
-	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999, 'AFF': 9990}
+	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999}
 	return numfat[bcodart]
 
 
@@ -128,7 +128,6 @@ def altri_costi():
 		costi = [
 			# 'BA',		# Bocche Antincendio
 			# 'SDB',	# Spese domiciliazione bolletta
-			'AFF',
 			'CS',		# Competenze servizio
 			'MC',		# Manutenzione contatori
 			'QAC',		# Quota Fissa acqua calda
@@ -225,13 +224,15 @@ def giorni_tariffe():
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar[0] == 'A']).items():
 		cons[k] = v
 
+	##----- Croara: depuratore e fogna non devono essere considerati ------------------------------
 	# depuratore
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'DEPUR']).items():
-		cons[k] = v
-
-	# fogna
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'FOGNA']).items():
-		cons[k] = v
+	# for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'DEPUR']).items():
+	# 	cons[k] = v
+	#
+	# # fogna
+	# for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'FOGNA']).items():
+	# 	cons[k] = v
+	##---------------------------------------------------------------------------------------------
 
 	# quota fissa
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar[0] == 'Q']).items():
@@ -359,6 +360,11 @@ def initialize():
 
 		fprot = sorted(aqua_data['Fatprot'], key=lambda t: (t.fpt_vigore, t.fpt_codtar, t.fpt_colonna))
 
+		##---------------------------------------------------------------------------------------------
+		##----- Croara: Filtro le tariffe per eliminare 'FOGNA' e 'DEPUR' -----------------------------
+		fprot = [f for f in fprot if f.fpt_codtar not in ['FOGNA', 'DEPUR']]
+		##---------------------------------------------------------------------------------------------
+
 		# Controllo della presenza dei costi
 		if 'Fatproc' not in aqua_data:
 			raise DataMissingError("", "Mancano i costi.")
@@ -412,8 +418,8 @@ if __name__ == '__main__':
 		main()
 
 		## Stampe di debug
-		csv_print_data()
-		csv_print_results()
+		# csv_print_data()
+		# csv_print_results()
 		# pretty_print_data()
 		# pretty_print_results()
 

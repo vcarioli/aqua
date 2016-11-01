@@ -1,16 +1,18 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-# -------------------------------------------------------------------------------
-# Name:		logger
-#-------------------------------------------------------------------------------
+##----------------------------------------------------------------------------------------------------------------------
+##	Name:		logger
+##----------------------------------------------------------------------------------------------------------------------
 
 __all__ = ["Logger"]
 
-from logging import basicConfig, DEBUG, info, debug, error, exception
+##======================================================================================================================
+
+from logging import basicConfig, DEBUG, info, debug, error, exception, warning
 from os.path import basename
 
+##======================================================================================================================
 
-#=##############################################################################
 class Logger():
 	def __init__(self, filename=None, log_filename=None, prefix=None, separator='  ', filler=' ', debug_mode=False, info_level=1, line_len=60):
 		self.__filename__ = filename
@@ -22,75 +24,93 @@ class Logger():
 		self.__debug_mode__ = debug_mode
 		self.__info_level__ = info_level
 
-	def __set_debug_mode__(self, value):
-		self.__debug_mode__ = value
 
-	def __get_debug_mode__(self):
+	def __set_debug_mode(self, value):
+		self.__debug_mode__ = value
+	def __get_debug_mode(self):
 		return self.__debug_mode__
 
-	debug_mode = property(__get_debug_mode__, __set_debug_mode__)
+	debug_mode = property(__get_debug_mode, __set_debug_mode)
 
-	def __set_info_level__(self, value):
+
+	def __set_info_level(self, value):
 		self.__info_level__ = value
-
-	def __get_info_level__(self):
+	def __get_info_level(self):
 		return self.__info_level__
 
-	info_level = property(__get_info_level__, __set_info_level__)
+	info_level = property(__get_info_level, __set_info_level)
 
-	def __get_filename__(self):
+
+	def __get_filename(self):
 		return self.__filename__
-
-	def __set_filename__(self, value):
+	def __set_filename(self, value):
 		self.__filename__ = value
 
-	filename = property(__get_filename__, __set_filename__)
+	filename = property(__get_filename, __set_filename)
 
-	def __get_log_filename__(self):
+
+	def __get_log_filename(self):
 		return self.__log_filename__
-
-	def __set_log_filename__(self, value):
+	def __set_log_filename(self, value):
 		self.__log_filename__ = value
 
-	log_filename = property(__get_log_filename__, __set_log_filename__)
+	log_filename = property(__get_log_filename, __set_log_filename)
 
-	def __get_prefix__(self):
+
+	def __get_prefix(self):
 		return self.__prefix__
-
-	def __set_prefix__(self, value):
+	def __set_prefix(self, value):
 		self.__prefix__ = value
 
-	prefix = property(__get_prefix__, __set_prefix__)
+	prefix = property(__get_prefix, __set_prefix)
 
-	def __get_separator__(self):
+
+	def __get_separator(self):
 		return self.__separator__
-
-	def __set_separator__(self, value):
+	def __set_separator(self, value):
 		self.__separator__ = value
 
-	separator = property(__get_separator__, __set_separator__)
+	separator = property(__get_separator, __set_separator)
 
-	def __get_filler__(self):
+
+	def __get_filler(self):
 		return self.__filler__
-
-	def __set_filler__(self, value):
+	def __set_filler(self, value):
 		self.__filler__ = value
 
-	filler = property(__get_filler__, __set_filler__)
+	filler = property(__get_filler, __set_filler)
+
+
+	@staticmethod
+	def warn(msg, *args, **kwargs):
+		warning(msg, *args, **kwargs)
+	@staticmethod
+	def exception(msg, *args, **kwargs):
+		exception(msg, *args, **kwargs)
+
 
 	def info(self, msg, *args, **kwargs):
 		if self.info_level > 0:
 			info(msg, *args, **kwargs)
 
-	def info_with_prefix(self, msg, *args, **kwargs):
+	def prefix_info(self, msg, *args, **kwargs):
+		"""
+		Aggiunge un log 'INFO' con il prefisso se presente
+		"""
 		if self.info_level > 0:
 			info((self.prefix if self.prefix else '') + msg, *args, **kwargs)
 
-	def info_centered(self, msg='', sep='', filler='-'):
+	def center_info(self, msg='', sep='', filler='-'):
 		if self.info_level > 0:
 			sep = self.separator if len(sep) == 0 else sep
 			fill = self.filler if len(filler) == 0 else filler
 			info('{sep}{msg}{sep}'.format(msg=msg, sep='' if msg == '' or msg is None else sep).center(self.__line_len__, fill))
+
+	def prefix_warn(self, msg, *args, **kwargs):
+		"""
+		Aggiunge un log 'WARNING' con il prefisso se presente
+		"""
+		warning((self.prefix if self.prefix else '') + msg, *args, **kwargs)
 
 	def debug(self, msg, *args, **kwargs):
 		if self.__debug_mode__:
@@ -100,10 +120,22 @@ class Logger():
 		error(basename(self.filename) + ': ' + msg, *args, **kwargs)
 
 	@staticmethod
-	def exception(msg, *args, **kwargs):
-		exception(msg, *args, **kwargs)
+	def usererror(msg, *args, **kwargs):
+		error(msg, *args, **kwargs)
 
 	def config(self, log_filename=None):
 		logfile = log_filename if log_filename else self.log_filename
 		basicConfig(filename=logfile, format='%(asctime)s %(levelname)-8s %(message)s', level=DEBUG)
 
+	def writeln(self, s=''):
+		with open(self.log_filename, 'a') as fout:
+			fout.write(s + '\n')
+
+	def info_logdata(self, data_filename):
+		self.writeln('---------------------------------------------------------------------- INIZIO DUMP ----------')
+
+		with open(data_filename, 'r') as fin:
+			with open(self.log_filename, 'a') as fout:
+				fout.writelines(fin.readlines())
+
+		self.writeln('------------------------------------------------------------------------ FINE DUMP ----------')

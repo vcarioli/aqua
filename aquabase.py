@@ -1,8 +1,8 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-#-------------------------------------------------------------------------------
-# Name:		aquabase
-#-------------------------------------------------------------------------------
+##----------------------------------------------------------------------------------------------------------------------
+##	Name:		aquabase
+##----------------------------------------------------------------------------------------------------------------------
 
 from collections import OrderedDict
 from datetime import datetime, date
@@ -14,8 +14,8 @@ from logger import Logger
 
 logger = Logger(filename=__file__)
 
+##======================================================================================================================
 
-#=##############################################################################
 class AquaBase():
 	def __init__(self, classname, spec):
 		self._spec = [classname] + spec
@@ -191,5 +191,4 @@ class AquaBase():
 		rdelim = delim[1] if len(delim) > 1 else ldelim
 		fmts = dict(i='{0}', d='{0}', s=ldelim + '{0}' + rdelim, dt=ldelim + '{0}' + rdelim)
 
-		return sep.join(
-			[fmts[self.fields[k]['field_type']].format(eval('self.' + k)) for k in self.fields.keys()])
+		return sep.join([fmts[self.fields[k]['field_type']].format(eval('self.' + k)) for k in self.fields.keys()])
