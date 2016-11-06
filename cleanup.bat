@@ -1,1 +1,1 @@
-del /s/f/q *~ aqua*.log out.txt aquaclasses.py *.pyc __pycache__
+del  /s/f/q *~ aqua*.log out.txt aquaclasses.py *.pyc __pycache__

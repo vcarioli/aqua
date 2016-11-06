@@ -104,18 +104,6 @@ def costo_acqua_calda(qta, numfat):
 	return output_line(numfat, 'C', codart, qta, costo)
 
 
-def get_numfat(bcodart):
-	"""
-	Decodifica il numero di fattura dal codice articolo
-	:param bcodart: <string> - Codice articolo
-	:return: <int> - Numero fattura di partenza (per l'ordinamento delle righe di output) <int>
-	"""
-	assert isinstance(bcodart, str)
-
-	numfat = {'MC': 10000, 'QAC': 1000, 'CS': 99999, 'AFF': 9990}
-	return numfat[bcodart]
-
-
 def altri_costi():
 	"""
 	Produce una lista di costi aggiuntivi
@@ -128,15 +116,21 @@ def altri_costi():
 		costi = [
 			# 'BA',		# Bocche Antincendio
 			# 'SDB',	# Spese domiciliazione bolletta
-			'AFF',
+			'AFF',		# Adesione fondo fughe
+			'CFC'		# Conguaglio fredda/calda
+			'CDE'		# Conguaglio depurazione
+			'CFO'		# Conguaglio fogna
 			'CS',		# Competenze servizio
 			'MC',		# Manutenzione contatori
 			'QAC',		# Quota Fissa acqua calda
 		]
 		for c in fproc:
 			codart = c.fpc_bcodart
-			if codart in costi:
-				res.append(output_line(get_numfat(codart), 'C', codart, 1, c.fpc_costo))
+			if codart in costi and c.fpc_qta > 0:
+				if codart == 'AFF':
+					res.append(output_line(c.fpc_bgiorni, 'C', codart, fpro.fp_periodo, c.fpc_costo * fpro.fp_periodo))
+				else:
+					res.append(output_line(c.fpc_bgiorni, 'C', codart, 1, c.fpc_costo))
 
 	if len(res) == 0:
 		logger.prefix_warn("Non ci sono costi da fatturare")
@@ -167,7 +161,7 @@ def calcolo_storno(st, numfat):
 	assert isinstance(numfat, int)
 
 	codart = 'S' + st.fps_bcodart[0:len(st.fps_bcodart) - 1]
-	return output_line(numfat, 'S', codart, -st.fps_qta, st.fps_costo)
+	return output_line(st.fps_bgiorni + numfat, 'S', codart, -st.fps_qta, st.fps_costo)
 
 
 def compatta_storni(storni):
@@ -288,11 +282,11 @@ def main():
 					qty = sc if consumo > sc else consumo
 					results.append(costo(tar, qty, numfat))
 					consumo -= qty
-					numfat += 1
+#					numfat += 1
 			else:
 				qty = consumo if tar.fpt_costo_um == 'MC' else gt[k]
 				results.append(costo(tar, qty, numfat))
-				numfat += 1
+#				numfat += 1
 
 	##	Acqua calda, se presente
 	if mc_consumo_totale_calda > 0:
@@ -306,13 +300,14 @@ def main():
 
 	##	Storni
 	if fpros:
-		numfat = 50000
+#		numfat = 0
 		for fps in compatta_storni(fpros):
 			o = calcolo_storno(fps, numfat)
 			results.append(o)
-			numfat += 1
+#			numfat += 1
 
-	##	Scrittura dei risultati
+	##	Scrittura dei risultati ordinati su fpo_numfat
+	results = [r for r in sorted(results, key=lambda x: x.fpo_numfat)]
 	write_output(results)
 
 	logger.debug('main(): Results written to %s', basename(output_filename))
@@ -363,7 +358,9 @@ def initialize():
 		if 'Fatproc' not in aqua_data:
 			raise DataMissingError("", "Mancano i costi.")
 
-		fproc = aqua_data['Fatproc']
+		# Filtro le righe con quantità 0
+		fproc = [c for c in aqua_data['Fatproc'] if c.fpc_qta != 0]
+
 		# Il codice 'CS' deve essere presente
 		if len([c for c in fproc if c.fpc_bcodart == 'CS']) == 0:
 			raise CostCodeMissingError("", "Mancano le Competenze di Servizio (cod. CS).")
@@ -372,7 +369,8 @@ def initialize():
 		if 'Fatpros' not in aqua_data:
 			logger.prefix_warn("Non sono stati specificati storni.")
 		else:
-			fpros = aqua_data['Fatpros']
+			# Filtro le righe con quantità 0
+			fpros = [s for s in aqua_data['Fatpros'] if s.fps_qta != 0]
 
 	except:
 		logger.error("Errore durante l'inizializzazione!")
