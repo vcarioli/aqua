@@ -5,7 +5,7 @@ case "$1" in
 	*)	VER=3.4;;
 esac
 
-rm -rf aqua.log aquaclasses.py out.txt *.pyc __pycache__
+rm  -rf aqua.log aquaclasses.py out.txt *.pyc __pycache__
 
 echo python${VER} aqua_launcher.py -m generico.py -i input.txt -o out.txt -c classdefs.txt -l aqua.log
 
