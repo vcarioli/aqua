@@ -117,9 +117,9 @@ def altri_costi():
 			# 'BA',		# Bocche Antincendio
 			# 'SDB',	# Spese domiciliazione bolletta
 			'AFF',		# Adesione fondo fughe
-			'CFC'		# Conguaglio fredda/calda
-			'CDE'		# Conguaglio depurazione
-			'CFO'		# Conguaglio fogna
+#			'CFC'		# Conguaglio fredda/calda
+#			'CDE'		# Conguaglio depurazione
+#			'CFO'		# Conguaglio fogna
 			'CS',		# Competenze servizio
 			'MC',		# Manutenzione contatori
 			'QAC',		# Quota Fissa acqua calda
@@ -229,6 +229,18 @@ def giorni_tariffe():
 
 	# quota fissa
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar[0] == 'Q']).items():
+		cons[k] = v
+
+	# Conguaglio fredda/calda
+	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CFC']).items():
+		cons[k] = v
+
+	# Conguaglio depurazione
+	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CDE']).items():
+		cons[k] = v
+
+	# Conguaglio fogna
+	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CFO']).items():
 		cons[k] = v
 
 	return OrderedDict(sorted(cons.items(), key=lambda i: (i[0][0], i[0][1])))
