@@ -111,31 +111,32 @@ def altri_costi():
 	:return: <[Output()]>
 	"""
 
-	res = []
+	result = []
 	if fproc is not None:
 		costi = [
 			# 'BA',		# Bocche Antincendio
 			# 'SDB',	# Spese domiciliazione bolletta
 			'AFF',		# Adesione fondo fughe
-#			'CFC'		# Conguaglio fredda/calda
-#			'CDE'		# Conguaglio depurazione
-#			'CFO'		# Conguaglio fogna
 			'CS',		# Competenze servizio
 			'MC',		# Manutenzione contatori
-			'QAC',		# Quota Fissa acqua calda
+			'QAC'		# Quota Fissa acqua calda
 		]
-		for c in fproc:
-			codart = c.fpc_bcodart
-			if codart in costi and c.fpc_qta > 0:
-				if codart == 'AFF':
-					res.append(output_line(c.fpc_bgiorni, 'C', codart, fpro.fp_periodo, c.fpc_costo * fpro.fp_periodo))
-				else:
-					res.append(output_line(c.fpc_bgiorni, 'C', codart, 1, c.fpc_costo))
+		for c in [x for x in fproc if x.fpc_bcodart in costi]:
+			if c.fpc_bcodart == 'AFF':
+				result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo, c.fpc_costo * fpro.fp_periodo))
+			elif c.fpc_bcodart == 'CS':
+				result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, 1, c.fpc_costo))
+			elif c.fpc_bcodart == 'MC':
+				result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, 1, c.fpc_costo))
+			elif c.fpc_bcodart == 'QAC':
+				result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, 1, c.fpc_costo))
+			else:
+				result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, 1, c.fpc_costo))
 
-	if len(res) == 0:
+	if len(result) == 0:
 		logger.prefix_warn("Non ci sono costi da fatturare")
 
-	return res
+	return result
 
 
 def consumo_mc(letture):
@@ -152,7 +153,7 @@ def consumo_mc(letture):
 
 def calcolo_storno(st, numfat):
 	"""
-	Calcolo dello st
+	Calcolo dello storno
 	:param st: <Fatpros()> - Storno
 	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:return: <Output()> Risultato
@@ -213,37 +214,37 @@ def giorni_tariffe():
 	end_date = fpro.fp_data_let
 	start_date = end_date - timedelta(days=fpro.fp_periodo)
 
-	cons = {}
+	consumi = dict()
 
 	# acqua
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar[0] == 'A']).items():
-		cons[k] = v
+		consumi[k] = v
 
 	# depuratore
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'DEPUR']).items():
-		cons[k] = v
+		consumi[k] = v
 
 	# fogna
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'FOGNA']).items():
-		cons[k] = v
+		consumi[k] = v
 
 	# quota fissa
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar[0] == 'Q']).items():
-		cons[k] = v
+		consumi[k] = v
 
 	# Conguaglio fredda/calda
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CFC']).items():
-		cons[k] = v
+		consumi[k] = v
 
 	# Conguaglio depurazione
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CDE']).items():
-		cons[k] = v
+		consumi[k] = v
 
 	# Conguaglio fogna
 	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CFO']).items():
-		cons[k] = v
+		consumi[k] = v
 
-	return OrderedDict(sorted(cons.items(), key=lambda i: (i[0][0], i[0][1])))
+	return OrderedDict(sorted(consumi.items(), key=lambda i: (i[0][0], i[0][1])))
 
 ##======================================================================================================================
 
@@ -319,7 +320,7 @@ def main():
 #			numfat += 1
 
 	##	Scrittura dei risultati ordinati su fpo_numfat
-	results = [r for r in sorted(results, key=lambda x: x.fpo_numfat)]
+	results = [r for r in sorted(results, key=lambda x: x.fpo_numfat) if r.fpo_qta != 0]
 	write_output(results)
 
 	logger.debug('main(): Results written to %s', basename(output_filename))
