@@ -30,7 +30,8 @@ __all__ = [
 	"DataConversionError"
 	"CostCodeMissingError",
 	"DataMissingError",
-	"InvalidDataError"
+	"InvalidDataError",
+	"ClassDefsParseError"
 ]
 
 ##======================================================================================================================
@@ -130,6 +131,18 @@ class DataMissingError(AquaException):
 class InvalidDataError(AquaException):
 	"""
 	Relevant input-data is inconsistent.
+	"""
+
+	def __init__(self, cls_name, message):
+		self.cls_name, self.msg = cls_name, message
+		self.exit_code = INVALID_DATA_ERROR
+
+	def __str__(self):
+		return self.msg
+
+class ClassDefsParseError(AquaException):
+	"""
+	Erro parsing classdefs.txt
 	"""
 
 	def __init__(self, cls_name, message):

@@ -7,6 +7,7 @@
 __all__ = ["ClassDefinitionReader"]
 
 ##======================================================================================================================
+from aquaerrors import ClassDefsParseError
 
 class ClassDefinitionReader():
 	def __init__(self, file_name):
@@ -23,8 +24,10 @@ class ClassDefinitionReader():
 
 		classdefs = {}
 		for line in [x.split('\t') for x in lines]:
+			if len(line) != 2:
+				raise ClassDefsParseError(self.__class__.__name__, "Linea '{0}' malformata.\t(Manca un tab?)".format(line[0]))
 			if line[0] not in classdefs:
 				classdefs[line[0]] = []
-#			print(line)
 			classdefs[line[0]] += [line[1]]
+
 		return classdefs
