@@ -11,14 +11,17 @@ ARGUMENT_ERROR				= 2
 ASSIGNMENT_ERROR			= 3
 NO_FILE_ERROR				= 4
 DATA_CONVERSION_ERROR		= 5
+CLASSDEFS_PARSE_ERROR		= 6
 
 # User errors
 
 USER_ERROR_BASE = 100
 
-COST_CODE_MISSING_ERROR		= USER_ERROR_BASE + 1
-DATA_MISSING_ERROR			= USER_ERROR_BASE + 2
-INVALID_DATA_ERROR			= USER_ERROR_BASE + 3
+COST_CODE_MISSING_ERROR		= USER_ERROR_BASE + 1	# 101
+DATA_MISSING_ERROR			= USER_ERROR_BASE + 2	# 102
+INVALID_DATA_ERROR			= USER_ERROR_BASE + 3	# 103
+
+
 
 ##======================================================================================================================
 
@@ -147,7 +150,7 @@ class ClassDefsParseError(AquaException):
 
 	def __init__(self, cls_name, message):
 		self.cls_name, self.msg = cls_name, message
-		self.exit_code = INVALID_DATA_ERROR
+		self.exit_code = CLASSDEFS_PARSE_ERROR
 
 	def __str__(self):
 		return self.msg

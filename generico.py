@@ -121,7 +121,9 @@ def altri_costi():
 			'MC',		# Manutenzione contatori
 			'QAC'		# Quota Fissa acqua calda
 		]
+
 		for c in [x for x in fproc if x.fpc_bcodart in costi]:
+
 			if c.fpc_bcodart == 'AFF':
 				result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo, c.fpc_costo * fpro.fp_periodo))
 			elif c.fpc_bcodart == 'CS':
@@ -210,10 +212,7 @@ def calcolo_tariffe(start_date, end_date, tar):
 	return cons
 
 
-def giorni_tariffe():
-	end_date = fpro.fp_data_let
-	start_date = end_date - timedelta(days=fpro.fp_periodo)
-
+def giorni_tariffe(start_date, end_date):
 	consumi = dict()
 
 	# acqua
@@ -275,14 +274,16 @@ def main():
 	mc_consumo_totale			= mc_consumo_totale_casa + mc_consumo_totale_garage
 	##---------------------------------------------------------------------------------------------
 
+	# Periodo di riferimento dei consumi
+	end_date = fpro.fp_data_let
+	start_date = end_date - timedelta(days=fpro.fp_periodo)
+
 	numfat = 0
 
 	##	Consumi
-	gt = giorni_tariffe()
+	gt = giorni_tariffe(start_date, end_date)
 	if len(gt.items()) == 0:
-		ed = fpro.fp_data_let
-		sd = ed - timedelta(days=fpro.fp_periodo)
-		raise InvalidDataError('', 'Nessuna tariffa applicabile al periodo specificato [{sd} - {ed}].'.format(sd=sd, ed=ed))
+		raise InvalidDataError('', 'Nessuna tariffa applicabile al periodo specificato [{start_date} - {end_date}].'.format(sd=start_date, ed=end_date))
 
 	for k in gt.keys():
 		ts = [x for x in fprot if x.fpt_vigore == k[0] and x.fpt_codtar == k[1]]
@@ -332,6 +333,7 @@ def main():
 def initialize():
 	"""
 	Lettura dei dati dal file di input e inizializzazione delle variabili globali
+
 	:return: None
 	"""
 	global aqua_data, fpro, tipo_lettura, fprol, fproc, fprot, fpros, logger
@@ -394,6 +396,7 @@ def initialize():
 ##======================================================================================================================
 
 def csv_print_results():
+	print()
 	print(results[0].get_csv_hdr())
 	print('\n'.join([i.get_csv_row() for i in results]))
 
@@ -404,11 +407,12 @@ def csv_print_data():
 		print('\n'.join([i.get_csv_row() for i in aqua_data[k]]))
 
 def pretty_print_data():
-	print()
 	for k in aqua_data.keys():
+		print()
 		print('\n\n'.join([i.pretty_print() for i in aqua_data[k]]))
 
 def pretty_print_results():
+	print()
 	print('\n\n'.join([i.pretty_print() for i in results]))
 
 ##======================================================================================================================
@@ -425,6 +429,7 @@ if __name__ == '__main__':
 		## Stampe di debug
 		csv_print_data()
 		csv_print_results()
+
 		# pretty_print_data()
 		# pretty_print_results()
 
