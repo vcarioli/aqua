@@ -1,7 +1,7 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
 ##----------------------------------------------------------------------------------------------------------------------
-##	Name:		classmoduleupdater
+##	Name:		classdefinitionreader
 ##----------------------------------------------------------------------------------------------------------------------
 
 __all__ = ["ClassDefinitionReader"]
@@ -25,5 +25,6 @@ class ClassDefinitionReader():
 		for line in [x.split('\t') for x in lines]:
 			if line[0] not in classdefs:
 				classdefs[line[0]] = []
+#			print(line)
 			classdefs[line[0]] += [line[1]]
 		return classdefs
