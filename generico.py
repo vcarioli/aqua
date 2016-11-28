@@ -17,7 +17,7 @@ from aquaclasses import *
 
 ##======================================================================================================================
 
-logger = Logger(filename=__file__, log_filename=log_filename, prefix='---  ', debug_mode=False)
+logger = Logger(filename=__file__, log_filename=globals()['log_filename'], prefix='---  ', debug_mode=False)
 logger.config()
 
 fpro = None		# Dati di fatturazione dell'azienda
@@ -37,7 +37,7 @@ def write_output(res):
 	:param res: <[Output()]>
 	:return; <None>
 	"""
-	with open(output_filename, "w") as fout:
+	with open(globals()['output_filename'], "w") as fout:
 		fout.writelines([str(o) + '\n' for o in res])
 
 
@@ -64,7 +64,7 @@ def scaglione(tar, mc):
 	return Decimal(round(tar.fpt_quota * mc / 1000) if tar.fpt_quota < 99999 else 99999)
 
 
-def costo(tar, qta, numfat):
+def linea_di_costo(tar, qta, numfat):
 	"""
 	Prepara un record di Output() di costi
 	:param tar: <Fatprot()> - Tariffa applicata
@@ -283,7 +283,8 @@ def main():
 	##	Consumi
 	gt = giorni_tariffe(start_date, end_date)
 	if len(gt.items()) == 0:
-		raise InvalidDataError('', 'Nessuna tariffa applicabile al periodo specificato [{start_date} - {end_date}].'.format(sd=start_date, ed=end_date))
+		msg = 'Nessuna tariffa applicabile al periodo specificato [{0} - {1}].'.format(start_date, end_date)
+		raise InvalidDataError('', msg)
 
 	for k in gt.keys():
 		ts = [x for x in fprot if x.fpt_vigore == k[0] and x.fpt_codtar == k[1]]
@@ -294,12 +295,12 @@ def main():
 				if consumo > 0:
 					sc = scaglione(tar, gt[k])
 					qty = sc if consumo > sc else consumo
-					results.append(costo(tar, qty, numfat))
+					results.append(linea_di_costo(tar, qty, numfat))
 					consumo -= qty
 #					numfat += 1
 			else:
 				qty = consumo if tar.fpt_costo_um == 'MC' else gt[k]
-				results.append(costo(tar, qty, numfat))
+				results.append(linea_di_costo(tar, qty, numfat))
 #				numfat += 1
 
 	##	Acqua calda, se presente
@@ -324,7 +325,7 @@ def main():
 	results = [r for r in sorted(results, key=lambda x: x.fpo_numfat) if r.fpo_qta != 0]
 	write_output(results)
 
-	logger.debug('main(): Results written to %s', basename(output_filename))
+	logger.debug('main(): Results written to %s', basename(globals()['output_filename']))
 
 ##======================================================================================================================
 ##	Inizializzazione e verifica della presenza e congruità dei dati
@@ -341,7 +342,7 @@ def initialize():
 	try:
 		# Lettura file dei dati in input
 		logger.debug('InputReader().read(): Starting')
-		aqua_data = InputReader(aqua_classes, input_filename.replace('\\', '/')).read()
+		aqua_data = InputReader(aqua_classes, globals()['input_filename']).read()
 		logger.debug('InputReader().read(): Done')
 
 		# Controllo presenza dei dati dell'azienda

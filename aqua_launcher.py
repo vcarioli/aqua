@@ -36,14 +36,13 @@
 								sulla linea di comando
 """
 
-AQUA_CLASSES = "aquaclasses.py"
-
 from sys import exit, version_info as pyver
 from runpy import run_path
 from os.path import abspath, dirname, exists, getmtime, basename, join
-
 from aquaerrors import NoFileError, USER_ERROR_BASE, UNHANDLED_ERROR, AquaException
 from logger import Logger
+
+AQUA_CLASSES = "aquaclasses.py"
 
 ##======================================================================================================================
 
@@ -124,8 +123,14 @@ def main():
 	logger.center_info()
 
 	logger.debug('%s: Starting', basename(main_program_filename))
-	g = {'input_filename': input_filename, 'output_filename': output_filename, 'log_filename': log_filename}
+
+	g = {
+		'input_filename': input_filename.replace('\\', '/'),
+		'output_filename': output_filename.replace('\\', '/'),
+		'log_filename': log_filename.replace('\\', '/')
+	}
 	run_path(main_program_filename, run_name='__main__', init_globals=g)
+
 	logger.debug('%s: Done', basename(main_program_filename))
 
 ##======================================================================================================================

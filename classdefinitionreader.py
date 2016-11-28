@@ -4,12 +4,13 @@
 ##	Name:		classdefinitionreader
 ##----------------------------------------------------------------------------------------------------------------------
 
+from aquaerrors import ClassDefsParseError
+
 __all__ = ["ClassDefinitionReader"]
 
 ##======================================================================================================================
-from aquaerrors import ClassDefsParseError
 
-class ClassDefinitionReader():
+class ClassDefinitionReader:
 	def __init__(self, file_name):
 		self._file_name = file_name
 
