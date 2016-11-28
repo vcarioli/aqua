@@ -163,8 +163,8 @@ def calcolo_storno(st, numfat):
 	assert isinstance(st, Fatpros)
 	assert isinstance(numfat, int)
 
-	codart = 'S' + st.fps_bcodart[0:len(st.fps_bcodart) - 1]
-	return output_line(st.fps_bgiorni + numfat, 'S', codart, -st.fps_qta, st.fps_costo)
+#	codart = 'S' + st.fps_bcodart[0:len(st.fps_bcodart) - 1]
+	return output_line(st.fps_bgiorni + numfat, 'S', st.fps_bcodart, -st.fps_qta, st.fps_costo)
 
 
 def compatta_storni(storni):
@@ -429,8 +429,9 @@ if __name__ == '__main__':
 
 		## Stampe di debug
 		csv_print_data()
+		print()
 		csv_print_results()
-
+		print(); print('#	TAG1, TAG2, TBA, TEC1, TEC2, CFC, DE, CDE, FO, CFO, QF')
 		# pretty_print_data()
 		# pretty_print_results()
 
