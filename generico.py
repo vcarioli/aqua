@@ -1,8 +1,8 @@
 # -*- Mode: Python; tab-width: 4 -*-
 # -*- coding: utf-8 -*-
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 ##	Name:		generico
-#-----------------------------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------------------------------
 
 from os.path import basename
 from decimal import Decimal
@@ -20,16 +20,18 @@ from aquaclasses import *
 logger = Logger(filename=__file__, log_filename=globals()['log_filename'], prefix='---  ', debug_mode=False)
 logger.config()
 
-fpro = None		# Dati di fatturazione dell'azienda
-fprol = []		# letture
-fproc = []		# costi
-fprot = []		# tariffe
-fpros = []		# scaglioni
+fpro = None  # Dati di fatturazione dell'azienda
+fprol = []  # letture
+fproc = []  # costi
+fprot = []  # tariffe
+fpros = []  # scaglioni
 
 results = []
 tipo_lettura = ''
 
+
 ##======================================================================================================================
+
 
 def write_output(res):
 	"""
@@ -42,12 +44,12 @@ def write_output(res):
 		fout.writelines([str(o) + '\n' for o in res])
 
 
-def output_line(numfat, cs, codart, qta, costo):
+def output_line(numfat, cs, codart, qta, importo):
 	o = Output()
 	o.fpo_numfat = numfat
 	o.fpo_cs = cs
 	o.fpo_bcodart = codart
-	o.fpo_costo = costo
+	o.fpo_costo = importo
 	o.fpo_qta = qta
 	return o
 
@@ -66,39 +68,35 @@ def scaglione(tar, mc):
 	return Decimal(round(tar.fpt_quota * mc / 1000) if tar.fpt_quota < 99999 else 99999)
 
 
-def linea_di_costo(tar, qta, numfat):
+def costo(tar, qta):
 	"""
 	Prepara un record di Output() di costi
 
 	:param tar: <Fatprot()> - Tariffa applicata
-	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:param qta: <Dec(5.3> - Quantità
 	:return: Output()
 	"""
 	assert isinstance(tar, Fatprot)
-	assert isinstance(numfat, int)
 	assert isinstance(qta, (Decimal, int))
 
 	codart = tar.fpt_bcodart_s if tipo_lettura == 'S' else tar.fpt_bcodart_r
-	return output_line(numfat, 'C', codart, qta, tar.fpt_costo_tot)
+	return output_line(tar.fpt_bgiorni, 'C', codart, qta, tar.fpt_costo_tot)
 
 
-def costo_acqua_calda(qta, numfat):
+def costo_acqua_calda(qta):
 	"""
 	Calcola il costo dell'acqua calda
 
 	:param qta: <int> - Quantità consumata
-	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:return: <Output()>
 	"""
 	assert isinstance(qta, (int, Decimal))
-	assert isinstance(numfat, int)
 
 	try:
 		codart = 'AC' if tipo_lettura == 'R' else 'ACS'
 		ac = [x for x in fproc if x.fpc_bcodart == codart][0]
-		costo = ac.fpc_costo
-		return output_line(ac.fpc_bgiorni, 'C', codart, qta, costo)
+		importo = ac.fpc_costo
+		return output_line(ac.fpc_bgiorni, 'C', codart, qta, importo)
 	except:
 		raise DataMissingError('', "Nei costi mancano i codici 'AC' e/o 'ACS'")
 
@@ -110,19 +108,10 @@ def altri_costi():
 	:return: <[Output()]>
 	"""
 
-	result = []
-	if fproc is not None:
-		for c in fproc:
-			if c.fpc_bcodart == 'AFF':
-				result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo, c.fpc_costo * fpro.fp_periodo))
-			# elif c.fpc_bcodart == 'CS':
-			# 	result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, 1, c.fpc_costo))
-			# elif c.fpc_bcodart == 'MC':
-			# 	result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, 1, c.fpc_costo))
-			# elif c.fpc_bcodart == 'QAC':
-			# 	result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, 1, c.fpc_costo))
-			else:
-				result.append(output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, 1, c.fpc_costo))
+	result = [
+		output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo_p if c.fpc_bcodart == 'AFF' else 1, c.fpc_costo)
+		for c in fproc
+		]
 
 	if len(result) == 0:
 		logger.prefix_warn("Non ci sono costi da fatturare")
@@ -143,19 +132,16 @@ def consumo_mc(letture):
 	return Decimal(sum([x.fpl_consumo for x in letture]))
 
 
-def calcolo_storno(st, numfat):
+def calcolo_storno(st):
 	"""
 	Calcolo dello storno
 
 	:param st: <Fatpros()> - Storno
-	:param numfat: <int> - Numero fattura (per l'ordinamento delle righe di output)
 	:return: <Output()> Risultato
 	"""
 	assert isinstance(st, Fatpros)
-	assert isinstance(numfat, int)
 
-	# codart = 'S' + st.fps_bcodart[0:len(st.fps_bcodart) - 1]
-	return output_line(st.fps_bgiorni + numfat, 'S', st.fps_bcodart, -st.fps_qta, st.fps_costo)
+	return output_line(st.fps_bgiorni, 'S', st.fps_bcodart, -st.fps_qta, st.fps_costo)
 
 
 def compatta_storni(storni):
@@ -189,7 +175,8 @@ def calcolo_tariffe(start_date, end_date, tar):
 	x = []
 	for t in tar:
 		if t.fpt_vigore <= end_date:
-			k = ((t.fpt_vigore, t.fpt_codtar, t.fpt_bcodart_r if tipo_lettura == 'R' else t.fpt_bcodart_s), max(t.fpt_vigore, start_date))
+			codart = t.fpt_bcodart_r if tipo_lettura == 'R' else t.fpt_bcodart_s
+			k = ((t.fpt_vigore, t.fpt_codtar, codart, t.fpt_bgiorni), max(t.fpt_vigore, start_date))
 			if k not in x:
 				x.append(k)
 	x.sort()
@@ -207,39 +194,13 @@ def calcolo_tariffe(start_date, end_date, tar):
 def giorni_tariffe(start_date, end_date):
 	consumi = dict()
 
-	# f = sorted(fprot, key=lambda x: (x.fpt_vigore, x.fpt_bgiorni))
-	# for k, v in calcolo_tariffe(start_date, end_date, [i for i in f]).items():
-	# 	consumi[k] = v
+	tariffe = set([x.fpt_codtar for x in fprot])
 
-	# acqua
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar[0] == 'A']).items():
-		consumi[k] = v
+	for t in tariffe:
+		for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == t]).items():
+			consumi[k] = v
 
-	# depuratore
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'DEPUR']).items():
-		consumi[k] = v
-
-	# fogna
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'FOGNA']).items():
-		consumi[k] = v
-
-	# quota fissa
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar[0] == 'Q']).items():
-		consumi[k] = v
-
-	# Conguaglio fredda/calda
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CFC']).items():
-		consumi[k] = v
-
-	# Conguaglio depurazione
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CDE']).items():
-		consumi[k] = v
-
-	# Conguaglio fogna
-	for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == 'CFO']).items():
-		consumi[k] = v
-
-	return OrderedDict(sorted(consumi.items(), key=lambda i: (i[0][0], i[0][1])))
+	return OrderedDict(sorted(consumi.items(), key=lambda i: (i[0][0], i[0][3])))
 
 
 ##======================================================================================================================
@@ -249,34 +210,32 @@ def main():
 	global results
 
 	# Isolamento letture casa da letture garage
-	letture_casa	= [x for x in fprol if x.fpl_garage == '']
-	letture_garage	= [x for x in fprol if x.fpl_garage == 'G']
+	letture_casa = [x for x in fprol if x.fpl_garage == '']
+	letture_garage = [x for x in fprol if x.fpl_garage == 'G']
 
 	# Consumi casa
-	mc_consumo_fredda_casa		= consumo_mc([x for x in letture_casa if x.fpl_fc == 0])
-	mc_consumo_calda_casa		= consumo_mc([x for x in letture_casa if x.fpl_fc == 1])
+	mc_consumo_fredda_casa = consumo_mc([x for x in letture_casa if x.fpl_fc == 0])
+	mc_consumo_calda_casa = consumo_mc([x for x in letture_casa if x.fpl_fc == 1])
 
 	# Consumi garage
-	mc_consumo_fredda_garage	= consumo_mc([x for x in letture_garage if x.fpl_fc == 0])
-	mc_consumo_calda_garage		= consumo_mc([x for x in letture_garage if x.fpl_fc == 1])
+	mc_consumo_fredda_garage = consumo_mc([x for x in letture_garage if x.fpl_fc == 0])
+	mc_consumo_calda_garage = consumo_mc([x for x in letture_garage if x.fpl_fc == 1])
 
-	#----------------------------------------------------------------------------------------------
+	# ----------------------------------------------------------------------------------------------
 	##	Consumi totali
-	#----------------------------------------------------------------------------------------------
-	mc_consumo_totale_garage	= mc_consumo_fredda_garage + mc_consumo_calda_garage
-	mc_consumo_totale_casa		= mc_consumo_fredda_casa + mc_consumo_calda_casa
+	# ----------------------------------------------------------------------------------------------
+	mc_consumo_totale_garage = mc_consumo_fredda_garage + mc_consumo_calda_garage
+	mc_consumo_totale_casa = mc_consumo_fredda_casa + mc_consumo_calda_casa
 
-	mc_consumo_totale_calda		= mc_consumo_calda_casa	+ mc_consumo_calda_garage
-	mc_consumo_totale_fredda	= mc_consumo_fredda_casa + mc_consumo_fredda_garage
+	mc_consumo_totale_calda = mc_consumo_calda_casa + mc_consumo_calda_garage
+	mc_consumo_totale_fredda = mc_consumo_fredda_casa + mc_consumo_fredda_garage
 
-	mc_consumo_totale			= mc_consumo_totale_casa + mc_consumo_totale_garage
-	#----------------------------------------------------------------------------------------------
+	mc_consumo_totale = mc_consumo_totale_casa + mc_consumo_totale_garage
+	# ----------------------------------------------------------------------------------------------
 
 	# Periodo di riferimento dei consumi
 	end_date = fpro.fp_data_let
 	start_date = end_date - timedelta(days=fpro.fp_periodo)
-
-	numfat = 0
 
 	# Consumi
 	gt = giorni_tariffe(start_date, end_date)
@@ -293,36 +252,32 @@ def main():
 				if consumo > 0:
 					sc = scaglione(tar, gt[k])
 					qty = sc if consumo > sc else consumo
-					results.append(linea_di_costo(tar, qty, tar.fpt_bgiorni))
-					# results.append(linea_di_costo(tar, qty, numfat))
+					results.append(costo(tar, qty))
 					consumo -= qty
-					numfat += 1
 			else:
 				qty = consumo if tar.fpt_costo_um == 'MC' else gt[k]
-				results.append(linea_di_costo(tar, qty, tar.fpt_bgiorni))
-				# results.append(linea_di_costo(tar, qty, numfat))
-				numfat += 1
+				results.append(costo(tar, qty))
 
 	# Acqua calda, se presente
 	if mc_consumo_totale_calda > 0:
 		if not fproc:
 			msg = "Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_totale_calda
 			raise DataMissingError("Fatproc", msg)
-		results.append(costo_acqua_calda(mc_consumo_totale_calda, numfat))
+		results.append(costo_acqua_calda(mc_consumo_totale_calda))
 
 	# Costi
-	results += altri_costi()
+	costi = altri_costi()
 
 	# Storni
+	storni = []
 	if fpros:
-		# numfat = 0
 		for fps in compatta_storni(fpros):
-			o = calcolo_storno(fps, numfat)
-			results.append(o)
-			# numfat += 1
+			o = calcolo_storno(fps)
+			storni.append(o)
 
 	# Scrittura dei risultati ordinati su fpo_numfat
-	results = [r for r in sorted(results, key=lambda x: x.fpo_numfat) if r.fpo_qta != 0]
+	results = [r for r in results + sorted(costi + storni, key=lambda x: x.fpo_numfat) if r.fpo_qta != 0]
+
 	write_output(results)
 
 	logger.debug('main(): Results written to %s', basename(globals()['output_filename']))
@@ -355,7 +310,8 @@ def initialize():
 		tipo_lettura = fpro.fp_tipo_let
 
 		logger.prefix_info("Utente:\t[%d/%s]", fpro.fp_aconto, fpro.fp_azienda)
-		logger.prefix_info("Lettura:\t[%s/%d/%d %s]", tipo_lettura, fpro.fp_numlet_pr, fpro.fp_numlet_aa, fpro.fp_data_let)
+		logger.prefix_info("Lettura:\t[%s/%d/%d %s]", tipo_lettura, fpro.fp_numlet_pr, fpro.fp_numlet_aa,
+						   fpro.fp_data_let)
 
 		if fpro.fp_periodo <= 0:
 			raise InvalidDataError('', 'Il periodo non può essere di 0 giorni.')
@@ -376,8 +332,8 @@ def initialize():
 		if 'Fatproc' not in aqua_data:
 			raise DataMissingError("", "Mancano i costi.")
 
-		# Filtro le righe con quantità 0
-		fproc = [c for c in aqua_data['Fatproc'] if c.fpc_qta != 0]
+		# # Filtro le righe con quantità 0
+		fproc = [c for c in aqua_data['Fatproc']]  # if c.fpc_qta != 0]
 
 		# Il codice 'CS' deve essere presente
 		if len([c for c in fproc if c.fpc_bcodart == 'CS']) == 0:
@@ -423,6 +379,7 @@ def pretty_print_results():
 	print()
 	print('\n\n'.join([i.pretty_print() for i in results]))
 
+
 ##======================================================================================================================
 
 if __name__ == '__main__':
@@ -438,7 +395,8 @@ if __name__ == '__main__':
 		csv_print_data()
 		print()
 		csv_print_results()
-		print(); print('#	TAG1, TAG2, TBA, TEC1, TEC2, CFC, DE, CDE, FO, CFO, QF')
+		print();
+		print('#	TAG1, TAG2, TBA, TEC1, TEC2, CFC, DE, CDE, FO, CFO, QF')
 		# pretty_print_data()
 		# pretty_print_results()
 
