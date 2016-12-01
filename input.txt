@@ -1,7 +1,7 @@
 Fatpro  	SERRA               	16	11111	11947	S	 	            	            	            	            	D	AR03 	QR03 	FOGNA	DEPUR	N	20161020	R	00158	00063
 #
 Fatproc 	AC   	+00001,000	+0003,615200	500
-#Fatproc 	ACS  	+00001,000	+0003,615200	500
+Fatproc 	ACS  	+00001,000	+0003,615200	500
 Fatproc 	AFF  	+00001,000	+0020,000000	950	    
 Fatproc 	CS   	+00001,000	+0004,650000	999	    
 #
