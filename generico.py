@@ -110,7 +110,7 @@ def altri_costi():
 
 	result = [
 		output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo_p if c.fpc_bcodart == 'AFF' else 1, c.fpc_costo)
-		for c in fproc if c.fpc_bcodart != ('AC' if tipo_lettura == 'R' else 'ACS')
+		for c in fproc if c.fpc_bcodart not in ('AC', 'ACS')
 		]
 
 	if len(result) == 0:
