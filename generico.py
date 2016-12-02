@@ -28,6 +28,7 @@ fpros = []  # scaglioni
 
 results = []
 tipo_lettura = ''
+ordinamento = 0
 
 
 ##======================================================================================================================
@@ -79,8 +80,9 @@ def costo(tar, qta):
 	assert isinstance(tar, Fatprot)
 	assert isinstance(qta, (Decimal, int))
 
+	global ordinamento
 	codart = tar.fpt_bcodart_s if tipo_lettura == 'S' else tar.fpt_bcodart_r
-	return output_line(tar.fpt_bgiorni, 'C', codart, qta, tar.fpt_costo_tot)
+	return output_line(ordinamento + tar.fpt_bgiorni, 'C', codart, qta, tar.fpt_costo_tot)
 
 
 def costo_acqua_calda(qta):
@@ -92,11 +94,12 @@ def costo_acqua_calda(qta):
 	"""
 	assert isinstance(qta, (int, Decimal))
 
+	global ordinamento
 	try:
 		codart = 'AC' if tipo_lettura == 'R' else 'ACS'
 		ac = [x for x in fproc if x.fpc_bcodart == codart][0]
 		importo = ac.fpc_costo
-		return output_line(ac.fpc_bgiorni, 'C', codart, qta, importo)
+		return output_line(ordinamento + ac.fpc_bgiorni, 'C', codart, qta, importo)
 	except:
 		raise DataMissingError('', "Nei costi mancano i codici 'AC' e/o 'ACS'")
 
@@ -108,8 +111,9 @@ def altri_costi():
 	:return: <[Output()]>
 	"""
 
+	global ordinamento
 	result = [
-		output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo_p if c.fpc_bcodart == 'AFF' else 1, c.fpc_costo)
+		output_line(ordinamento + c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo_p if c.fpc_bcodart == 'AFF' else 1, c.fpc_costo)
 		for c in fproc if c.fpc_bcodart not in ('AC', 'ACS')
 		]
 
@@ -141,7 +145,8 @@ def calcolo_storno(st):
 	"""
 	assert isinstance(st, Fatpros)
 
-	return output_line(st.fps_bgiorni, 'S', st.fps_bcodart, -st.fps_qta, st.fps_costo)
+	global ordinamento
+	return output_line(ordinamento + st.fps_bgiorni, 'S', st.fps_bcodart, -st.fps_qta, st.fps_costo)
 
 
 def compatta_storni(storni):
@@ -208,6 +213,7 @@ def giorni_tariffe(start_date, end_date):
 
 def main():
 	global results
+	global ordinamento
 
 	# Isolamento letture casa da letture garage
 	letture_casa = [x for x in fprol if x.fpl_garage == '']
@@ -243,7 +249,9 @@ def main():
 		msg = 'Nessuna tariffa applicabile al periodo specificato [{0} - {1}].'.format(start_date, end_date)
 		raise InvalidDataError('', msg)
 
+	ordinamento = 1000
 	for k in gt.keys():
+		inc = 0
 		ts = [x for x in fprot if x.fpt_vigore == k[0] and x.fpt_codtar == k[1]]
 		consumo = Decimal(round(mc_consumo_totale / fpro.fp_periodo * gt[k]))
 
@@ -254,11 +262,16 @@ def main():
 					qty = sc if consumo > sc else consumo
 					results.append(costo(tar, qty))
 					consumo -= qty
+					inc = 1000
 			else:
 				qty = consumo if tar.fpt_costo_um == 'MC' else gt[k]
 				results.append(costo(tar, qty))
+				inc = 1000
+
+		ordinamento += inc
 
 	# Acqua calda, se presente
+	ordinamento = 100000
 	if mc_consumo_totale_calda > 0:
 		if not fproc:
 			msg = "Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_totale_calda
