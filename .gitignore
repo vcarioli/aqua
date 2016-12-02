@@ -4,3 +4,4 @@
 /out.txt
 *.pyc
 ## workspace.xml
+.idea/workspace.xml

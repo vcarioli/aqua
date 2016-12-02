@@ -7,7 +7,7 @@
 from os.path import basename
 from decimal import Decimal
 from collections import OrderedDict
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from aquaerrors import DataMissingError, CostCodeMissingError, InvalidDataError
 from inputreader import InputReader
@@ -28,7 +28,6 @@ fpros = []  # scaglioni
 
 results = []
 tipo_lettura = ''
-ordinamento = 0
 
 
 ##======================================================================================================================
@@ -80,9 +79,8 @@ def costo(tar, qta):
 	assert isinstance(tar, Fatprot)
 	assert isinstance(qta, (Decimal, int))
 
-	global ordinamento
 	codart = tar.fpt_bcodart_s if tipo_lettura == 'S' else tar.fpt_bcodart_r
-	return output_line(ordinamento + tar.fpt_bgiorni, 'C', codart, qta, tar.fpt_costo_tot)
+	return output_line(tar.fpt_bgiorni, 'C', codart, qta, tar.fpt_costo_tot)
 
 
 def costo_acqua_calda(qta):
@@ -94,14 +92,13 @@ def costo_acqua_calda(qta):
 	"""
 	assert isinstance(qta, (int, Decimal))
 
-	global ordinamento
+	codart = 'AC' if tipo_lettura == 'R' else 'ACS'
 	try:
-		codart = 'AC' if tipo_lettura == 'R' else 'ACS'
 		ac = [x for x in fproc if x.fpc_bcodart == codart][0]
 		importo = ac.fpc_costo
-		return output_line(ordinamento + ac.fpc_bgiorni, 'C', codart, qta, importo)
+		return output_line(ac.fpc_bgiorni, 'C', codart, qta, importo)
 	except:
-		raise DataMissingError('', "Nei costi mancano i codici 'AC' e/o 'ACS'")
+		raise DataMissingError('', "Nei costi manca il codice '{0}'".format(codart))
 
 
 def altri_costi():
@@ -111,9 +108,8 @@ def altri_costi():
 	:return: <[Output()]>
 	"""
 
-	global ordinamento
 	result = [
-		output_line(ordinamento + c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo_p if c.fpc_bcodart == 'AFF' else 1, c.fpc_costo)
+		output_line(c.fpc_bgiorni, 'C', c.fpc_bcodart, fpro.fp_periodo_p if c.fpc_bcodart == 'AFF' else 1, c.fpc_costo)
 		for c in fproc if c.fpc_bcodart not in ('AC', 'ACS')
 		]
 
@@ -145,8 +141,7 @@ def calcolo_storno(st):
 	"""
 	assert isinstance(st, Fatpros)
 
-	global ordinamento
-	return output_line(ordinamento + st.fps_bgiorni, 'S', st.fps_bcodart, -st.fps_qta, st.fps_costo)
+	return output_line(st.fps_bgiorni, 'S', st.fps_bcodart, -st.fps_qta, st.fps_costo)
 
 
 def compatta_storni(storni):
@@ -154,7 +149,7 @@ def compatta_storni(storni):
 	Compattazione e ordinamento degli storni
 
 	:param storni: <[Fatpros()]> - Lista degli storni
-	:return: <[Fatpros()]> - Lista degli storni compattati e ordinati secondo il campo fps_bgiorni
+	:return: <[Fatpros()]> - Lista degli storni compattati
 	"""
 	if storni:
 		assert isinstance(storni[0], Fatpros)
@@ -173,7 +168,7 @@ def compatta_storni(storni):
 		fps.fps_qta = s[k]
 		storni.append(fps)
 
-	return sorted(storni, key=lambda x: x.fps_bgiorni)
+	return storni
 
 
 def calcolo_tariffe(start_date, end_date, tar):
@@ -213,7 +208,6 @@ def giorni_tariffe(start_date, end_date):
 
 def main():
 	global results
-	global ordinamento
 
 	# Isolamento letture casa da letture garage
 	letture_casa = [x for x in fprol if x.fpl_garage == '']
@@ -249,47 +243,61 @@ def main():
 		msg = 'Nessuna tariffa applicabile al periodo specificato [{0} - {1}].'.format(start_date, end_date)
 		raise InvalidDataError('', msg)
 
-	ordinamento = 1000
+	# Per dare un ordinamento ai record in output
+	periodi = sorted(set([x[0] for x in gt.keys()]))
+
 	for k in gt.keys():
-		inc = 0
-		ts = [x for x in fprot if x.fpt_vigore == k[0] and x.fpt_codtar == k[1]]
+		data_vigore = k[0]
+
+		# Per ogni periodo di tariffazione l'ordinamento viene incrementato di 1000
+		def ordina_tariffe(o):
+			o.fpo_numfat += periodi.index(data_vigore) * 1000
+			return o
+
+		res = []
+		ts = [x for x in fprot if x.fpt_vigore == data_vigore and x.fpt_codtar == k[1]]
 		consumo = Decimal(round(mc_consumo_totale / fpro.fp_periodo * gt[k]))
 
 		for tar in ts:
+			qty = 0
 			if tar.fpt_codtar[0] == 'A':
 				if consumo > 0:
 					sc = scaglione(tar, gt[k])
 					qty = sc if consumo > sc else consumo
-					results.append(costo(tar, qty))
 					consumo -= qty
-					inc = 1000
 			else:
 				qty = consumo if tar.fpt_costo_um == 'MC' else gt[k]
-				results.append(costo(tar, qty))
-				inc = 1000
 
-		ordinamento += inc
+			if qty != 0:
+				# o = costo(tar, qty)
+				# o.fpo_numfat += ordinamento()
+				res += [ordina_tariffe(costo(tar, qty))]
+
+		results += res
+
+	# Per non aver problemi con l'ordinamento dell'output in caso di più di due periodi di tariffazione
+	# impongo l'ordinamento base a 999000
+	def ordina_costi(o):
+		o.fpo_numfat += 999000
+		return o
 
 	# Acqua calda, se presente
-	ordinamento = 100000
-	if mc_consumo_totale_calda > 0:
-		if not fproc:
-			msg = "Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_totale_calda
-			raise DataMissingError("Fatproc", msg)
-		results.append(costo_acqua_calda(mc_consumo_totale_calda))
+	try:
+		if mc_consumo_totale_calda > 0:
+			results += [ordina_costi(costo_acqua_calda(mc_consumo_totale_calda))]
+	except:
+		msg = "Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_totale_calda
+		raise DataMissingError("Fatproc", msg)
 
 	# Costi
-	costi = altri_costi()
+	results += [ordina_costi(o) for o in altri_costi()]
 
 	# Storni
-	storni = []
 	if fpros:
-		for fps in compatta_storni(fpros):
-			o = calcolo_storno(fps)
-			storni.append(o)
+		results += [ordina_costi(o) for o in [calcolo_storno(fps) for fps in compatta_storni(fpros)]]
 
-	# Scrittura dei risultati ordinati su fpo_numfat
-	results = [r for r in results + sorted(costi + storni, key=lambda x: x.fpo_numfat) if r.fpo_qta != 0]
+	# Ordino i risultati rispetto fpo_numfat
+	results.sort(key=lambda x: x.fpo_numfat)
 
 	write_output(results)
 
