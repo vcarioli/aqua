@@ -176,7 +176,7 @@ def calcolo_tariffe(start_date, end_date, tar):
 	for t in tar:
 		if t.fpt_vigore <= end_date:
 			codart = t.fpt_bcodart_r if tipo_lettura == 'R' else t.fpt_bcodart_s
-			k = ((t.fpt_vigore, t.fpt_codtar, codart, t.fpt_bgiorni), max(t.fpt_vigore, start_date))
+			k = ((t.fpt_vigore, t.fpt_codtar, codart), max(t.fpt_vigore, start_date))
 			if k not in x:
 				x.append(k)
 	x.sort()
@@ -200,7 +200,7 @@ def giorni_tariffe(start_date, end_date):
 		for k, v in calcolo_tariffe(start_date, end_date, [x for x in fprot if x.fpt_codtar == t]).items():
 			consumi[k] = v
 
-	return OrderedDict(sorted(consumi.items(), key=lambda i: (i[0][0], i[0][3])))
+	return consumi
 
 
 ##======================================================================================================================
@@ -243,15 +243,18 @@ def main():
 		msg = 'Nessuna tariffa applicabile al periodo specificato [{0} - {1}].'.format(start_date, end_date)
 		raise InvalidDataError('', msg)
 
-	# Per dare un ordinamento ai record in output
+	# Lista ordinata di date di inizio periodo. Serve per dare un ordinamento ai record in output
+	# (nella tupla delle chiavi di 'gt' il primo elemento) è la data di inizio del periodo
 	periodi = sorted(set([x[0] for x in gt.keys()]))
 
 	for k in gt.keys():
 		data_vigore = k[0]
 
-		# Per ogni periodo di tariffazione l'ordinamento viene incrementato di 1000
+		# Per ogni periodo di tariffazione numfat viene incrementato di 1000 * (ordinale_periodo - 1)
+		# Es: 1^ periodo: numfat + 1000 * 0 = numfat, 2^ periodo = numfat + 1000 * 1 = numfat + 1000, ecc.
+		# In pratica il moltiplicatore è l'indice della data di inizio periodo nella lista ordinata "periodi"
 		def ordina_tariffe(o):
-			o.fpo_numfat += periodi.index(data_vigore) * 1000
+			o.fpo_numfat += 1000 * periodi.index(data_vigore)
 			return o
 
 		res = []
@@ -276,25 +279,26 @@ def main():
 		results += res
 
 	# Per non aver problemi con l'ordinamento dell'output in caso di più di due periodi di tariffazione
-	# impongo l'ordinamento base a 999000
-	def ordina_costi(o):
-		o.fpo_numfat += 999000
+	# impongo l'ordinamento a numfat + 1000 * numero di scadenze
+	# Es. se ci sono 2 periodi sarà: nufat + 1000 * 2 = numfat + 2000
+	def ordina(o):
+		o.fpo_numfat += 1000 * len(periodi)
 		return o
 
 	# Acqua calda, se presente
 	try:
 		if mc_consumo_totale_calda > 0:
-			results += [ordina_costi(costo_acqua_calda(mc_consumo_totale_calda))]
+			results += [ordina(costo_acqua_calda(mc_consumo_totale_calda))]
 	except:
 		msg = "Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_totale_calda
 		raise DataMissingError("Fatproc", msg)
 
 	# Costi
-	results += [ordina_costi(o) for o in altri_costi()]
+	results += [ordina(o) for o in altri_costi()]
 
 	# Storni
 	if fpros:
-		results += [ordina_costi(o) for o in [calcolo_storno(fps) for fps in compatta_storni(fpros)]]
+		results += [ordina(o) for o in [calcolo_storno(fps) for fps in compatta_storni(fpros)]]
 
 	# Ordino i risultati rispetto fpo_numfat
 	results.sort(key=lambda x: x.fpo_numfat)

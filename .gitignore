@@ -3,5 +3,5 @@
 /aquaclasses.py
 /out.txt
 *.pyc
-## workspace.xml
+workspace.xml
 .idea/workspace.xml
