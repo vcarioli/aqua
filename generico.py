@@ -7,7 +7,7 @@
 from os.path import basename
 from decimal import Decimal
 from collections import OrderedDict
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from aquaerrors import DataMissingError, CostCodeMissingError, InvalidDataError
 from inputreader import InputReader
@@ -272,8 +272,6 @@ def main():
 				qty = consumo if tar.fpt_costo_um == 'MC' else gt[k]
 
 			if qty != 0:
-				# o = costo(tar, qty)
-				# o.fpo_numfat += ordinamento()
 				res += [ordina_tariffe(costo(tar, qty))]
 
 		results += res
@@ -335,8 +333,7 @@ def initialize():
 		tipo_lettura = fpro.fp_tipo_let
 
 		logger.prefix_info("Utente:\t[%d/%s]", fpro.fp_aconto, fpro.fp_azienda)
-		logger.prefix_info("Lettura:\t[%s/%d/%d %s]", tipo_lettura, fpro.fp_numlet_pr, fpro.fp_numlet_aa,
-						   fpro.fp_data_let)
+		logger.prefix_info("Lettura:\t[%s/%d/%d %s]", tipo_lettura, fpro.fp_numlet_pr, fpro.fp_numlet_aa, fpro.fp_data_let)
 
 		if fpro.fp_periodo <= 0:
 			raise InvalidDataError('', 'Il periodo non può essere di 0 giorni.')
@@ -357,9 +354,7 @@ def initialize():
 		if 'Fatproc' not in aqua_data:
 			raise DataMissingError("", "Mancano i costi.")
 
-		# # Filtro le righe con quantità 0
-		fproc = [c for c in aqua_data['Fatproc']]  # if c.fpc_qta != 0]
-
+		fproc = aqua_data['Fatproc']
 		# Il codice 'CS' deve essere presente
 		if len([c for c in fproc if c.fpc_bcodart == 'CS']) == 0:
 			raise CostCodeMissingError("", "Mancano le Competenze di Servizio (cod. CS).")
@@ -368,8 +363,7 @@ def initialize():
 		if 'Fatpros' not in aqua_data:
 			logger.prefix_warn("Non sono stati specificati storni.")
 		else:
-			# Filtro le righe con quantità 0
-			fpros = [s for s in aqua_data['Fatpros'] if s.fps_qta != 0]
+			fpros = aqua_data['Fatpros']
 
 	except:
 		logger.error("Errore durante l'inizializzazione!")
@@ -417,11 +411,11 @@ if __name__ == '__main__':
 		main()
 
 		# Stampe di debug
-		csv_print_data()
-		print()
-		csv_print_results()
-		print();
-		print('#	TAG1, TAG2, TBA, TEC1, TEC2, CFC, DE, CDE, FO, CFO, QF')
+		# csv_print_data()
+		# print()
+		# csv_print_results()
+		# print();
+		# print('#	TAG1, TAG2, TBA, TEC1, TEC2, CFC, DE, CDE, FO, CFO, QF')
 		# pretty_print_data()
 		# pretty_print_results()
 
