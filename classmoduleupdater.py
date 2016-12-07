@@ -5,14 +5,19 @@
 ##----------------------------------------------------------------------------------------------------------------------
 
 from os.path import join, dirname
+from sys import argv
+
 from classdefinitionreader import ClassDefinitionReader
 from classfactory import ClassFactory
+from logger import Logger
 
 __all__ = ["ClassModuleUpdater"]
 
+
 ##======================================================================================================================
 
-class ClassModuleUpdater():
+
+class ClassModuleUpdater:
 	def __init__(self, classdefs_fn):
 		self.__classdefs_file = join(dirname(argv[0]), 'classdefs.txt') if classdefs_fn is None else classdefs_fn
 		self.__out_file = join(dirname(self.__classdefs_file), 'aquaclasses.py')
@@ -28,11 +33,10 @@ class ClassModuleUpdater():
 			"# Name:		aquaclasses",
 			"#-------------------------------------------------------------------------------",
 			"",
-			"__all__ = " + str(list(self.__definitions.keys()) + ['aqua_classes']),
-			"",
 			"from collections import OrderedDict",
 			"from decimal import Decimal",
-			"from aquabase import AquaBase"
+			"from aquabase import AquaBase",
+			"__all__ = " + str(list(self.__definitions.keys()) + ['aqua_classes'])
 		]
 
 		with open(self.__out_file, 'w') as outfile:
@@ -60,10 +64,8 @@ class ClassModuleUpdater():
 			self.__get_classes()
 		self.__write_class_module()
 
-##======================================================================================================================
 
-from sys import argv
-from logger import Logger
+##======================================================================================================================
 
 logger = Logger(__file__)
 

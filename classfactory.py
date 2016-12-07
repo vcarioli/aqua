@@ -9,18 +9,20 @@ from aquaerrors import ArgumentError
 
 __all__ = ["ClassFactory"]
 
+
 ##======================================================================================================================
+
 
 class ClassFactory(AquaBase):
 	def __init__(self, classname, spec):
-		AquaBase.__init__(self, classname, spec)
+		super().__init__()
 		if classname is None or len(classname.strip()) == 0:
 			raise ArgumentError("classname", "can't be None or empty")
 		if spec is None or len(spec) == 0 or type(spec) is not list:
 			raise ArgumentError("_spec", "can't be None or empty and must be a list object")
 		self._spec = [classname] + spec
 		self.class_name = self._spec[0]
-		self.fields = AquaBase(classname, spec).create_fields_dict()
+		self.fields = self.create_fields_dict(classname, spec)
 
 	@property
 	def class_definition(self):
@@ -32,6 +34,7 @@ class ClassFactory(AquaBase):
 
 		# <<< __init__ -----------------------------------------------------------------------------
 		c += ["	def __init__(self):"]
+		c += ["		super().__init__()"]
 
 		for key in self.fields.keys():
 			field = self.fields[key]

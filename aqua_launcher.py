@@ -36,15 +36,18 @@
 								sulla linea di comando
 """
 
-from sys import exit, version_info as pyver
-from runpy import run_path
 from os.path import abspath, dirname, exists, getmtime, basename, join
+from runpy import run_path
+from sys import exit, version_info as pyver
+
 from aquaerrors import NoFileError, USER_ERROR_BASE, UNHANDLED_ERROR, AquaException
 from logger import Logger
 
 AQUA_CLASSES = "aquaclasses.py"
 
+
 ##======================================================================================================================
+
 
 def get_command_line_options():
 	from optparse import OptionParser, make_option
@@ -58,6 +61,7 @@ def get_command_line_options():
 			make_option("-l", "--logfile", dest="log_filename", metavar="FILE", help="write data to FILE")
 		]
 	).parse_args()
+
 
 ##======================================================================================================================
 
@@ -132,6 +136,7 @@ def main():
 	run_path(main_program_filename, run_name='__main__', init_globals=g)
 
 	logger.debug('%s: Done', basename(main_program_filename))
+
 
 ##======================================================================================================================
 

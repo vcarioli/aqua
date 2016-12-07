@@ -11,24 +11,25 @@ from decimal import Decimal
 from aquaerrors import AssignmentError, UnknownFieldTypeError
 from logger import Logger
 
-
 logger = Logger(filename=__file__)
+
 
 ##======================================================================================================================
 
-class AquaBase():
-	def __init__(self, classname, spec):
-		self._spec = [classname] + spec
-		self.fields = self.create_fields_dict()
 
-	def create_fields_dict(self):
+class AquaBase:
+	def __init__(self):
+		self._spec = []
+		self.fields = OrderedDict()
+
+	def create_fields_dict(self, classname, spec):
+		self._spec = [classname] + spec
 		funcs = {
 				'i': ["_set_int", "_chk_int", "_get_int", "_out_int"],
 				's': ["_set_str", "_chk_str", "_get_str", "_get_str"],
 				'dt': ["_set_date", "_chk_date", "_get_date", "_get_date"],
 				'd': ["_set_dec", "_chk_dec", "_get_dec", "_out_dec"]
 		}
-		fields = OrderedDict()
 		for fld in [x.strip('\r') for x in self._spec[1:]]:
 			try:
 				d = fld.split(',')
@@ -41,7 +42,7 @@ class AquaBase():
 				if typ not in funcs.keys():
 					raise UnknownFieldTypeError(key, typ)
 
-				fields[key] = dict(
+				self.fields[key] = dict(
 					field_type=typ,
 					field_len=field_len,
 					dec_len=dec_len,
@@ -53,7 +54,7 @@ class AquaBase():
 			except:
 				logger.error("create_fields_dict(self): error decoding [{0}][{1}]".format(self._spec[0], fld))
 				raise
-		return fields
+		return self.fields
 
 	@staticmethod
 	def _get_internal_name(fieldname):

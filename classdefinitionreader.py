@@ -8,7 +8,9 @@ from aquaerrors import ClassDefsParseError
 
 __all__ = ["ClassDefinitionReader"]
 
+
 ##======================================================================================================================
+
 
 class ClassDefinitionReader:
 	def __init__(self, file_name):

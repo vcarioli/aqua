@@ -4,16 +4,15 @@
 ##	Name:		croara
 ##----------------------------------------------------------------------------------------------------------------------
 
-from os.path import basename
-from decimal import Decimal
 from collections import OrderedDict
-from datetime import timedelta
+from datetime import timedelta, datetime
+from decimal import Decimal
+from os.path import basename
 
+from aquaclasses import *
 from aquaerrors import DataMissingError, CostCodeMissingError, InvalidDataError
 from inputreader import InputReader
 from logger import Logger
-
-from aquaclasses import *
 
 ##======================================================================================================================
 
@@ -28,6 +27,7 @@ fpros = []  # scaglioni
 
 results = []
 tipo_lettura = ''
+aqua_data = None
 
 
 ##======================================================================================================================
@@ -191,7 +191,7 @@ def calcolo_tariffe(start_date, end_date, tar):
 	return cons
 
 
-def giorni_tariffe(start_date, end_date):
+def giorni_tariffe(start_date: datetime, end_date: datetime) -> dict:
 	consumi = dict()
 
 	tariffe = set([x.fpt_codtar for x in fprot])
@@ -228,7 +228,7 @@ def main():
 	mc_consumo_totale_casa = mc_consumo_fredda_casa + mc_consumo_calda_casa
 
 	mc_consumo_totale_calda = mc_consumo_calda_casa + mc_consumo_calda_garage
-	mc_consumo_totale_fredda = mc_consumo_fredda_casa + mc_consumo_fredda_garage
+	# mc_consumo_totale_fredda = mc_consumo_fredda_casa + mc_consumo_fredda_garage
 
 	mc_consumo_totale = mc_consumo_totale_casa + mc_consumo_totale_garage
 	# ----------------------------------------------------------------------------------------------
@@ -239,7 +239,7 @@ def main():
 
 	# Consumi
 	gt = giorni_tariffe(start_date, end_date)
-	if len(gt.items()) == 0:
+	if len([gt.items()]) == 0:
 		msg = 'Nessuna tariffa applicabile al periodo specificato [{0} - {1}].'.format(start_date, end_date)
 		raise InvalidDataError('', msg)
 

@@ -7,12 +7,14 @@
 from aquaclasses import *
 from inputreader import InputReader
 
+
 ##======================================================================================================================
+
 
 def main():
 	sep = "##################################################################################\n"
 
-	aqua_data = InputReader(aqua_classes, input_filename).read()
+	aqua_data = InputReader(aqua_classes, globals()['input_filename']).read()
 
 	fpro = aqua_data['Fatpro'][0]
 
@@ -80,6 +82,7 @@ def main():
 		print()
 
 	print(sep)
+
 
 ##======================================================================================================================
 

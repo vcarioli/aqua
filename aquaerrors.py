@@ -37,7 +37,9 @@ __all__ = [
 	"ClassDefsParseError"
 ]
 
+
 ##======================================================================================================================
+
 
 class AquaException(Exception):
 	def __init__(self):
@@ -46,7 +48,9 @@ class AquaException(Exception):
 	def __str__(self):
 		pass
 
+
 ##======================================================================================================================
+
 
 class UnknownFieldTypeError(AquaException):
 	"""An error from creating or using an argument (optional or positional)."""
@@ -142,6 +146,7 @@ class InvalidDataError(AquaException):
 
 	def __str__(self):
 		return self.msg
+
 
 class ClassDefsParseError(AquaException):
 	"""

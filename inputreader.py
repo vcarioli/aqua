@@ -3,22 +3,24 @@
 ##----------------------------------------------------------------------------------------------------------------------
 ##	Name:		inputreader
 ##----------------------------------------------------------------------------------------------------------------------
+from datetime import datetime
+from decimal import Decimal
+from os.path import dirname, join
+
 from aquaerrors import DataConversionError
+from logger import Logger
 
 __all__ = ["InputReader"]
 
 ##======================================================================================================================
 
-from os.path import dirname, join
-from datetime import datetime
-from decimal import Decimal
-from logger import Logger
-
 logger = Logger(filename=__file__, prefix='---  ', debug_mode=False, info_level=0)
+
 
 ##======================================================================================================================
 
-class InputReader():
+
+class InputReader:
 	def __init__(self, aqua_classes, file_name=None):
 		if file_name is None:
 			file_name = join(dirname(__file__), 'input.txt')

@@ -4,17 +4,18 @@
 ##	Name:		logger
 ##----------------------------------------------------------------------------------------------------------------------
 
-__all__ = ["Logger"]
-
-##======================================================================================================================
-
 from logging import basicConfig, DEBUG, info, debug, error, exception, warning
 from os.path import basename
 
+##======================================================================================================================
+
+__all__ = ["Logger"]
+
 
 ##======================================================================================================================
 
-class Logger():
+
+class Logger:
 	def __init__(self, filename=None, log_filename=None, prefix=None, separator='  ', filler=' ', debug_mode=False, info_level=1, line_len=60):
 		self.__filename__ = filename
 		self.__line_len__ = line_len
