@@ -248,7 +248,7 @@ def main():
 		raise InvalidDataError('', msg)
 
 	# Lista ordinata di date di inizio periodo. Serve per dare un ordinamento ai record in output
-	# (nella tupla delle chiavi di 'gt' il primo elemento) è la data di inizio del periodo
+	# (nella tupla delle chiavi di 'gt' il primo elemento è la data di inizio del periodo)
 	periodi = sorted(set([x[0] for x in gt.keys()]))
 
 	for k in gt.keys():
