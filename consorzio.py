@@ -5,7 +5,7 @@
 # -----------------------------------------------------------------------------------------------------------------------
 
 from collections import OrderedDict
-from datetime import timedelta, datetime
+from datetime import timedelta
 from decimal import Decimal
 from os.path import basename
 
@@ -27,7 +27,11 @@ fpros = []  # scaglioni
 
 results = []
 tipo_lettura = ''
-aqua_data = None
+
+# Lettura file dei dati in input
+logger.debug('InputReader().read(): Starting')
+aqua_data = InputReader(aqua_classes, globals()['input_filename']).read()
+logger.debug('InputReader().read(): Done')
 
 
 ##======================================================================================================================
@@ -38,7 +42,7 @@ def write_output(res):
 	Scrive i risultati nel file di output
 
 	:param res: <[Output()]>
-	:return; <None>
+	:return <None>
 	"""
 	with open(globals()['output_filename'], "w") as fout:
 		fout.writelines([str(o) + '\n' for o in res])
@@ -60,7 +64,7 @@ def scaglione(tar, mc):
 
 	:param tar: Fatprot() - Tariffa
 	:param mc: int - metri cubi
-	:return: Decimal()
+	:return Decimal()
 	"""
 	assert isinstance(tar, Fatprot)
 	assert isinstance(mc, (int, Decimal))
@@ -74,7 +78,7 @@ def costo(tar, qta):
 
 	:param tar: <Fatprot()> - Tariffa applicata
 	:param qta: <Dec(5.3> - Quantità
-	:return: Output()
+	:return Output()
 	"""
 	assert isinstance(tar, Fatprot)
 	assert isinstance(qta, (Decimal, int))
@@ -88,7 +92,7 @@ def costo_acqua_calda(qta):
 	Calcola il costo dell'acqua calda
 
 	:param qta: <int> - Quantità consumata
-	:return: <Output()>
+	:return <Output()>
 	"""
 	assert isinstance(qta, (int, Decimal))
 
@@ -105,7 +109,7 @@ def altri_costi():
 	"""
 	Produce una lista di costi aggiuntivi
 
-	:return: <[Output()]>
+	:return <[Output()]>
 	"""
 
 	result = [
@@ -124,7 +128,7 @@ def consumo_mc(letture):
 	Consumo in metri cubi
 
 	:param letture: <[Fatprol()]> - Lista letture
-	:return : <Decimal()> - Consumo (mc)
+	:return <Decimal()> - Consumo (mc)
 	"""
 	if letture:
 		assert isinstance(letture[0], Fatprol)
@@ -137,7 +141,7 @@ def calcolo_storno(st):
 	Calcolo dello storno
 
 	:param st: <Fatpros()> - Storno
-	:return: <Output()> Risultato
+	:return <Output()> Risultato
 	"""
 	assert isinstance(st, Fatpros)
 
@@ -149,7 +153,7 @@ def compatta_storni(storni):
 	Compattazione e ordinamento degli storni
 
 	:param storni: <[Fatpros()]> - Lista degli storni
-	:return: <[Fatpros()]> - Lista degli storni compattati
+	:return <[Fatpros()]> - Lista degli storni compattati
 	"""
 	if storni:
 		assert isinstance(storni[0], Fatpros)
@@ -191,7 +195,7 @@ def calcolo_tariffe(start_date, end_date, tar):
 	return cons
 
 
-def giorni_tariffe(start_date: datetime, end_date: datetime) -> dict:
+def giorni_tariffe(start_date, end_date):
 	consumi = dict()
 
 	tariffe = set([x.fpt_codtar for x in fprot])
@@ -313,18 +317,13 @@ def main():
 
 def initialize():
 	"""
-	Lettura dei dati dal file di input e inizializzazione delle variabili globali
+	Inizializzazione delle variabili globali
 
-	:return: None
+	:return None
 	"""
 	global aqua_data, fpro, tipo_lettura, fprol, fproc, fprot, fpros, logger
 
 	try:
-		# Lettura file dei dati in input
-		logger.debug('InputReader().read(): Starting')
-		aqua_data = InputReader(aqua_classes, globals()['input_filename']).read()
-		logger.debug('InputReader().read(): Done')
-
 		# Controllo presenza dei dati dell'azienda
 		if 'Fatpro' not in aqua_data:
 			raise DataMissingError('', "Mancano i dati dell'azienda.")
@@ -354,16 +353,17 @@ def initialize():
 		if 'Fatproc' not in aqua_data:
 			raise DataMissingError("", "Mancano i costi.")
 
-		fproc = aqua_data['Fatproc']
+		# Filtro le righe con quantità 0
+		fproc = [c for c in aqua_data['Fatproc'] if c.fpc_qta != 0]
 		# Il codice 'CS' deve essere presente
 		if len([c for c in fproc if c.fpc_bcodart == 'CS']) == 0:
 			raise CostCodeMissingError("", "Mancano le Competenze di Servizio (cod. CS).")
 
-		# Controllo della presenza degli storni
+		# Controllo della presenza degli storni e filtro le righe con quantità 0
 		if 'Fatpros' not in aqua_data:
 			logger.prefix_warn("Non sono stati specificati storni.")
 		else:
-			fpros = aqua_data['Fatpros']
+			fpros = [s for s in aqua_data['Fatpros'] if s.fps_qta != 0]
 
 	except:
 		logger.error("Errore durante l'inizializzazione!")
