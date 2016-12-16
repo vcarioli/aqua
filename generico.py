@@ -27,12 +27,19 @@ fpros = []  # scaglioni
 
 results = []
 tipo_lettura = ''
+<<<<<<< Updated upstream
 
 # Lettura file dei dati in input
 logger.debug('InputReader().read(): Starting')
 aqua_data = InputReader(aqua_classes, globals()['input_filename']).read()
 logger.debug('InputReader().read(): Done')
+=======
+>>>>>>> Stashed changes
 
+# Lettura file dei dati in input
+logger.debug('InputReader().read(): Starting')
+aqua_data = InputReader(aqua_classes, globals()['input_filename']).read()
+logger.debug('InputReader().read(): Done')
 
 ##======================================================================================================================
 
@@ -292,7 +299,7 @@ def main():
 		if mc_consumo_totale_calda > 0:
 			results += [ordina(costo_acqua_calda(mc_consumo_totale_calda))]
 	except:
-		msg = "Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_totale_calda
+		msg = "Consumo acqua calda > 0 (mc {:d}) ma non sono presenti i relativi costi".format(mc_consumo_totale_calda)
 		raise DataMissingError("Fatproc", msg)
 
 	# Costi
