@@ -27,14 +27,11 @@ fpros = []  # scaglioni
 
 results = []
 tipo_lettura = ''
-<<<<<<< Updated upstream
 
 # Lettura file dei dati in input
 logger.debug('InputReader().read(): Starting')
 aqua_data = InputReader(aqua_classes, globals()['input_filename']).read()
 logger.debug('InputReader().read(): Done')
-=======
->>>>>>> Stashed changes
 
 # Lettura file dei dati in input
 logger.debug('InputReader().read(): Starting')
