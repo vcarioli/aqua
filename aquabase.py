@@ -17,7 +17,7 @@ logger = Logger(filename=__file__)
 ##======================================================================================================================
 
 
-class AquaBase:
+class AquaBase(object):
 	def __init__(self):
 		self._spec = []
 		self.fields = OrderedDict()

@@ -292,18 +292,18 @@ def main():
 		if mc_consumo_totale_calda > 0:
 			results += [ordina(costo_acqua_calda(mc_consumo_totale_calda))]
 	except:
-		msg = "Consumo acqua calda > 0 (mc %d) ma non sono presenti i relativi costi" % mc_consumo_totale_calda
+		msg = "Consumo acqua calda > 0 (mc {0}) ma non sono presenti i relativi costi".format(mc_consumo_totale_calda)
 		raise DataMissingError("Fatproc", msg)
 
 	# Costi
-	results += [ordina(o) for o in altri_costi()]
+	results += [ordina(c) for c in altri_costi()]
 
 	# Storni
 	if fpros:
-		results += [ordina(o) for o in [calcolo_storno(fps) for fps in compatta_storni(fpros)]]
+		results += [ordina(s) for s in [calcolo_storno(fps) for fps in compatta_storni(fpros)]]
 
 	# Ordino i risultati rispetto fpo_numfat
-	results.sort(key=lambda x: x.fpo_numfat)
+	results.sort(key=lambda r: r.fpo_numfat)
 
 	write_output(results)
 
